@@ -1,0 +1,4 @@
+packages:
+  - common # 项目公共使用的代码
+  - docs # 项目文档
+  - "packages/**" # 所有项目的源码存放目录
