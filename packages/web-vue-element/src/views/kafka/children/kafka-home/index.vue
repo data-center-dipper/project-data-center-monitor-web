@@ -3,7 +3,7 @@
 </script>
 
 <template>
-
+kafka-home
 </template>
 
 <style scoped>

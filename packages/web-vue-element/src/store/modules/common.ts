@@ -1,8 +1,15 @@
-import { reactive } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
-export const useStore = defineStore('common', () => {
-    const uploadData = reactive({})
-    const AbortController = {}
-    return { uploadData, AbortController }
+export const useCommonStore = defineStore('common', () => {
+    const isCollapse = ref(false)
+
+    const toggleCollapse = () => {
+        isCollapse.value = !isCollapse.value
+    }
+
+    return {
+        isCollapse,
+        toggleCollapse
+    }
 })

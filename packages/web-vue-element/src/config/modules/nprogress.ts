@@ -1,4 +1,4 @@
-import NProgress from 'src/config/modules/nprogress'
+import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
 NProgress.configure({
