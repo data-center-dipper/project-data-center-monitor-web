@@ -11,6 +11,7 @@ const systemManagementRouter: Array<RouteRecordRaw> = [
             title: '系统管理',
             key: 'system-management',
             to: { name: 'route-management' },
+            icon: 'system'
         },
         children: [
             {

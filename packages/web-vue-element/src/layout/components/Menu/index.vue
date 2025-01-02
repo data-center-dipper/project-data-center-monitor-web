@@ -3,7 +3,7 @@
     <el-menu :collapse="isCollapse" :default-active="activeMenu" class="el-menu-vertical-demo" @select="handleSelect">
       <el-sub-menu v-for="route in routerArray" :key="route.path" :index="route.path">
         <template #title>
-          <iconpark-icon name="menu-fold-one"></iconpark-icon>
+          <iconpark-icon :name="(route.meta as RouteMeta).icon" size="20" :class="!isCollapse ? 'mr-2' : ''"></iconpark-icon>
           <span>{{ (route.meta as RouteMeta).title }}</span>
         </template>
         <el-menu-item

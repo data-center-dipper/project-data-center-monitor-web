@@ -11,6 +11,7 @@ const userRouter: Array<RouteRecordRaw> = [
             title: '个人中心',
             key: 'user',
             to: { name: 'user' },
+            icon: 'individual'
         },
         children: [
             {

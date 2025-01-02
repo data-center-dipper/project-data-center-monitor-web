@@ -11,6 +11,7 @@ const kafkaRouter: Array<RouteRecordRaw> = [
             title: 'Kafka监控',
             key: 'kafka-management',
             to: { name: 'kafka' },
+            icon: 'Kafka'
         },
         children: [
             {

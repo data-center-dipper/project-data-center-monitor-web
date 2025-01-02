@@ -15,7 +15,7 @@ useRouteTitle()
 
 <template>
   <el-container>
-    <el-aside :width="isCollapse? 'auto' : '200px'">
+    <el-aside :width="isCollapse? 'auto' : '200px'" :class="{ 'shadow-md': isCollapse }">
       <Logo />
       <Menu />
     </el-aside>
