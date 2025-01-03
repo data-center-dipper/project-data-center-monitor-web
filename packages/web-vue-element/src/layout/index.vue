@@ -27,8 +27,8 @@ useRouteTitle()
         <router-view v-slot="{ Component, route }">
           <keep-alive :include="cacheRouter">
             <component
-                :is="Component"
-                :key="route.path"
+              :is="Component"
+              :key="route.path"
             />
           </keep-alive>
         </router-view>
