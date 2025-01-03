@@ -1,20 +1,43 @@
 <script setup lang="ts">
 import Simplebar from 'simplebar-vue'
 import 'simplebar-vue/dist/simplebar.min.css'
+import { computed } from 'vue'
+
+interface Props {
+  autoHide?: boolean // 是否自动隐藏滚动条
+  forceVisible?: boolean | 'x' | 'y' // 强制显示滚动条
+  class?: string // 自定义类名
+  style?: Record<string, string> // 自定义样式
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  autoHide: true,
+  forceVisible: false,
+  class: '',
+  style: () => ({}),
+})
+
+// 合并外部传入的样式和类名
+const customStyle = computed(() => ({
+  ...props.style,
+}))
+
+const customClass = computed(() => [props.class])
 </script>
 
 <template>
-  <div class="scrollbar">
-    <Simplebar class="h-full">
-      <slot />
-    </Simplebar>
-  </div>
+  <Simplebar
+      :auto-hide="autoHide"
+      :force-visible="forceVisible"
+      :class="customClass"
+      :style="customStyle"
+  >
+    <slot />
+  </Simplebar>
 </template>
 
-<style lang="scss" scoped>
-.scrollbar {
-  flex: 1;
-  height: 100%;
-  overflow: hidden;
+<style scoped>
+.simplebar-scrollbar::before {
+  background-color: #666;
 }
 </style>

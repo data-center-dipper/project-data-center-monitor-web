@@ -6,6 +6,7 @@ import { useCommonStore } from '@/store/modules/common.ts'
 import Header from './components/Header/index.vue'
 import Menu from './components/Menu/index.vue'
 import Logo from './components/Logo/index.vue'
+import Tab from './components/Tab/index.vue'
 
 const commonStore = useCommonStore()
 const { isCollapse } = storeToRefs(commonStore)
@@ -23,6 +24,7 @@ useRouteTitle()
       <el-header>
         <Header />
       </el-header>
+      <Tab />
       <el-main>
         <router-view v-slot="{ Component, route }">
           <keep-alive :include="cacheRouter">
