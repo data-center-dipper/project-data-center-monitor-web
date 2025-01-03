@@ -1,26 +1,14 @@
 <template>
   <el-scrollbar>
-    <el-menu :collapse="isCollapse" :default-active="activeMenu" class="el-menu-vertical-demo" @select="handleSelect">
-      <template v-for="route in routerArray" :key="route.path">
-        <el-sub-menu v-if="route.children && route.children.length" :index="route.path">
-          <template #title>
-            <iconpark-icon :name="(route.meta as RouteMeta).icon" size="20" :class="!isCollapse ? 'mr-2' : ''"></iconpark-icon>
-            <span>{{ (route.meta as RouteMeta).title }}</span>
-          </template>
-          <el-menu-item
-              v-for="child in route.children"
-              :key="child.path"
-              :index="child.path"
-          >
-            {{ (child.meta as RouteMeta).title }}
-          </el-menu-item>
-        </el-sub-menu>
-
-        <el-menu-item v-else :index="route.path">
-          <iconpark-icon :name="(route.meta as RouteMeta).icon" size="20" :class="!isCollapse ? 'mr-2' : ''"></iconpark-icon>
-          {{ (route.meta as RouteMeta).title }}
-        </el-menu-item>
-      </template>
+    <el-menu
+        :router="false"
+        :default-active="activeMenu"
+        :collapse="isCollapse"
+        :unique-opened="true"
+        :collapse-transition="false"
+        @select="handleSelect"
+    >
+      <SubMenu :router-array="routerArray" />
     </el-menu>
   </el-scrollbar>
 </template>
@@ -30,8 +18,8 @@ import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { useCommonStore } from '@/store/modules/common'
+import SubMenu from './components/sub-menu.vue'
 import { routerArray } from '@/router/index.ts'
-import type { RouteMeta } from '@/router/index.ts'
 
 const router = useRouter()
 const { isCollapse } = storeToRefs(useCommonStore())

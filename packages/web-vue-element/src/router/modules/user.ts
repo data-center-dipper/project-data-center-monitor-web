@@ -25,6 +25,7 @@ const userRouter: Array<RouteRecordRaw> = [
                     title: '个人信息',
                     key: 'userInfo',
                     to: { name: 'userInfo' },
+                    parentKey: 'user'
                 },
             }
         ],

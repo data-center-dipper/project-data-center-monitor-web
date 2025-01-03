@@ -5,6 +5,7 @@ const systemManagementRouter: Array<RouteRecordRaw> = [
         path: '/system-management',
         component: () => import('@/layout/index.vue'),
         redirect: '/system-management/route-management',
+        name: 'system-management',
         meta: {
             keepAlive: true,
             requiresAuth: true,
@@ -18,6 +19,7 @@ const systemManagementRouter: Array<RouteRecordRaw> = [
                 path: '/system-management/route-management',
                 name: 'route-management',
                 component: () => import('@/views/system/children/route-management/index.vue'),
+                redirect: '/system-management/route-management/add',
                 meta: {
                     keepAlive: true,
                     requiresAuth: true,
@@ -26,6 +28,37 @@ const systemManagementRouter: Array<RouteRecordRaw> = [
                     to: { name: 'route-management' },
                     parentKey: 'system-management',
                 },
+                children: [
+                    {
+                        path: '/system-management/route-management/add',
+                        name: 'add-route',
+                        component: () => import('@/views/system/children/route-management/children/add.vue'),
+                        redirect: '/system-management/route-management/add/test',
+                        meta: {
+                            keepAlive: true,
+                            requiresAuth: true,
+                            title: '新增路由',
+                            key: 'add-route',
+                            to: { name: 'add-route' },
+                            parentKey: 'route-management',
+                        },
+                        children: [
+                            {
+                                path: '/system-management/route-management/test',
+                                name: 'test-route',
+                                component: () => import('@/views/system/children/route-management/children/test.vue'),
+                                meta: {
+                                    keepAlive: true,
+                                    requiresAuth: true,
+                                    title: '测试新增路由',
+                                    key: 'test-route',
+                                    to: { name: 'test-route' },
+                                    parentKey: 'add-route',
+                                },
+                            }
+                        ]
+                    }
+                ],
             },
             {
                 path: '/system-management/role-management',

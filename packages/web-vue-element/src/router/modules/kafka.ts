@@ -5,6 +5,7 @@ const kafkaRouter: Array<RouteRecordRaw> = [
         path: '/kafka',
         component: () => import('@/layout/index.vue'),
         redirect: '/kafka/kafka-home',
+        name: 'kafka-management',
         meta: {
             keepAlive: false,
             requiresAuth: true,

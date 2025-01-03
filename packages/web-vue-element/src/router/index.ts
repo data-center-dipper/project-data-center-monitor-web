@@ -19,6 +19,7 @@ export interface RouteMeta {
     parentKey?: string
     icon?: string
     to?: { name: string }
+    path?: string
 }
 
 // 更新RouteRecordRaw，使其包含meta
