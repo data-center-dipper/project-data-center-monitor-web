@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import type { RouteMeta } from '@/router/index.ts'
+import { useRouteChange } from '@/hooks/index.ts'
+import { useCommonStore } from "@/store/modules/common.ts"
 import { computed } from 'vue'
 
 const route = useRoute()
 const router = useRouter()
+const commonStore = useCommonStore()
 
 // 递归获取面包屑路径
 const getBreadcrumbPath = (
@@ -28,6 +31,10 @@ const getBreadcrumbPath = (
 // 生成面包屑
 const breadcrumbItems = computed(() => {
   return getBreadcrumbPath(route.name as string)
+})
+
+useRouteChange((newRoute) => {
+  commonStore.toggleMenu(newRoute.path)
 })
 </script>
 

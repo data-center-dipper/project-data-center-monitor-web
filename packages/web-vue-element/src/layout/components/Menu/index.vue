@@ -14,7 +14,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { useCommonStore } from '@/store/modules/common'
@@ -22,9 +21,8 @@ import SubMenu from './components/sub-menu.vue'
 import { routerArray } from '@/router/index.ts'
 
 const router = useRouter()
-const { isCollapse } = storeToRefs(useCommonStore())
-
-const activeMenu = ref('/kafka/kafka-home')
+const commonStore = useCommonStore()
+const { isCollapse, activeMenu } = storeToRefs(commonStore)
 
 const handleSelect = (index: string) => {
   router.push(index)
