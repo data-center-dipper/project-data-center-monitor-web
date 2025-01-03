@@ -3,7 +3,7 @@
 </script>
 
 <template>
-Route Management
+  <div>Route Management</div>
 </template>
 
 <style scoped>

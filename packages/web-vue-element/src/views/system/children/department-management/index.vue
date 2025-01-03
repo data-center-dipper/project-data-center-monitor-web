@@ -3,7 +3,7 @@
 </script>
 
 <template>
-Department Management
+  <div>Department Management</div>
 </template>
 
 <style scoped>

@@ -18,6 +18,7 @@ export interface RouteMeta {
     key: string
     parentKey?: string
     icon?: string
+    to?: { name: string }
 }
 
 // 更新RouteRecordRaw，使其包含meta
@@ -54,6 +55,7 @@ const routes: RouteRecordRawWithMeta[] = [
             requiresAuth: false,
             title: '登录',
             key: 'login',
+            to: { name: 'login' }
         },
     },
     ...routerArray,

@@ -1,6 +1,4 @@
 export default function useTest() {
-    // import.meta
-
     /**
      * @description 测试环境变量的使用
      * import.meta.env

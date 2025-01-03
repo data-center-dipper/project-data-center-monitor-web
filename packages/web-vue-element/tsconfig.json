@@ -1,4 +1,10 @@
 {
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@data-center-monitor/lib": ["node_modules/@data-center-monitor/lib"]
+    }
+  },
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json"},

@@ -15,7 +15,7 @@ const systemManagementRouter: Array<RouteRecordRaw> = [
         },
         children: [
             {
-                path: 'route-management',
+                path: '/system-management/route-management',
                 name: 'route-management',
                 component: () => import('@/views/system/children/route-management/index.vue'),
                 meta: {
@@ -23,11 +23,12 @@ const systemManagementRouter: Array<RouteRecordRaw> = [
                     requiresAuth: true,
                     title: '路由管理',
                     key: 'route-management',
+                    to: { name: 'route-management' },
                     parentKey: 'system-management',
                 },
             },
             {
-                path: 'role-management',
+                path: '/system-management/role-management',
                 name: 'role-management',
                 component: () => import('@/views/system/children/role-management/index.vue'),
                 meta: {
@@ -35,11 +36,12 @@ const systemManagementRouter: Array<RouteRecordRaw> = [
                     requiresAuth: true,
                     title: '角色管理',
                     key: 'role-management',
+                    to: { name: 'role-management' },
                     parentKey: 'system-management',
                 },
             },
             {
-                path: 'user-management',
+                path: '/system-management/user-management',
                 name: 'user-management',
                 component: () => import('@/views/system/children/user-management/index.vue'),
                 meta: {
@@ -47,11 +49,12 @@ const systemManagementRouter: Array<RouteRecordRaw> = [
                     requiresAuth: true,
                     title: '用户管理',
                     key: 'user-management',
+                    to: { name: 'user-management' },
                     parentKey: 'system-management',
                 },
             },
             {
-                path: 'department-management',
+                path: '/system-management/department-management',
                 name: 'department-management',
                 component: () => import('@/views/system/children/department-management/index.vue'),
                 meta: {
@@ -59,6 +62,7 @@ const systemManagementRouter: Array<RouteRecordRaw> = [
                     requiresAuth: true,
                     title: '部门管理',
                     key: 'department-management',
+                    to: { name: 'department-management' },
                     parentKey: 'system-management',
                 },
             },

@@ -15,7 +15,7 @@ const kafkaRouter: Array<RouteRecordRaw> = [
         },
         children: [
             {
-                path: 'kafka-home',
+                path: '/kafka/kafka-home',
                 name: 'kafkaHome',
                 component: () => import('@/views/kafka/children/kafka-home/index.vue'),
                 meta: {
@@ -23,11 +23,12 @@ const kafkaRouter: Array<RouteRecordRaw> = [
                     requiresAuth: true,
                     title: '概览',
                     key: 'kafka-home',
+                    to: { name: 'kafkaHome' },
                     parentKey: 'kafka-management',
                 },
             },
             {
-                path: 'kafka-cluster',
+                path: '/kafka/kafka-cluster',
                 name: 'kafkaCluster',
                 component: () => import('@/views/kafka/children/kafka-cluster/index.vue'),
                 meta: {
@@ -35,11 +36,12 @@ const kafkaRouter: Array<RouteRecordRaw> = [
                     requiresAuth: true,
                     title: '集群管理',
                     key: 'kafka-cluster',
+                    to: { name: 'kafkaCluster' },
                     parentKey: 'kafka-management',
                 },
             },
             {
-                path: 'kafka-topic',
+                path: '/kafka/kafka-topic',
                 name: 'kafkaTopic',
                 component: () => import('@/views/kafka/children/kafka-topic/index.vue'),
                 meta: {
@@ -47,11 +49,12 @@ const kafkaRouter: Array<RouteRecordRaw> = [
                     requiresAuth: true,
                     title: 'Topic监控',
                     key: 'kafka-topic',
+                    to: { name: 'kafkaTopic' },
                     parentKey: 'kafka-management',
                 },
             },
             {
-                path: 'kafka-consumer',
+                path: '/kafka/kafka-consumer',
                 name: 'kafkaConsumer',
                 component: () => import('@/views/kafka/children/kafka-consumer/index.vue'),
                 meta: {
@@ -59,11 +62,12 @@ const kafkaRouter: Array<RouteRecordRaw> = [
                     requiresAuth: true,
                     title: '消费者监控',
                     key: 'kafka-consumer',
+                    to: { name: 'kafkaConsumer' },
                     parentKey: 'kafka-management',
                 },
             },
             {
-                path: 'kafka-host-load',
+                path: '/kafka/kafka-host-load',
                 name: 'kafkaHostLoad',
                 component: () => import('@/views/kafka/children/kafka-host-load/index.vue'),
                 meta: {
@@ -71,11 +75,12 @@ const kafkaRouter: Array<RouteRecordRaw> = [
                     requiresAuth: true,
                     title: '主机负载',
                     key: 'kafka-load',
+                    to: { name: 'kafkaHostLoad' },
                     parentKey: 'kafka-management',
                 },
             },
             {
-                path: 'kafka-topic-load',
+                path: '/kafka/kafka-topic-load',
                 name: 'kafkaTopicLoad',
                 component: () => import('@/views/kafka/children/kafka-topic-load/index.vue'),
                 meta: {
@@ -83,6 +88,7 @@ const kafkaRouter: Array<RouteRecordRaw> = [
                     requiresAuth: true,
                     title: 'Topic负载',
                     key: 'kafka-topic-load',
+                    to: { name: 'kafkaTopicLoad' },
                     parentKey: 'kafka-management',
                 },
             },

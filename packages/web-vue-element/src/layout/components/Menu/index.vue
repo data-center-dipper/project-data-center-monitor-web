@@ -1,19 +1,26 @@
 <template>
   <el-scrollbar>
     <el-menu :collapse="isCollapse" :default-active="activeMenu" class="el-menu-vertical-demo" @select="handleSelect">
-      <el-sub-menu v-for="route in routerArray" :key="route.path" :index="route.path">
-        <template #title>
+      <template v-for="route in routerArray" :key="route.path">
+        <el-sub-menu v-if="route.children && route.children.length" :index="route.path">
+          <template #title>
+            <iconpark-icon :name="(route.meta as RouteMeta).icon" size="20" :class="!isCollapse ? 'mr-2' : ''"></iconpark-icon>
+            <span>{{ (route.meta as RouteMeta).title }}</span>
+          </template>
+          <el-menu-item
+              v-for="child in route.children"
+              :key="child.path"
+              :index="child.path"
+          >
+            {{ (child.meta as RouteMeta).title }}
+          </el-menu-item>
+        </el-sub-menu>
+
+        <el-menu-item v-else :index="route.path">
           <iconpark-icon :name="(route.meta as RouteMeta).icon" size="20" :class="!isCollapse ? 'mr-2' : ''"></iconpark-icon>
-          <span>{{ (route.meta as RouteMeta).title }}</span>
-        </template>
-        <el-menu-item
-            v-for="child in route.children"
-            :key="child.path"
-            :index="child.path"
-        >
-          {{ (child.meta as RouteMeta).title }}
+          {{ (route.meta as RouteMeta).title }}
         </el-menu-item>
-      </el-sub-menu>
+      </template>
     </el-menu>
   </el-scrollbar>
 </template>

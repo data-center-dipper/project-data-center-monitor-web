@@ -3,7 +3,7 @@
 </script>
 
 <template>
-Role Management
+  <div>Role Management</div>
 </template>
 
 <style scoped>

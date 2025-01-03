@@ -1,11 +1,7 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
-kafka-home
+  <div>Kafka Home</div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

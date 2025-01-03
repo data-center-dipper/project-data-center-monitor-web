@@ -5,6 +5,7 @@ const userRouter: Array<RouteRecordRaw> = [
         path: '/user',
         component: () => import('@/layout/index.vue'),
         redirect: '/user/user-info',
+        name: 'user',
         meta: {
             keepAlive: false,
             requiresAuth: true,
@@ -15,7 +16,7 @@ const userRouter: Array<RouteRecordRaw> = [
         },
         children: [
             {
-                path: 'user-info',
+                path: '/user/user-info',
                 name: 'userInfo',
                 component: () => import('@/views/user/index.vue'),
                 meta: {
