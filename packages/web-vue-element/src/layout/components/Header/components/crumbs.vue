@@ -55,5 +55,5 @@ useRouteChange((newRoute) => {
 </template>
 
 <style scoped>
-/* 样式可以根据需要自定义 */
+
 </style>

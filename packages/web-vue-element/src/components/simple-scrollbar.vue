@@ -5,7 +5,6 @@ import { computed } from 'vue'
 
 interface Props {
   autoHide?: boolean // 是否自动隐藏滚动条
-  forceVisible?: boolean | 'x' | 'y' // 强制显示滚动条
   class?: string // 自定义类名
   style?: Record<string, string> // 自定义样式
 }
@@ -28,7 +27,6 @@ const customClass = computed(() => [props.class])
 <template>
   <Simplebar
       :auto-hide="autoHide"
-      :force-visible="forceVisible"
       :class="customClass"
       :style="customStyle"
   >
@@ -37,7 +35,4 @@ const customClass = computed(() => [props.class])
 </template>
 
 <style scoped>
-.simplebar-scrollbar::before {
-  background-color: #666;
-}
 </style>

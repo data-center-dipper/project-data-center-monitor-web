@@ -1,10 +1,10 @@
-<script setup lang="ts">
-import SimpleScrollbar from "@/components/simple-scrollbar.vue"
-</script>
-
 <template>
 
 </template>
+
+<script setup lang="ts">
+
+</script>
 
 <style scoped>
 

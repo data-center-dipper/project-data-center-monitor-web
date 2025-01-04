@@ -12,15 +12,18 @@ const handleCollapse  = () => {
 </script>
 
 <template>
-  <header class="flex justify-between items-center px-4 py-3 bg-gray-100 border-b border-gray-200">
+  <header class="flex justify-between items-center px-4 py-3 bg-gray-100">
     <div class="flex items-center space-x-2">
       <iconpark-icon size="24" :name="isCollapse ? 'unfold' : 'fold'" @click="handleCollapse" class="cursor-pointer"></iconpark-icon>
       <Crumbs />
     </div>
-    <div class="user-avatar flex items-center">
-      <div class="avatar w-10 h-10 bg-blue-500 rounded-full"></div>
+    <div class="user-avatar flex gap-2 items-center text-nowrap">
+      <div class="avatar-name text-gray-600 text-sm">一勺</div>
+      <div class="avatar p-3 bg-[linear-gradient(180deg,#FFA9D9_0%,#E83D3D_100%)] rounded-full"></div>
     </div>
   </header>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>

@@ -1,25 +1,44 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import cacheRouter from '@/router/catche.ts'
-import { useRouteTitle } from "@/hooks"
+import { useRouteTitle, useMobileDetection } from "@/hooks"
 import { useCommonStore } from '@/store/modules/common.ts'
 import Header from './components/Header/index.vue'
 import Menu from './components/Menu/index.vue'
 import Logo from './components/Logo/index.vue'
 import Tab from './components/Tab/index.vue'
 
+const asideRef = ref(null)
+const menuDrawerRef = ref(null)
+
 const commonStore = useCommonStore()
 const { isCollapse } = storeToRefs(commonStore)
 
+const { isMobile } = useMobileDetection()
 useRouteTitle()
 </script>
 
 <template>
   <el-container>
-    <el-aside :width="isCollapse? 'auto' : '200px'" :class="{ 'shadow-md': isCollapse }">
+    <!-- PC 端显示 aside -->
+    <el-aside
+        v-if="!isMobile"
+        ref="asideRef"
+        :width="isCollapse ? 'auto' : '200px'"
+        :class="{ 'shadow-md': isCollapse }"
+    >
       <Logo />
       <Menu />
     </el-aside>
+    <!-- 移动端显示 drawer -->
+    <el-drawer ref="menuDrawerRef" v-else v-model="isCollapse" direction="ltr">
+      <div>
+        <Logo />
+        <Menu />
+      </div>
+    </el-drawer>
+
     <el-container>
       <el-header>
         <Header />
@@ -28,10 +47,7 @@ useRouteTitle()
       <el-main>
         <router-view v-slot="{ Component, route }">
           <keep-alive :include="cacheRouter">
-            <component
-              :is="Component"
-              :key="route.path"
-            />
+            <component :is="Component" :key="route.path" />
           </keep-alive>
         </router-view>
       </el-main>
@@ -49,5 +65,12 @@ useRouteTitle()
 }
 .el-header {
   --el-header-padding: 0;
+  --el-header-height: auto;
+}
+:deep(.el-drawer ) {
+  width: auto!important;
+}
+:deep(.el-drawer__header) {
+  display: none;
 }
 </style>

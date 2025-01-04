@@ -3,20 +3,20 @@ import { defineStore } from 'pinia';
 import { useMobileDetection } from '../../hooks';
 
 export const useCommonStore = defineStore('common', () => {
-    const isCollapse = ref(false);
-    const activeMenu = ref('/kafka/kafka-home');
-    const { isMobile } = useMobileDetection();
+    const isCollapse = ref(false)
+    const activeMenu = ref('/kafka/kafka-home')
+    const { isMobile, isMediumScreen } = useMobileDetection()
 
-    watch(isMobile, (newVal) => {
-        isCollapse.value = newVal; // 根据 isMobile 的值更新 isCollapse
+    watch(isMediumScreen, (newVal) => {
+        isCollapse.value = newVal
     });
 
     const toggleCollapse = () => {
-        isCollapse.value = !isCollapse.value;
+        isCollapse.value = !isCollapse.value
     };
 
     const toggleMenu = (menu: string) => {
-        activeMenu.value = menu;
+        activeMenu.value = menu
     };
 
     return {
@@ -25,5 +25,6 @@ export const useCommonStore = defineStore('common', () => {
         toggleCollapse,
         toggleMenu,
         isMobile,
+        isMediumScreen
     };
 });
