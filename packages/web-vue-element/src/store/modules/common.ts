@@ -1,6 +1,6 @@
-import { ref, watch } from 'vue';
-import { defineStore } from 'pinia';
-import { useMobileDetection } from '../../hooks';
+import { ref, watch } from 'vue'
+import { defineStore } from 'pinia'
+import { useMobileDetection } from '../../hooks'
 
 export const useCommonStore = defineStore('common', () => {
     const isCollapse = ref(false)
@@ -9,15 +9,15 @@ export const useCommonStore = defineStore('common', () => {
 
     watch(isMediumScreen, (newVal) => {
         isCollapse.value = newVal
-    });
+    })
 
     const toggleCollapse = () => {
         isCollapse.value = !isCollapse.value
-    };
+    }
 
     const toggleMenu = (menu: string) => {
         activeMenu.value = menu
-    };
+    }
 
     return {
         activeMenu,
@@ -26,5 +26,5 @@ export const useCommonStore = defineStore('common', () => {
         toggleMenu,
         isMobile,
         isMediumScreen
-    };
-});
+    }
+})

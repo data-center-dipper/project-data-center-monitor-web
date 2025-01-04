@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
+import { useRouteChange } from '../../hooks'
 
 export const useTagsStore = defineStore('tags', () => {
     const tagsViewList = ref([
@@ -27,6 +28,15 @@ export const useTagsStore = defineStore('tags', () => {
             tagsViewList.value.push(tag)
         }
     }
+
+    useRouteChange((newRoute) => {
+        addTagView({
+            title: newRoute.meta.title,
+            path: newRoute.path,
+            fullPath: newRoute.fullPath,
+            meta: newRoute.meta
+        })
+    })
 
     // TODO: 按方向进行删除
 
