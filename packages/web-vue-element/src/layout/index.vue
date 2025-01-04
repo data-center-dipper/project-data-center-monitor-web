@@ -88,4 +88,7 @@ useRouteTitle()
 :deep(.el-drawer__header) {
   display: none;
 }
+:deep(.el-main) {
+  --el-main-padding: 5px 20px;
+}
 </style>

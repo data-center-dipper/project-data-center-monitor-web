@@ -20,6 +20,7 @@ export interface RouteMeta {
     icon?: string
     to?: { name: string }
     path?: string
+    singlePage?: boolean
 }
 
 // 更新RouteRecordRaw，使其包含meta
@@ -42,11 +43,6 @@ Object.keys(metaRouters).forEach((item) => {
 })
 
 const routes: RouteRecordRawWithMeta[] = [
-    {
-        path: '/',
-        redirect: '/login',
-        meta: { key: 'home', title: '首页' },
-    },
     {
         path: '/login',
         name: 'login',

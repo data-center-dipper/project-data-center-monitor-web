@@ -19,7 +19,7 @@ const handleCollapse  = () => {
     </div>
     <div class="user-avatar flex gap-2 items-center text-nowrap">
       <div class="avatar-name text-gray-600 text-sm">一勺</div>
-      <div class="avatar p-3 bg-[linear-gradient(180deg,#FFA9D9_0%,#E83D3D_100%)] rounded-full"></div>
+      <div class="avatar p-3 bg-[linear-gradient(180deg,#FFA9D9_0%,#E83D3D_100%)] rounded-full cursor-pointer"></div>
     </div>
   </header>
 </template>
