@@ -38,7 +38,6 @@ useRouteTitle()
         <Menu />
       </div>
     </el-drawer>
-
     <el-container>
       <el-header>
         <Header />
@@ -46,9 +45,11 @@ useRouteTitle()
       <Tab />
       <el-main>
         <router-view v-slot="{ Component, route }">
-          <keep-alive :include="cacheRouter">
-            <component :is="Component" :key="route.path" />
-          </keep-alive>
+          <transition name="fade-transform" mode="out-in">
+            <keep-alive :include="cacheRouter">
+              <component :is="Component" :key="route.path" />
+            </keep-alive>
+          </transition>
         </router-view>
       </el-main>
     </el-container>
@@ -59,17 +60,31 @@ useRouteTitle()
 .el-container {
   height: 100vh;
 }
+
 .el-aside {
   height: 100%;
   overflow: hidden;
 }
+
 .el-header {
   --el-header-padding: 0;
   --el-header-height: auto;
 }
-:deep(.el-drawer ) {
-  width: auto!important;
+
+.fade-transform-enter-active,
+.fade-transform-leave-active {
+  transition: opacity 0.5s, transform 0.5s;
 }
+
+.fade-transform-enter,
+.fade-transform-leave-to {
+  opacity: 0;
+}
+
+:deep(.el-drawer) {
+  width: auto !important;
+}
+
 :deep(.el-drawer__header) {
   display: none;
 }

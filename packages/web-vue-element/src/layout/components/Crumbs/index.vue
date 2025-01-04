@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import type { RouteMeta } from '@/router/index.ts'
-import { useRouteChange } from '@/hooks/index.ts'
-import { useCommonStore } from "@/store/modules/common.ts"
+import type { RouteMeta } from '@/router'
+import { useRouteChange } from '@/hooks'
+import { useCommonStore } from "@/store/modules/common.js"
 import { computed } from 'vue'
 
 const route = useRoute()

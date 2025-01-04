@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import Crumbs from './components/crumbs.vue'
+import Crumbs from '../Crumbs/index.vue'
 import { useCommonStore } from '@/store/modules/common.ts'
 
 const commonStore = useCommonStore()
@@ -12,7 +12,7 @@ const handleCollapse  = () => {
 </script>
 
 <template>
-  <header class="flex justify-between items-center px-4 py-3 bg-gray-100">
+  <header class="flex justify-between items-center px-4 py-3 bg-gray-100 shadow-sm">
     <div class="flex items-center space-x-2">
       <iconpark-icon size="24" :name="isCollapse ? 'unfold' : 'fold'" @click="handleCollapse" class="cursor-pointer"></iconpark-icon>
       <Crumbs />

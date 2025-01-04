@@ -16,7 +16,6 @@ const props = withDefaults(defineProps<Props>(), {
   style: () => ({}),
 })
 
-// 合并外部传入的样式和类名
 const customStyle = computed(() => ({
   ...props.style,
 }))
