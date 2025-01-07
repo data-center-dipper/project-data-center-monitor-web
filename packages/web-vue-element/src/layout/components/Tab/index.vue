@@ -1,5 +1,5 @@
 <template>
-  <div class="tags-view-container h-[32px] px-2 flex items-center mt-1">
+  <div class="tags-view-container h-[32px] px-2 flex items-center mt-1 border-b border-gray-200 pt-1">
     <el-scrollbar>
       <div class="flex items-center h-full">
         <router-link
@@ -21,12 +21,11 @@
         </router-link>
       </div>
     </el-scrollbar>
-    <!--  TODO: 实现右键菜单  -->
-    <!--    <context-menu-->
-    <!--      v-show="visible"-->
-    <!--      :style="menuStyle"-->
-    <!--      :index="selectIndex"-->
-    <!--    />-->
+    <context-menu
+        v-show="visible"
+        :style="menuStyle"
+        :index="selectIndex"
+    />
   </div>
 </template>
 
@@ -34,6 +33,7 @@
 import { computed, ref, reactive, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTagsStore } from '@/store/modules/tags.ts'
+import ContextMenu from './components/ContextMenu.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -64,6 +64,7 @@ const menuStyle = reactive({
 // 展示菜单
 const openMenu = (e: MouseEvent, index: number) => {
   const { clientX: x, clientY: y } = e
+  console.log(x, y)
   menuStyle.left = `${x}px`
   menuStyle.top = `${y}px`
   selectIndex.value = index
@@ -114,10 +115,5 @@ watch(visible, (val) => {
 }
 .tags-view-item.active {
   font-weight: bold;
-}
-
-.el-icon-close {
-  cursor: pointer;
-  margin-left: 5px;
 }
 </style>

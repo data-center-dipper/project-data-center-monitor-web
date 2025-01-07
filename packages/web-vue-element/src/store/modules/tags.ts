@@ -13,7 +13,7 @@ export const useTagsStore = defineStore('tags', () => {
     ])
 
     const cssVar = reactive({
-        menuActiveText: 'rgba(46,78,150,0.8)',
+        menuActiveText: 'rgba(66,99,182,0.8)',
     })
 
     // 删除单个
@@ -38,12 +38,40 @@ export const useTagsStore = defineStore('tags', () => {
         })
     })
 
-    // TODO: 按方向进行删除
+    // 关闭右侧标签
+    const closeRightTags = (index: number) => {
+        tagsViewList.value = tagsViewList.value.slice(0, index + 1)
+    }
+
+    // 关闭其他标签
+    const closeOtherTags = (index: number) => {
+        const affixTag = tagsViewList.value.find(tag => tag.meta.affix)
+        const currentTag = tagsViewList.value[index]
+
+        // 如果当前标签是固钉标签，直接保留，否则保留固钉标签和当前标签
+        if (currentTag.meta.affix) {
+            tagsViewList.value = [currentTag]
+        } else {
+            if (affixTag) {
+                tagsViewList.value = [affixTag, currentTag]
+            } else {
+                tagsViewList.value = [currentTag]
+            }
+        }
+    }
+
+    // 关闭所有标签
+    const closeAllTags = () => {
+        tagsViewList.value = [tagsViewList.value[0]]
+    }
 
     return {
         tagsViewList,
         cssVar,
         removeTagView,
-        addTagView
-    };
-});
+        addTagView,
+        closeRightTags,
+        closeOtherTags,
+        closeAllTags
+    }
+})
