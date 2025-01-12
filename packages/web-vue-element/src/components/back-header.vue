@@ -28,7 +28,7 @@ const router = useRouter();
   border-bottom: 1px solid #e4efff;
   padding-top: 12px;
   padding-left: 16px;
-
+  
   .title {
     margin-left: 1px;
     width: 100%;
