@@ -1,7 +1,16 @@
+# 锁定文件版本，指定了此锁定文件格式的版本。
+# 版本号 '9.0' 表示这是一个使用 pnpm v7 或更新版本创建的锁定文件。
 lockfileVersion: '9.0'
 
 settings:
+  # 自动安装对等依赖（peer dependencies）的设置。
+  # 当设置为 true 时，pnpm 会自动解析并安装任何缺失的对等依赖。
+  # 这样可以减少手动安装对等依赖的需求，并且有助于防止由于缺少对等依赖而引起的错误。
   autoInstallPeers: true
+
+  # 是否将符号链接排除在锁定文件之外的设置。
+  # 如果设置为 true，则不会将本地包（如 monorepo 中的其他包）的符号链接记录到锁定文件中。
+  # 设置为 false（默认值），则这些符号链接会被包含进来，保证所有开发者有相同的工作环境。
   excludeLinksFromLockfile: false
 
 importers:
