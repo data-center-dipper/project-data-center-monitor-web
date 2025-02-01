@@ -22,5 +22,11 @@ app.use(router);
 // 安装 Pinia 状态管理库到应用实例中，使得所有组件都可以访问全局的状态管理功能。
 app.use(pinia);
 
+app.config.errorHandler = (err, vm, info) => {
+    console.error('Global errorHandler:', err);
+    console.log('Vue instance:', vm);
+    console.log('Info:', info);
+};
+
 // 将应用实例挂载到 HTML 中 id 为 'app' 的元素上，启动应用。
 app.mount('#app');

@@ -6,7 +6,7 @@
 
 <template>
     <!-- 主容器，使用 Tailwind CSS 类来设置内边距 -->
-    <div class="kafka-home p-4">
+    <div class="kafka-nodes p-4">
 
         <!-- Kafka 集群概览部分 -->
         <div>
