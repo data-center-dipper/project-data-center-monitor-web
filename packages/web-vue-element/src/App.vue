@@ -7,7 +7,7 @@ useRouteTitle();
 </script>
 
 <template>
-  <!-- <router-view /> 是一个占位符，Vue Router 会根据当前路由匹配的结果，在这里渲染相应的组件 -->
+  <!-- <router-view /> 是 Vue Router 中的一个关键组件，它充当一个占位符，用于渲染与当前 URL 匹配的组件。当应用的状态（即 URL）发生变化时，<router-view /> 会自动更新以显示相应的组件。 -->
   <router-view />
 </template>
 
