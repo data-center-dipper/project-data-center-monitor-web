@@ -325,7 +325,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed } from 'vue'
 
 // 数据初始化
 const topics = ref([
@@ -346,78 +346,76 @@ const topics = ref([
     inRateEpsFifteenMin: 123,
     status: '正常',
   },
-]);
-const itemsPerPage = 5;
-const currentPage = ref(1);
-const topicModalVisible = ref(false);
-const consumerVisible = ref(false);
-const topicDataShowVisible = ref(false);
-const topicRebuildVisible = ref(false);
-const topicKuorongVisible = ref(false);
-const producerVisible = ref(false);
-const modalData = ref({});
-const modalTitle = ref('');
+])
+const itemsPerPage = 5
+const currentPage = ref(1)
+const topicModalVisible = ref(false)
+const consumerVisible = ref(false)
+const topicDataShowVisible = ref(false)
+const topicRebuildVisible = ref(false)
+const topicKuorongVisible = ref(false)
+const producerVisible = ref(false)
+const modalData = ref({})
+const modalTitle = ref('')
 
 // 计算属性
 const paginatedTopics = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-  return topics.value.slice(start, end);
-});
+  const start = (currentPage.value - 1) * itemsPerPage
+  const end = start + itemsPerPage
+  return topics.value.slice(start, end)
+})
 
-const totalPages = computed(() =>
-  Math.ceil(topics.value.length / itemsPerPage),
-);
+const totalPages = computed(() => Math.ceil(topics.value.length / itemsPerPage))
 
 // 方法定义
 function showDetails(topic: any) {
-  modalTitle.value = `主题详情 - ${topic.name}`;
-  modalData.value = { ...topic };
-  topicModalVisible.value = true;
+  modalTitle.value = `主题详情 - ${topic.name}`
+  modalData.value = { ...topic }
+  topicModalVisible.value = true
 }
 
 function closeModal() {
-  topicModalVisible.value = false;
-  consumerVisible.value = false;
-  topicDataShowVisible.value = false;
-  topicRebuildVisible.value = false;
-  topicKuorongVisible.value = false;
-  producerVisible.value = false;
+  topicModalVisible.value = false
+  consumerVisible.value = false
+  topicDataShowVisible.value = false
+  topicRebuildVisible.value = false
+  topicKuorongVisible.value = false
+  producerVisible.value = false
 }
 
 function showDataPreview(topic: any) {
-  modalTitle.value = `数据预览 - ${topic.name}`;
-  modalData.value = { ...topic };
-  topicDataShowVisible.value = true;
+  modalTitle.value = `数据预览 - ${topic.name}`
+  modalData.value = { ...topic }
+  topicDataShowVisible.value = true
 }
 
 function rebuildTopic(topic: any) {
-  modalTitle.value = `重建topic - ${topic.name}`;
-  modalData.value = { ...topic };
-  topicRebuildVisible.value = true;
+  modalTitle.value = `重建topic - ${topic.name}`
+  modalData.value = { ...topic }
+  topicRebuildVisible.value = true
 }
 
 function expandPartitions(topic: any) {
-  modalTitle.value = `分区扩容 - ${topic.name}`;
-  modalData.value = { ...topic };
-  topicKuorongVisible.value = true;
+  modalTitle.value = `分区扩容 - ${topic.name}`
+  modalData.value = { ...topic }
+  topicKuorongVisible.value = true
 }
 
 function produceData(topic: any) {
-  modalTitle.value = `生产数据 - ${topic.name}`;
-  modalData.value = { ...topic };
-  producerVisible.value = true;
+  modalTitle.value = `生产数据 - ${topic.name}`
+  modalData.value = { ...topic }
+  producerVisible.value = true
 }
 
 function prevPage() {
   if (currentPage.value > 1) {
-    currentPage.value--;
+    currentPage.value--
   }
 }
 
 function nextPage() {
   if (currentPage.value < totalPages.value) {
-    currentPage.value++;
+    currentPage.value++
   }
 }
 </script>

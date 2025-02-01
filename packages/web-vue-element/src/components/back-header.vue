@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import { useRouter } from 'vue-router';
-import { defineProps } from 'vue';
+import { useRouter } from 'vue-router'
+import { defineProps } from 'vue'
 
 interface Props {
-  back: () => void;
-  isDefault: boolean;
+  back: () => void
+  isDefault: boolean
 }
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 
-const router = useRouter();
+const router = useRouter()
 </script>
 
 <template>

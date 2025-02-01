@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { onMounted, onBeforeUnmount } from 'vue';
+import { ref, computed } from 'vue'
+import { onMounted, onBeforeUnmount } from 'vue'
 
-console.log('KafkaClusterPage setup');
+console.log('KafkaClusterPage setup')
 
 onMounted(() => {
-  console.log('KafkaClusterPage mounted');
-});
+  console.log('KafkaClusterPage mounted')
+})
 
 onBeforeUnmount(() => {
-  console.log('KafkaClusterPage beforeDestroy');
-});
+  console.log('KafkaClusterPage beforeDestroy')
+})
 
 // 数据初始化
-const searchQuery = ref('');
-const currentPage = ref(1);
-const itemsPerPage = 5;
+const searchQuery = ref('')
+const currentPage = ref(1)
+const itemsPerPage = 5
 const clusters = ref([
   {
     id: 1,
@@ -32,11 +32,11 @@ const clusters = ref([
     monitorStartTime: null,
     monitorEndTime: null,
   },
-]);
-const clusterModalVisible = ref(false);
-const addEditClusterVisible = ref(false);
-const modalData = ref({});
-const modalTitle = ref('');
+])
+const clusterModalVisible = ref(false)
+const addEditClusterVisible = ref(false)
+const modalData = ref({})
+const modalTitle = ref('')
 const newCluster = ref({
   name: '',
   address: '',
@@ -45,83 +45,83 @@ const newCluster = ref({
   monitoringPolicy: 'now', // 默认值
   monitorStartTime: null,
   monitorEndTime: null,
-});
-const addEditModalTitle = ref('');
+})
+const addEditModalTitle = ref('')
 
 // 计算属性
 const filteredClusters = computed(() =>
   clusters.value.filter((cluster) =>
     cluster.name.toLowerCase().includes(searchQuery.value.toLowerCase()),
   ),
-);
+)
 
 const paginatedclusters = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-  return filteredClusters.value.slice(start, end);
-});
+  const start = (currentPage.value - 1) * itemsPerPage
+  const end = start + itemsPerPage
+  return filteredClusters.value.slice(start, end)
+})
 
 const totalPages = computed(() =>
   Math.ceil(filteredClusters.value.length / itemsPerPage),
-);
+)
 
 // 方法定义
 function showDetails(cluster: any) {
-  modalTitle.value = `集群详情 - ${cluster.name}`;
-  modalData.value = { ...cluster };
-  clusterModalVisible.value = true;
+  modalTitle.value = `集群详情 - ${cluster.name}`
+  modalData.value = { ...cluster }
+  clusterModalVisible.value = true
 }
 
 function editCluster(cluster: any) {
-  newCluster.value = { ...cluster };
-  addEditModalTitle.value = `编辑集群 - ${cluster.name}`;
-  addEditClusterVisible.value = true;
+  newCluster.value = { ...cluster }
+  addEditModalTitle.value = `编辑集群 - ${cluster.name}`
+  addEditClusterVisible.value = true
 }
 
 function deleteCluster(cluster: any) {}
 
 function showAddClusterModal() {
-  newCluster.value = {};
-  addEditModalTitle.value = '新增集群';
-  addEditClusterVisible.value = true;
+  newCluster.value = {}
+  addEditModalTitle.value = '新增集群'
+  addEditClusterVisible.value = true
 }
 
 function submitClusterForm() {
   if (addEditModalTitle.value.includes('新增')) {
-    clusters.value.push({ ...newCluster.value });
+    clusters.value.push({ ...newCluster.value })
   } else {
-    let index = clusters.value.findIndex((c) => c.id === newCluster.value.id);
+    let index = clusters.value.findIndex((c) => c.id === newCluster.value.id)
     if (index !== -1) {
-      clusters.value.splice(index, 1, { ...newCluster.value });
+      clusters.value.splice(index, 1, { ...newCluster.value })
     }
   }
-  closeAddEditModal();
+  closeAddEditModal()
 }
 
 function closeAddEditModal() {
-  addEditClusterVisible.value = false;
+  addEditClusterVisible.value = false
 }
 
 function closeModal() {
-  clusterModalVisible.value = false;
+  clusterModalVisible.value = false
 }
 
 function prevPage() {
   if (currentPage.value > 1) {
-    currentPage.value--;
+    currentPage.value--
   }
 }
 
 function nextPage() {
   if (currentPage.value < totalPages.value) {
-    currentPage.value++;
+    currentPage.value++
   }
 }
 
 function updateMonitoring(cluster: any) {
   if (cluster.monitoringPolicy === 'now') {
-    cluster.monitorStartTime = null;
-    cluster.monitorEndTime = null;
+    cluster.monitorStartTime = null
+    cluster.monitorEndTime = null
   }
 }
 </script>

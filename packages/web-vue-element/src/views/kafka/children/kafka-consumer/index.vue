@@ -93,15 +93,15 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed } from 'vue'
 import {
   ElInput,
   ElButton,
   ElTable,
   ElTableColumn,
   ElDialog,
-} from 'element-plus';
-import AddConsumer from './consumer/AddConsumer.vue'; // 确保路径正确
+} from 'element-plus'
+import AddConsumer from './consumer/AddConsumer.vue' // 确保路径正确
 
 // 模拟的消费者数据
 const consumers = ref([
@@ -155,13 +155,13 @@ const consumers = ref([
       },
     ],
   },
-]);
+])
 
 // 搜索查询字符串
-const searchQuery = ref('');
+const searchQuery = ref('')
 
 // 消费者总数
-const consumerCount = computed(() => consumers.value.length);
+const consumerCount = computed(() => consumers.value.length)
 
 // 过滤后的消费者列表
 const filteredConsumers = computed(() => {
@@ -169,51 +169,51 @@ const filteredConsumers = computed(() => {
     (consumer) =>
       consumer.topic.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       consumer.groupId.toLowerCase().includes(searchQuery.value.toLowerCase()),
-  );
-});
+  )
+})
 
 // 使用对象跟踪每个条目是否展开
-const expandedIndexes = ref({});
+const expandedIndexes = ref({})
 
 // 展开或收起详情
 function toggleDetails(index) {
   if (!expandedIndexes.value[index]) {
-    expandedIndexes.value = { ...expandedIndexes.value, [index]: true };
+    expandedIndexes.value = { ...expandedIndexes.value, [index]: true }
   }
 }
 
 // 收起详情
 function collapseDetail(index) {
-  expandedIndexes.value = { ...expandedIndexes.value, [index]: false };
+  expandedIndexes.value = { ...expandedIndexes.value, [index]: false }
 }
 
 // 刷新消费者信息
 function refresh(consumer) {
-  console.log(`刷新 ${consumer.topic} 的信息`);
+  console.log(`刷新 ${consumer.topic} 的信息`)
 }
 
 // 更新消费者信息
 function updateConsumer(consumer) {
-  console.log('更新消费者信息');
+  console.log('更新消费者信息')
 }
 
 // 删除消费者
 function deleteConsumer(index) {
-  consumers.value.splice(index, 1);
+  consumers.value.splice(index, 1)
 }
 
 // 控制新增消费者弹窗的显示状态
-const isAddModalVisible = ref(false);
+const isAddModalVisible = ref(false)
 
 // 切换弹窗显示状态
 function toggleAddModal() {
-  isAddModalVisible.value = !isAddModalVisible.value;
+  isAddModalVisible.value = !isAddModalVisible.value
 }
 
 // 处理新增消费者的逻辑
 function handleAddConsumer(consumerData) {
-  consumers.value.push({ ...consumerData, details: [] }); // 添加新消费者到列表
-  toggleAddModal(); // 添加后关闭弹窗
+  consumers.value.push({ ...consumerData, details: [] }) // 添加新消费者到列表
+  toggleAddModal() // 添加后关闭弹窗
 }
 
 // 模态框相关状态
@@ -222,20 +222,20 @@ const modalData = ref({
   groupId: '',
   businessProperty: '',
   deadline: '',
-});
-const editMode = ref(false);
-let editingIndex = null;
+})
+const editMode = ref(false)
+let editingIndex = null
 
 // 显示添加弹窗
 function showAddModal() {
-  editMode.value = false;
+  editMode.value = false
   modalData.value = {
     topic: '',
     groupId: '',
     businessProperty: '',
     deadline: '',
-  };
-  toggleAddModal();
+  }
+  toggleAddModal()
 }
 
 // 更新选中的消费者
@@ -245,9 +245,9 @@ function updateSelectedConsumer(updatedData) {
     editingIndex >= 0 &&
     editingIndex < consumers.value.length
   ) {
-    consumers.value[editingIndex] = { ...updatedData };
+    consumers.value[editingIndex] = { ...updatedData }
   }
-  toggleAddModal();
+  toggleAddModal()
 }
 </script>
 

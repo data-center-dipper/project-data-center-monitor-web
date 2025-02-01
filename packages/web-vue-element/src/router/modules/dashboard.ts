@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router'
 
 const dashboardRouter: Array<RouteRecordRaw> = [
   {
@@ -25,6 +25,6 @@ const dashboardRouter: Array<RouteRecordRaw> = [
       },
     ],
   },
-];
+]
 
-export default dashboardRouter;
+export default dashboardRouter

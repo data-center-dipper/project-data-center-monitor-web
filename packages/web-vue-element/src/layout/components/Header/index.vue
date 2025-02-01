@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
-import Crumbs from '../Crumbs/index.vue';
-import { useCommonStore } from '@/store/modules/common.ts';
+import { storeToRefs } from 'pinia'
+import Crumbs from '../Crumbs/index.vue'
+import { useCommonStore } from '@/store/modules/common.ts'
 
-const commonStore = useCommonStore();
-const { isCollapse } = storeToRefs(commonStore);
+const commonStore = useCommonStore()
+const { isCollapse } = storeToRefs(commonStore)
 
 const handleCollapse = () => {
-  commonStore.toggleCollapse();
-};
+  commonStore.toggleCollapse()
+}
 </script>
 
 <template>

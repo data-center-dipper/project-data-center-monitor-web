@@ -27,37 +27,37 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
-import { useRouter } from 'vue-router';
-import { useTagsStore } from '@/store/modules/tags'; // 导入你的 tags store
+import { defineProps } from 'vue'
+import { useRouter } from 'vue-router'
+import { useTagsStore } from '@/store/modules/tags' // 导入你的 tags store
 
 const props = defineProps<{
-  index: number;
-}>();
+  index: number
+}>()
 
-const router = useRouter();
-const tagsStore = useTagsStore();
+const router = useRouter()
+const tagsStore = useTagsStore()
 
 // 刷新当前页面
 const onRefreshClick = () => {
-  router.go(0);
-};
+  router.go(0)
+}
 
 // 关闭右侧标签
 const onCloseRightClick = () => {
-  tagsStore.closeRightTags(props.index);
-};
+  tagsStore.closeRightTags(props.index)
+}
 
 // 关闭其他标签
 const onCloseOtherClick = () => {
-  tagsStore.closeOtherTags(props.index);
-};
+  tagsStore.closeOtherTags(props.index)
+}
 
 // 关闭所有标签
 const onCloseAllClick = () => {
-  tagsStore.closeAllTags();
-  router.push('/dashboard');
-};
+  tagsStore.closeAllTags()
+  router.push('/dashboard')
+}
 </script>
 
 <style scoped></style>

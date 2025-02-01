@@ -38,37 +38,37 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import LineChart from '../kafka-host-load/node/LineChart.vue';
+import { ref } from 'vue'
+import LineChart from '../../../../components/charts/line-chart.vue'
 
 // 模拟的 Topic 数据
 interface Topic {
-  name: string;
+  name: string
 }
 
 const topics = ref<Topic[]>([
   { name: 'topic1' }, // 只定义了名称，其他信息将在选择时加载
   { name: 'topic2' },
-]);
+])
 
 // 辅助函数生成随机数据用于图表
 function generateRandomData(hours: number) {
-  const now = new Date();
+  const now = new Date()
   return Array.from({ length: hours }, (_, i) => ({
     label: new Date(now - (hours - i - 1) * 3600 * 1000).toLocaleTimeString(),
     value: Math.floor(Math.random() * 100) + 1, // 随机值从1到100
-  }));
+  }))
 }
 
 // Topic 相关变量
-const selectedTopic = ref<string>('');
+const selectedTopic = ref<string>('')
 const selectedTopicMetrics = ref<
   { title: string; data: { label: string; value: number }[] }[]
->([]);
+>([])
 
 // 加载 Topic 的指标信息
 function loadTopicMetrics() {
-  if (!selectedTopic.value) return;
+  if (!selectedTopic.value) return
 
   // 这里假设每个 topic 的 metrics 是静态定义的，实际应用中应该从服务器获取
   const metrics = [
@@ -79,9 +79,9 @@ function loadTopicMetrics() {
     { title: '消息入栈速率(Eps)/1min', data: generateRandomData(24) },
     { title: '消息出栈速率(Eps)/1min', data: generateRandomData(24) },
     { title: '消息入栈速率(Eps)/15min', data: generateRandomData(24) },
-  ];
+  ]
 
-  selectedTopicMetrics.value = metrics;
+  selectedTopicMetrics.value = metrics
 }
 </script>
 

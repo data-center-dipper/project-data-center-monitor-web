@@ -1,9 +1,9 @@
 // 从 vue-router 导入 RouteRecordRaw 类型定义
-import type { RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router'
 
 const EmptyComponent = {
   template: `<div><h1>Error loading component</h1></div>`,
-};
+}
 
 // 定义 Kafka 相关路由配置数组
 const kafkaRouter: Array<RouteRecordRaw> = [
@@ -13,8 +13,8 @@ const kafkaRouter: Array<RouteRecordRaw> = [
     // 动态加载布局组件
     component: () =>
       import('@/layout/index.vue').catch((error) => {
-        console.error('Failed to load component:', error);
-        return EmptyComponent;
+        console.error('Failed to load component:', error)
+        return EmptyComponent
       }),
     // 默认重定向到 '/kafka/kafka-nodes'
     //         redirect: '/kafka/kafka-nodes',
@@ -40,8 +40,8 @@ const kafkaRouter: Array<RouteRecordRaw> = [
         component: () =>
           import('@/views/kafka/children/kafka-nodes/index.vue').catch(
             (error) => {
-              console.error('Failed to load component:', error);
-              return EmptyComponent;
+              console.error('Failed to load component:', error)
+              return EmptyComponent
             },
           ),
         // 子路由元数据
@@ -61,8 +61,8 @@ const kafkaRouter: Array<RouteRecordRaw> = [
         component: () =>
           import('@/views/kafka/children/kafka-cluster/index.vue').catch(
             (error) => {
-              console.error('Failed to load component:', error);
-              return EmptyComponent;
+              console.error('Failed to load component:', error)
+              return EmptyComponent
             },
           ),
         meta: {
@@ -81,8 +81,8 @@ const kafkaRouter: Array<RouteRecordRaw> = [
         component: () =>
           import('@/views/kafka/children/kafka-topic/index.vue').catch(
             (error) => {
-              console.error('Failed to load component:', error);
-              return EmptyComponent;
+              console.error('Failed to load component:', error)
+              return EmptyComponent
             },
           ),
         meta: {
@@ -101,8 +101,8 @@ const kafkaRouter: Array<RouteRecordRaw> = [
         component: () =>
           import('@/views/kafka/children/kafka-consumer/index.vue').catch(
             (error) => {
-              console.error('Failed to load component:', error);
-              return EmptyComponent;
+              console.error('Failed to load component:', error)
+              return EmptyComponent
             },
           ),
         meta: {
@@ -121,8 +121,8 @@ const kafkaRouter: Array<RouteRecordRaw> = [
         component: () =>
           import('@/views/kafka/children/kafka-host-load/index.vue').catch(
             (error) => {
-              console.error('Failed to load component:', error);
-              return EmptyComponent;
+              console.error('Failed to load component:', error)
+              return EmptyComponent
             },
           ),
         meta: {
@@ -141,8 +141,8 @@ const kafkaRouter: Array<RouteRecordRaw> = [
         component: () =>
           import('@/views/kafka/children/kafka-topic-load/index.vue').catch(
             (error) => {
-              console.error('Failed to load component:', error);
-              return EmptyComponent;
+              console.error('Failed to load component:', error)
+              return EmptyComponent
             },
           ),
         meta: {
@@ -156,7 +156,7 @@ const kafkaRouter: Array<RouteRecordRaw> = [
       },
     ],
   },
-];
+]
 
 // 导出 Kafka 路由配置供其他地方使用
-export default kafkaRouter;
+export default kafkaRouter

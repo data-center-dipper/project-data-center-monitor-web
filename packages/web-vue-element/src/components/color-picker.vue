@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
-import ColorPicker from '@simonwep/pickr';
-import '@simonwep/pickr/dist/themes/nano.min.css';
+import { onMounted, ref, watch } from 'vue'
+import ColorPicker from '@simonwep/pickr'
+import '@simonwep/pickr/dist/themes/nano.min.css'
 
 interface Props {
-  color: string;
-  palettes?: string[];
-  disabled?: boolean;
+  color: string
+  palettes?: string[]
+  disabled?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -29,24 +29,24 @@ const props = withDefaults(defineProps<Props>(), {
     '#10b981',
     '#14b8a6',
   ],
-});
+})
 
 interface Emits {
-  (e: 'update:color', value: string): void;
+  (e: 'update:color', value: string): void
 }
 
-const emit = defineEmits<Emits>();
+const emit = defineEmits<Emits>()
 
-const domRef = ref<HTMLElement | null>(null);
-const instance = ref<any>(null);
+const domRef = ref<HTMLElement | null>(null)
+const instance = ref<any>(null)
 
 function handleColorChange(hsva: any) {
-  const color = hsva.toHEXA().toString();
-  emit('update:color', color);
+  const color = hsva.toHEXA().toString()
+  emit('update:color', color)
 }
 
 function initColorPicker() {
-  if (!domRef.value) return;
+  if (!domRef.value) return
 
   instance.value = ColorPicker.create({
     el: domRef.value,
@@ -65,44 +65,44 @@ function initColorPicker() {
         input: true,
       },
     },
-  });
+  })
 
-  instance.value.on('change', handleColorChange);
+  instance.value.on('change', handleColorChange)
 }
 
 function updateColor(color: string) {
-  if (!instance.value) return;
+  if (!instance.value) return
 
-  instance.value.setColor(color);
+  instance.value.setColor(color)
 }
 
 function updateDisabled(disabled: boolean) {
-  if (!instance.value) return;
+  if (!instance.value) return
 
   if (disabled) {
-    instance.value.disable();
+    instance.value.disable()
   } else {
-    instance.value.enable();
+    instance.value.enable()
   }
 }
 
 watch(
   () => props.color,
   (value) => {
-    updateColor(value);
+    updateColor(value)
   },
-);
+)
 
 watch(
   () => props.disabled,
   (value) => {
-    updateDisabled(value);
+    updateDisabled(value)
   },
-);
+)
 
 onMounted(() => {
-  initColorPicker();
-});
+  initColorPicker()
+})
 </script>
 
 <template>

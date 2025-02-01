@@ -14,12 +14,12 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, watch, PropType } from 'vue';
-import { Chart, registerables } from 'chart.js';
+import { onMounted, ref, watch, PropType } from 'vue'
+import { Chart, registerables } from 'chart.js'
 
 interface DataItem {
-  label: string;
-  value: number;
+  label: string
+  value: number
 }
 
 const props = defineProps({
@@ -31,40 +31,40 @@ const props = defineProps({
     type: String,
     default: '',
   },
-});
+})
 
 // Reference to the canvas element
-const chartCanvas = ref<HTMLCanvasElement | null>(null);
-let chartInstance: any = null;
+const chartCanvas = ref<HTMLCanvasElement | null>(null)
+let chartInstance: any = null
 
 // Register all the controllers, elements, scales and plugins for Chart.js
-Chart.register(...registerables);
+Chart.register(...registerables)
 
 onMounted(() => {
-  console.log('LineChart mounted with data:', props.data); // Debug log
+  console.log('LineChart mounted with data:', props.data) // Debug log
   if (chartCanvas.value) {
-    renderChart();
+    renderChart()
   }
-});
+})
 
 watch(
   () => props.data,
   (newData) => {
-    console.log('Data updated:', newData); // Debug log
+    console.log('Data updated:', newData) // Debug log
     if (chartInstance) {
-      updateChart();
+      updateChart()
     } else {
-      renderChart();
+      renderChart()
     }
   },
   { deep: true },
-);
+)
 
 function renderChart() {
-  const ctx = chartCanvas.value?.getContext('2d');
-  if (!ctx) return;
+  const ctx = chartCanvas.value?.getContext('2d')
+  if (!ctx) return
 
-  console.log('Rendering chart with data:', props.data);
+  console.log('Rendering chart with data:', props.data)
 
   chartInstance = new Chart(ctx, {
     type: 'line',
@@ -105,26 +105,26 @@ function renderChart() {
         },
       },
     },
-  });
+  })
 }
 
 function updateChart() {
-  if (!chartInstance) return;
+  if (!chartInstance) return
 
-  const maxDataPoints = 10; // Set maximum data points
-  let newLabels = props.data.map((item) => item.label);
-  let newData = props.data.map((item) => item.value);
+  const maxDataPoints = 10 // Set maximum data points
+  let newLabels = props.data.map((item) => item.label)
+  let newData = props.data.map((item) => item.value)
 
   if (newLabels.length > maxDataPoints) {
-    newLabels = newLabels.slice(-maxDataPoints);
-    newData = newData.slice(-maxDataPoints);
+    newLabels = newLabels.slice(-maxDataPoints)
+    newData = newData.slice(-maxDataPoints)
   }
 
-  chartInstance.data.labels = newLabels;
-  chartInstance.data.datasets[0].data = newData;
-  chartInstance.update();
+  chartInstance.data.labels = newLabels
+  chartInstance.data.datasets[0].data = newData
+  chartInstance.update()
 
-  console.log('Updated chart with data:', newLabels, newData); // Debug log
+  console.log('Updated chart with data:', newLabels, newData) // Debug log
 }
 </script>
 

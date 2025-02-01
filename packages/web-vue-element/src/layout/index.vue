@@ -1,36 +1,36 @@
 <script setup lang="ts">
 // 引入 Vue 的 ref 和 watch 函数，用于响应式数据绑定和监听
-import { ref, watch } from 'vue';
+import { ref, watch } from 'vue'
 // 从 pinia 中引入 storeToRefs，用于解构 store 状态为响应式引用
-import { storeToRefs } from 'pinia';
+import { storeToRefs } from 'pinia'
 // 导入缓存路由配置
-import cacheRouter from '@/router/catche.ts';
+import cacheRouter from '@/router/catche.ts'
 // 自定义 hooks，用于处理页面标题和检测是否为移动端
-import { useRouteTitle, useMobileDetection } from '@/hooks';
+import { useRouteTitle, useMobileDetection } from '@/hooks'
 // 引入状态管理模块中的 commonStore
-import { useCommonStore } from '@/store/modules/common.ts';
+import { useCommonStore } from '@/store/modules/common.ts'
 
 // 引入各个组件
-import Header from './components/Header/index.vue';
-import Menu from './components/Menu/index.vue';
-import Logo from './components/Logo/index.vue';
-import Tab from './components/Tab/index.vue';
+import Header from './components/Header/index.vue'
+import Menu from './components/Menu/index.vue'
+import Logo from './components/Logo/index.vue'
+import Tab from './components/Tab/index.vue'
 
 // 定义侧边栏的 ref，用于获取 DOM 节点
-const asideRef = ref(null);
+const asideRef = ref(null)
 // 定义抽屉菜单的 ref，用于获取 DOM 节点
-const menuDrawerRef = ref(null);
+const menuDrawerRef = ref(null)
 
 // 使用 commonStore 来管理全局状态
-const commonStore = useCommonStore();
+const commonStore = useCommonStore()
 // 解构出 isCollapse 状态，用于控制侧边栏或抽屉的展开与收起
-const { isCollapse } = storeToRefs(commonStore);
+const { isCollapse } = storeToRefs(commonStore)
 
 // 检测是否为移动端，并将结果存储在 isMobile 中
-const { isMobile } = useMobileDetection();
+const { isMobile } = useMobileDetection()
 
 // 设置当前页面的标题
-useRouteTitle();
+useRouteTitle()
 </script>
 
 <template>

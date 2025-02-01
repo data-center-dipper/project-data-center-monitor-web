@@ -7,9 +7,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import ColorPicker from '@/components/color-picker.vue';
+import { ref } from 'vue'
+import ColorPicker from '@/components/color-picker.vue'
 
-const selectedColor = ref('#ff0000');
-const isDisabled = ref(false);
+const selectedColor = ref('#ff0000')
+const isDisabled = ref(false)
 </script>

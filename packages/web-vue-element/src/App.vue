@@ -1,9 +1,9 @@
 <script setup lang="ts">
 // 导入 useRouteTitle 自定义 Hook，这个 Hook 可能用于根据当前路由动态设置页面标题。
-import { useRouteTitle } from '@/hooks/index.ts';
+import { useRouteTitle } from '@/hooks/index.ts'
 
 // 调用 useRouteTitle 函数，这通常会在应用启动时执行，以确保页面标题根据当前路由正确设置。
-useRouteTitle();
+useRouteTitle()
 </script>
 
 <template>

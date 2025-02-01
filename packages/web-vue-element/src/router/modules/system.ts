@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router'
 
 const systemManagementRouter: Array<RouteRecordRaw> = [
   {
@@ -73,6 +73,6 @@ const systemManagementRouter: Array<RouteRecordRaw> = [
       },
     ],
   },
-];
+]
 
-export default systemManagementRouter;
+export default systemManagementRouter

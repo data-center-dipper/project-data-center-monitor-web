@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router'
 
 const userRouter: Array<RouteRecordRaw> = [
   {
@@ -30,6 +30,6 @@ const userRouter: Array<RouteRecordRaw> = [
       },
     ],
   },
-];
+]
 
-export default userRouter;
+export default userRouter

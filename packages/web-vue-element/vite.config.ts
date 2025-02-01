@@ -1,23 +1,23 @@
 // 导入 Vite 的配置函数，用于定义项目的构建和开发服务器配置。
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vite'
 
 // 从 Node.js 标准库导入 URL 相关的功能，用于处理文件路径。
-import { fileURLToPath, URL } from 'node:url';
+import { fileURLToPath, URL } from 'node:url'
 
 // 导入 Vue 插件，使 Vite 支持 Vue 单文件组件（SFC）。
-import vue from '@vitejs/plugin-vue';
+import vue from '@vitejs/plugin-vue'
 
 // 导入 AutoImport 插件，自动导入 API 和工具函数，减少手动 import。
-import AutoImport from 'unplugin-auto-import/vite';
+import AutoImport from 'unplugin-auto-import/vite'
 
 // 导入 Components 插件，自动注册所有 Vue 组件，无需手动 import 和 register。
-import Components from 'unplugin-vue-components/vite';
+import Components from 'unplugin-vue-components/vite'
 
 // 导入 Vue JSX 插件，使 Vite 支持在 TypeScript 文件中使用 JSX 语法。
-import vueJsx from '@vitejs/plugin-vue-jsx';
+import vueJsx from '@vitejs/plugin-vue-jsx'
 
 // 导入 ElementPlusResolver 解析器，用于解析 Element Plus 组件和函数。
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 // 导出默认的 Vite 配置对象。
 export default defineConfig({
@@ -50,4 +50,4 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-});
+})

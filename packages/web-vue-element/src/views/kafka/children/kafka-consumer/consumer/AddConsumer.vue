@@ -38,8 +38,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { defineProps, defineEmits } from 'vue';
+import { ref } from 'vue'
+import { defineProps, defineEmits } from 'vue'
 
 // 定义props属性
 const props = defineProps({
@@ -49,10 +49,10 @@ const props = defineProps({
   },
   editMode: Boolean,
   modalData: Object,
-});
+})
 
 // 定义emits事件
-const emit = defineEmits(['close', 'add', 'update']);
+const emit = defineEmits(['close', 'add', 'update'])
 
 // 初始化表单数据
 const formData = ref({
@@ -60,16 +60,16 @@ const formData = ref({
   groupId: props.modalData?.groupId || '',
   businessProperty: props.modalData?.businessProperty || '',
   deadline: props.modalData?.deadline || '',
-});
+})
 
 // 提交处理函数
 function handleSubmit() {
   if (props.editMode) {
     // 编辑模式下的逻辑
-    emit('update', formData.value);
+    emit('update', formData.value)
   } else {
     // 新增模式下的逻辑
-    emit('add', formData.value);
+    emit('add', formData.value)
   }
   // 清空表单
   Object.assign(formData.value, {
@@ -77,7 +77,7 @@ function handleSubmit() {
     groupId: '',
     businessProperty: '',
     deadline: '',
-  });
+  })
 }
 </script>
 

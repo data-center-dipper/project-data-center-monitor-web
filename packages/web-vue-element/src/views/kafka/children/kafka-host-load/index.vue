@@ -76,23 +76,23 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
-import { ElInput, ElPagination } from 'element-plus';
-import LineChart from './node/LineChart.vue'; // 假设有一个折线图组件
+import { ref, computed } from 'vue'
+import { ElInput, ElPagination } from 'element-plus'
+import LineChart from '../../../../components/charts/line-chart.vue' // 假设有一个折线图组件
 
 // 模拟数据
 interface Monitor {
-  hostDomain: string;
-  memory: string;
-  freeMemory: string;
-  cpuLoad: string;
-  metrics: Array<{ name: string; value: string }>;
-  loadData: { label: string; value: number }[];
-  cpuUsage: { label: string; value: number }[];
-  ioWrite: { label: string; value: number }[];
-  networkTraffic: { label: string; value: number }[];
-  diskWrite: { label: string; value: number }[];
-  diskRead: { label: string; value: number }[];
+  hostDomain: string
+  memory: string
+  freeMemory: string
+  cpuLoad: string
+  metrics: Array<{ name: string; value: string }>
+  loadData: { label: string; value: number }[]
+  cpuUsage: { label: string; value: number }[]
+  ioWrite: { label: string; value: number }[]
+  networkTraffic: { label: string; value: number }[]
+  diskWrite: { label: string; value: number }[]
+  diskRead: { label: string; value: number }[]
 }
 
 const kafkaMonitors = ref<Monitor[]>([
@@ -128,37 +128,37 @@ const kafkaMonitors = ref<Monitor[]>([
     diskWrite: generateRandomData(24),
     diskRead: generateRandomData(24),
   },
-]);
+])
 
 // 辅助函数生成随机数据用于图表
 function generateRandomData(hours: number) {
-  const now = new Date();
+  const now = new Date()
   return Array.from({ length: hours }, (_, i) => ({
     label: new Date(now - (hours - i - 1) * 3600 * 1000).toLocaleTimeString(),
     value: Math.floor(Math.random() * 100) + 1, // 随机值从1到100
-  }));
+  }))
 }
 
 // 搜索查询字符串
-const searchQuery = ref('');
+const searchQuery = ref('')
 
 // 分页相关变量
-const currentMonitorPage = ref(1);
-const monitorsPerPage = 10;
+const currentMonitorPage = ref(1)
+const monitorsPerPage = 10
 const totalMonitorPages = computed(() =>
   Math.ceil(kafkaMonitors.value.length / monitorsPerPage),
-);
+)
 
 // 计算分页后的 Kafka 监控列表
 const paginatedKafkaMonitors = computed(() => {
-  const start = (currentMonitorPage.value - 1) * monitorsPerPage;
-  const end = start + monitorsPerPage;
-  return kafkaMonitors.value.slice(start, end);
-});
+  const start = (currentMonitorPage.value - 1) * monitorsPerPage
+  const end = start + monitorsPerPage
+  return kafkaMonitors.value.slice(start, end)
+})
 
 // 处理分页改变
 function handleMonitorPageChange(page: number) {
-  currentMonitorPage.value = page;
+  currentMonitorPage.value = page
 }
 
 // 展示详情（这里可以实现更多逻辑）
@@ -166,12 +166,12 @@ function showDetail(monitor: Monitor) {
   if (
     !selectedHosts.value.some((host) => host.hostDomain === monitor.hostDomain)
   ) {
-    selectedHosts.value.push(monitor);
+    selectedHosts.value.push(monitor)
   }
 }
 
 // 默认显示的主机详情信息
-const selectedHosts = ref<Monitor[]>([]);
+const selectedHosts = ref<Monitor[]>([])
 
 // 折线图配置
 const charts = [
@@ -181,7 +181,7 @@ const charts = [
   { title: '网络流量', dataKey: 'networkTraffic' },
   { title: '磁盘写入', dataKey: 'diskWrite' },
   { title: '磁盘读取', dataKey: 'diskRead' },
-];
+]
 </script>
 
 <style scoped>

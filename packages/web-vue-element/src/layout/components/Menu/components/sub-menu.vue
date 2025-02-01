@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import type { RouteMeta } from '@/router/index.ts';
-import { useRouter } from 'vue-router';
+import type { RouteMeta } from '@/router/index.ts'
+import { useRouter } from 'vue-router'
 
 defineOptions({
   name: 'SubMenu',
-});
+})
 
 defineProps<{
-  routerArray: any[];
-}>();
+  routerArray: any[]
+}>()
 
-const router = useRouter();
+const router = useRouter()
 </script>
 
 <template>

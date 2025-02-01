@@ -1,23 +1,23 @@
-import { ref, watch } from 'vue';
-import { defineStore } from 'pinia';
-import { useMobileDetection } from '../../hooks';
+import { ref, watch } from 'vue'
+import { defineStore } from 'pinia'
+import { useMobileDetection } from '../../hooks'
 
 export const useCommonStore = defineStore('common', () => {
-  const isCollapse = ref(false);
-  const activeMenu = ref('/kafka/kafka-nodes');
-  const { isMobile, isMediumScreen } = useMobileDetection();
+  const isCollapse = ref(false)
+  const activeMenu = ref('/kafka/kafka-nodes')
+  const { isMobile, isMediumScreen } = useMobileDetection()
 
   watch(isMediumScreen, (newVal) => {
-    isCollapse.value = newVal;
-  });
+    isCollapse.value = newVal
+  })
 
   const toggleCollapse = () => {
-    isCollapse.value = !isCollapse.value;
-  };
+    isCollapse.value = !isCollapse.value
+  }
 
   const toggleMenu = (menu: string) => {
-    activeMenu.value = menu;
-  };
+    activeMenu.value = menu
+  }
 
   return {
     activeMenu,
@@ -26,5 +26,5 @@ export const useCommonStore = defineStore('common', () => {
     toggleMenu,
     isMobile,
     isMediumScreen,
-  };
-});
+  }
+})
