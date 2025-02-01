@@ -6,7 +6,7 @@ import { storeToRefs } from 'pinia';
 // 导入缓存路由配置
 import cacheRouter from '@/router/catche.ts';
 // 自定义 hooks，用于处理页面标题和检测是否为移动端
-import { useRouteTitle, useMobileDetection } from "@/hooks";
+import { useRouteTitle, useMobileDetection } from '@/hooks';
 // 引入状态管理模块中的 commonStore
 import { useCommonStore } from '@/store/modules/common.ts';
 
@@ -38,10 +38,10 @@ useRouteTitle();
   <el-container>
     <!-- PC 端显示侧边栏 -->
     <el-aside
-        v-if="!isMobile"
-        ref="asideRef"
-        :width="isCollapse ? 'auto' : '200px'"
-        :class="{ 'shadow-md': isCollapse }"
+      v-if="!isMobile"
+      ref="asideRef"
+      :width="isCollapse ? 'auto' : '200px'"
+      :class="{ 'shadow-md': isCollapse }"
     >
       <!-- 显示 Logo 组件 -->
       <Logo />
@@ -68,16 +68,16 @@ useRouteTitle();
 
       <!-- 主要内容区 这里以前遇到白屏问题，就是多个菜单切换来，切换后，然后来回几次就会出现白屏，后面经过测试发现，去掉transition过度效果就好了，但是加一个占位符，在组件未完全加载时显示，居然也能解决，但是却从来没有显示过加载中的样子，有点奇怪 -->
       <el-main>
-          <router-view v-slot="{ Component, route }">
-            <transition name="fade-transform" mode="out-in">
-              <div :key="route.path">
-                <component :is="Component" />
-                <!-- 占位符，在组件未完全加载时显示 -->
-                <div v-if="loading" class="skeleton">Loading...</div>
-              </div>
-            </transition>
-          </router-view>
-        </el-main>
+        <router-view v-slot="{ Component, route }">
+          <transition name="fade-transform" mode="out-in">
+            <div :key="route.path">
+              <component :is="Component" />
+              <!-- 占位符，在组件未完全加载时显示 -->
+              <div v-if="loading" class="skeleton">Loading...</div>
+            </div>
+          </transition>
+        </router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -103,7 +103,9 @@ useRouteTitle();
 /* 定义进入和离开时的过渡效果 */
 .fade-transform-enter-active,
 .fade-transform-leave-active {
-  transition: opacity 0.5s, transform 0.5s;
+  transition:
+    opacity 0.5s,
+    transform 0.5s;
 }
 
 /* 定义进入前和离开后的样式 */

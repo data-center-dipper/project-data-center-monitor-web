@@ -1,14 +1,13 @@
-import type { App, Directive } from 'vue'
+import type { App, Directive } from 'vue';
 
-const directivesList: { [key: string]: Directive } = {
-}
+const directivesList: { [key: string]: Directive } = {};
 
 const directives = {
-    install(app: App<Element>) {
-        Object.keys(directivesList).forEach((key) => {
-            app.directive(key, directivesList[key])
-        })
-    },
-}
+  install(app: App<Element>) {
+    Object.keys(directivesList).forEach((key) => {
+      app.directive(key, directivesList[key]);
+    });
+  },
+};
 
-export default directives
+export default directives;

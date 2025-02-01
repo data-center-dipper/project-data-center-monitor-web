@@ -87,7 +87,5 @@
 
   // 指定要包含在 TypeScript 编译过程中的文件模式。
   // 这里指定了 Vite 的配置文件 vite.config.ts。
-  "include": [
-    "vite.config.ts"
-  ]
+  "include": ["vite.config.ts"]
 }

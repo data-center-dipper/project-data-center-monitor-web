@@ -1,10 +1,16 @@
 <template>
   <div class="kafka-topic-monitor p-4">
     <!-- 第一行：主题: 搜索框 topic总数 -->
-    <div class="header flex justify-between items-center border border-gray-300 mb-4 p-2 w-full max-w-md mx-auto">
+    <div
+      class="header flex justify-between items-center border border-gray-300 mb-4 p-2 w-full max-w-md mx-auto"
+    >
       <div class="header-left flex space-x-2">
         <span>主题:</span>
-        <input type="text" placeholder="搜索topic..." class="border p-1 rounded"/>
+        <input
+          type="text"
+          placeholder="搜索topic..."
+          class="border p-1 rounded"
+        />
       </div>
       <div class="header-right">
         <span>topic总数: {{ topics.length }}</span>
@@ -13,15 +19,25 @@
 
     <!-- 第二行：topic列表 -->
     <div class="topic-list space-y-4">
-      <div v-for="(topic, index) in paginatedTopics" :key="index" class="topic-item p-4 border border-gray-300 bg-gray-100">
+      <div
+        v-for="(topic, index) in paginatedTopics"
+        :key="index"
+        class="topic-item p-4 border border-gray-300 bg-gray-100"
+      >
         <!-- 第1行：topic名称、类型、分区数、副本数、数据平均大小、磁盘占用 -->
         <div class="row flex flex-wrap gap-2.5 mb-2.5">
           <span class="flex-1 min-w-[100px]">topic名称：{{ topic.name }}</span>
           <span class="flex-1 min-w-[100px]">类型：{{ topic.type }}</span>
-          <span class="flex-1 min-w-[100px]">分区数：{{ topic.partitions }}</span>
+          <span class="flex-1 min-w-[100px]"
+            >分区数：{{ topic.partitions }}</span
+          >
           <span class="flex-1 min-w-[100px]">副本数：{{ topic.replicas }}</span>
-          <span class="flex-1 min-w-[100px]">数据平均大小：{{ topic.avgSize }}</span>
-          <span class="flex-1 min-w-[100px]">磁盘占用：{{ topic.diskUsage }}</span>
+          <span class="flex-1 min-w-[100px]"
+            >数据平均大小：{{ topic.avgSize }}</span
+          >
+          <span class="flex-1 min-w-[100px]"
+            >磁盘占用：{{ topic.diskUsage }}</span
+          >
         </div>
         <!-- 第2行：配置 -->
         <div class="row flex flex-wrap gap-2.5 mb-2.5">
@@ -38,49 +54,109 @@
           <div class="row grid grid-cols-4 gap-2.5">
             <span>消息入栈速率(Eps)/1min：{{ topic.inRateEpsMin }}</span>
             <span>消息出栈速率(Eps)/1min：{{ topic.outRateEpsMin }}</span>
-            <span>消息入栈速率(Eps)/15min：{{ topic.inRateEpsFifteenMin }}</span>
+            <span
+              >消息入栈速率(Eps)/15min：{{ topic.inRateEpsFifteenMin }}</span
+            >
           </div>
         </div>
         <!-- 第5行：分区状态 -->
         <div class="row flex items-center mb-2.5">
           <span>分区状态：</span>
-          <span :class="topic.status === '正常' ? 'text-green-500' : 'text-red-500'">{{ topic.status }}</span>
+          <span
+            :class="topic.status === '正常' ? 'text-green-500' : 'text-red-500'"
+            >{{ topic.status }}</span
+          >
         </div>
         <!-- 第6行：操作链接 -->
         <div class="actions row flex gap-2">
-          <a href="#" @click.prevent="showDetails(topic)" class="text-blue-700 hover:underline cursor-pointer">查询详情</a>
-          <a href="#" @click.prevent="showDataPreview(topic)" class="text-blue-700 hover:underline cursor-pointer">数据预览</a>
-          <a href="#" @click.prevent="rebuildTopic(topic)" class="text-blue-700 hover:underline cursor-pointer">重建topic</a>
-          <a href="#" @click.prevent="expandPartitions(topic)" class="text-blue-700 hover:underline cursor-pointer">分区扩容</a>
-          <a href="#" @click.prevent="produceData(topic)" class="text-blue-700 hover:underline cursor-pointer">生产数据</a>
+          <a
+            href="#"
+            @click.prevent="showDetails(topic)"
+            class="text-blue-700 hover:underline cursor-pointer"
+            >查询详情</a
+          >
+          <a
+            href="#"
+            @click.prevent="showDataPreview(topic)"
+            class="text-blue-700 hover:underline cursor-pointer"
+            >数据预览</a
+          >
+          <a
+            href="#"
+            @click.prevent="rebuildTopic(topic)"
+            class="text-blue-700 hover:underline cursor-pointer"
+            >重建topic</a
+          >
+          <a
+            href="#"
+            @click.prevent="expandPartitions(topic)"
+            class="text-blue-700 hover:underline cursor-pointer"
+            >分区扩容</a
+          >
+          <a
+            href="#"
+            @click.prevent="produceData(topic)"
+            class="text-blue-700 hover:underline cursor-pointer"
+            >生产数据</a
+          >
         </div>
       </div>
     </div>
 
     <!-- 分页 -->
     <div class="pagination flex justify-center items-center gap-2 mt-4">
-      <button @click="prevPage" :disabled="currentPage === 1"
-              class="px-2 py-1 bg-blue-600 text-white rounded disabled:bg-gray-400 disabled:cursor-not-allowed">上一页</button>
+      <button
+        @click="prevPage"
+        :disabled="currentPage === 1"
+        class="px-2 py-1 bg-blue-600 text-white rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
+      >
+        上一页
+      </button>
       <span>第 {{ currentPage }} 页 / 共 {{ totalPages }} 页</span>
-      <button @click="nextPage" :disabled="currentPage === totalPages"
-              class="px-2 py-1 bg-blue-600 text-white rounded disabled:bg-gray-400 disabled:cursor-not-allowed">下一页</button>
+      <button
+        @click="nextPage"
+        :disabled="currentPage === totalPages"
+        class="px-2 py-1 bg-blue-600 text-white rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
+      >
+        下一页
+      </button>
     </div>
 
     <!-- 查询详情模态框 -->
     <transition name="fade">
-      <div v-if="topicModalVisible" class="modal-overlay fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+      <div
+        v-if="topicModalVisible"
+        class="modal-overlay fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 z-50 flex justify-center items-center"
+      >
         <div class="modal bg-white p-4 rounded shadow-lg w-4/5 max-w-md">
           <div class="modal-header flex justify-between items-center">
             <h3>{{ modalTitle }}</h3>
-            <button @click="closeModal" class="bg-transparent border-none text-xl cursor-pointer">&times;</button>
+            <button
+              @click="closeModal"
+              class="bg-transparent border-none text-xl cursor-pointer"
+            >
+              &times;
+            </button>
           </div>
           <div class="modal-body">
             <p><strong>名称:</strong> {{ modalData.name }}</p>
-            <p><strong>描述:</strong> 这里是一些关于{{ modalData.name }}的额外信息。</p>
-            <p><strong>更多细节:</strong> 模拟的数据，比如最近的更新时间、维护记录等。</p>
+            <p>
+              <strong>描述:</strong> 这里是一些关于{{
+                modalData.name
+              }}的额外信息。
+            </p>
+            <p>
+              <strong>更多细节:</strong>
+              模拟的数据，比如最近的更新时间、维护记录等。
+            </p>
           </div>
           <div class="modal-footer text-right">
-            <button @click="closeModal" class="px-4 py-2 bg-blue-600 text-white rounded">关闭</button>
+            <button
+              @click="closeModal"
+              class="px-4 py-2 bg-blue-600 text-white rounded"
+            >
+              关闭
+            </button>
           </div>
         </div>
       </div>
@@ -88,19 +164,39 @@
 
     <!-- 数据预览模态框 -->
     <transition name="fade">
-      <div v-if="topicDataShowVisible" class="modal-overlay fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+      <div
+        v-if="topicDataShowVisible"
+        class="modal-overlay fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 z-50 flex justify-center items-center"
+      >
         <div class="modal bg-white p-4 rounded shadow-lg w-4/5 max-w-md">
           <div class="modal-header flex justify-between items-center">
             <h3>{{ modalTitle }}</h3>
-            <button @click="closeModal" class="bg-transparent border-none text-xl cursor-pointer">&times;</button>
+            <button
+              @click="closeModal"
+              class="bg-transparent border-none text-xl cursor-pointer"
+            >
+              &times;
+            </button>
           </div>
           <div class="modal-body">
             <p><strong>名称:</strong> {{ modalData.name }}</p>
-            <p><strong>描述:</strong> 这里是一些关于{{ modalData.name }}的额外信息。</p>
-            <p><strong>更多细节:</strong> 模拟的数据，比如最近的更新时间、维护记录等。</p>
+            <p>
+              <strong>描述:</strong> 这里是一些关于{{
+                modalData.name
+              }}的额外信息。
+            </p>
+            <p>
+              <strong>更多细节:</strong>
+              模拟的数据，比如最近的更新时间、维护记录等。
+            </p>
           </div>
           <div class="modal-footer text-right">
-            <button @click="closeModal" class="px-4 py-2 bg-blue-600 text-white rounded">关闭</button>
+            <button
+              @click="closeModal"
+              class="px-4 py-2 bg-blue-600 text-white rounded"
+            >
+              关闭
+            </button>
           </div>
         </div>
       </div>
@@ -108,19 +204,39 @@
 
     <!-- 重建topic模态框 -->
     <transition name="fade">
-      <div v-if="topicRebuildVisible" class="modal-overlay fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+      <div
+        v-if="topicRebuildVisible"
+        class="modal-overlay fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 z-50 flex justify-center items-center"
+      >
         <div class="modal bg-white p-4 rounded shadow-lg w-4/5 max-w-md">
           <div class="modal-header flex justify-between items-center">
             <h3>{{ modalTitle }}</h3>
-            <button @click="closeModal" class="bg-transparent border-none text-xl cursor-pointer">&times;</button>
+            <button
+              @click="closeModal"
+              class="bg-transparent border-none text-xl cursor-pointer"
+            >
+              &times;
+            </button>
           </div>
           <div class="modal-body">
             <p><strong>名称:</strong> {{ modalData.name }}</p>
-            <p><strong>描述:</strong> 这里是一些关于{{ modalData.name }}的额外信息。</p>
-            <p><strong>更多细节:</strong> 模拟的数据，比如最近的更新时间、维护记录等。</p>
+            <p>
+              <strong>描述:</strong> 这里是一些关于{{
+                modalData.name
+              }}的额外信息。
+            </p>
+            <p>
+              <strong>更多细节:</strong>
+              模拟的数据，比如最近的更新时间、维护记录等。
+            </p>
           </div>
           <div class="modal-footer text-right">
-            <button @click="closeModal" class="px-4 py-2 bg-blue-600 text-white rounded">关闭</button>
+            <button
+              @click="closeModal"
+              class="px-4 py-2 bg-blue-600 text-white rounded"
+            >
+              关闭
+            </button>
           </div>
         </div>
       </div>
@@ -128,19 +244,39 @@
 
     <!-- 分区扩容模态框 -->
     <transition name="fade">
-      <div v-if="topicKuorongVisible" class="modal-overlay fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+      <div
+        v-if="topicKuorongVisible"
+        class="modal-overlay fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 z-50 flex justify-center items-center"
+      >
         <div class="modal bg-white p-4 rounded shadow-lg w-4/5 max-w-md">
           <div class="modal-header flex justify-between items-center">
             <h3>{{ modalTitle }}</h3>
-            <button @click="closeModal" class="bg-transparent border-none text-xl cursor-pointer">&times;</button>
+            <button
+              @click="closeModal"
+              class="bg-transparent border-none text-xl cursor-pointer"
+            >
+              &times;
+            </button>
           </div>
           <div class="modal-body">
             <p><strong>名称:</strong> {{ modalData.name }}</p>
-            <p><strong>描述:</strong> 这里是一些关于{{ modalData.name }}的额外信息。</p>
-            <p><strong>更多细节:</strong> 模拟的数据，比如最近的更新时间、维护记录等。</p>
+            <p>
+              <strong>描述:</strong> 这里是一些关于{{
+                modalData.name
+              }}的额外信息。
+            </p>
+            <p>
+              <strong>更多细节:</strong>
+              模拟的数据，比如最近的更新时间、维护记录等。
+            </p>
           </div>
           <div class="modal-footer text-right">
-            <button @click="closeModal" class="px-4 py-2 bg-blue-600 text-white rounded">关闭</button>
+            <button
+              @click="closeModal"
+              class="px-4 py-2 bg-blue-600 text-white rounded"
+            >
+              关闭
+            </button>
           </div>
         </div>
       </div>
@@ -148,19 +284,39 @@
 
     <!-- 生产数据模态框 -->
     <transition name="fade">
-      <div v-if="producerVisible" class="modal-overlay fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+      <div
+        v-if="producerVisible"
+        class="modal-overlay fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 z-50 flex justify-center items-center"
+      >
         <div class="modal bg-white p-4 rounded shadow-lg w-4/5 max-w-md">
           <div class="modal-header flex justify-between items-center">
             <h3>{{ modalTitle }}</h3>
-            <button @click="closeModal" class="bg-transparent border-none text-xl cursor-pointer">&times;</button>
+            <button
+              @click="closeModal"
+              class="bg-transparent border-none text-xl cursor-pointer"
+            >
+              &times;
+            </button>
           </div>
           <div class="modal-body">
             <p><strong>名称:</strong> {{ modalData.name }}</p>
-            <p><strong>描述:</strong> 这里是一些关于{{ modalData.name }}的额外信息。</p>
-            <p><strong>更多细节:</strong> 模拟的数据，比如最近的更新时间、维护记录等。</p>
+            <p>
+              <strong>描述:</strong> 这里是一些关于{{
+                modalData.name
+              }}的额外信息。
+            </p>
+            <p>
+              <strong>更多细节:</strong>
+              模拟的数据，比如最近的更新时间、维护记录等。
+            </p>
           </div>
           <div class="modal-footer text-right">
-            <button @click="closeModal" class="px-4 py-2 bg-blue-600 text-white rounded">关闭</button>
+            <button
+              @click="closeModal"
+              class="px-4 py-2 bg-blue-600 text-white rounded"
+            >
+              关闭
+            </button>
           </div>
         </div>
       </div>
@@ -188,7 +344,7 @@ const topics = ref([
     inRateEpsMin: 65,
     outRateEpsMin: 45,
     inRateEpsFifteenMin: 123,
-    status: '正常'
+    status: '正常',
   },
 ]);
 const itemsPerPage = 5;
@@ -209,7 +365,9 @@ const paginatedTopics = computed(() => {
   return topics.value.slice(start, end);
 });
 
-const totalPages = computed(() => Math.ceil(topics.value.length / itemsPerPage));
+const totalPages = computed(() =>
+  Math.ceil(topics.value.length / itemsPerPage),
+);
 
 // 方法定义
 function showDetails(topic: any) {
@@ -266,7 +424,8 @@ function nextPage() {
 
 <style scoped>
 /* 可以保留一些无法通过 Tailwind CSS 实现的自定义样式 */
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.3s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {

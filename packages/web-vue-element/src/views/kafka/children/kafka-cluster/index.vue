@@ -5,11 +5,11 @@ import { onMounted, onBeforeUnmount } from 'vue';
 console.log('KafkaClusterPage setup');
 
 onMounted(() => {
-    console.log('KafkaClusterPage mounted');
+  console.log('KafkaClusterPage mounted');
 });
 
 onBeforeUnmount(() => {
-    console.log('KafkaClusterPage beforeDestroy');
+  console.log('KafkaClusterPage beforeDestroy');
 });
 
 // 数据初始化
@@ -30,7 +30,7 @@ const clusters = ref([
     monitoringEnabled: false,
     monitoringPolicy: 'now', // 默认值
     monitorStartTime: null,
-    monitorEndTime: null
+    monitorEndTime: null,
   },
 ]);
 const clusterModalVisible = ref(false);
@@ -44,15 +44,15 @@ const newCluster = ref({
   monitoringEnabled: false,
   monitoringPolicy: 'now', // 默认值
   monitorStartTime: null,
-  monitorEndTime: null
+  monitorEndTime: null,
 });
 const addEditModalTitle = ref('');
 
 // 计算属性
 const filteredClusters = computed(() =>
-  clusters.value.filter(cluster =>
-    cluster.name.toLowerCase().includes(searchQuery.value.toLowerCase())
-  )
+  clusters.value.filter((cluster) =>
+    cluster.name.toLowerCase().includes(searchQuery.value.toLowerCase()),
+  ),
 );
 
 const paginatedclusters = computed(() => {
@@ -61,7 +61,9 @@ const paginatedclusters = computed(() => {
   return filteredClusters.value.slice(start, end);
 });
 
-const totalPages = computed(() => Math.ceil(filteredClusters.value.length / itemsPerPage));
+const totalPages = computed(() =>
+  Math.ceil(filteredClusters.value.length / itemsPerPage),
+);
 
 // 方法定义
 function showDetails(cluster: any) {
@@ -88,7 +90,7 @@ function submitClusterForm() {
   if (addEditModalTitle.value.includes('新增')) {
     clusters.value.push({ ...newCluster.value });
   } else {
-    let index = clusters.value.findIndex(c => c.id === newCluster.value.id);
+    let index = clusters.value.findIndex((c) => c.id === newCluster.value.id);
     if (index !== -1) {
       clusters.value.splice(index, 1, { ...newCluster.value });
     }
@@ -130,15 +132,29 @@ function updateMonitoring(cluster: any) {
     <div class="header flex justify-between items-center border-b pb-2 mb-4">
       <div class="flex items-center space-x-2">
         <span>集群查询:</span>
-        <input type="text" v-model="searchQuery" placeholder="搜索集群..." class="border rounded px-2 py-1"/>
+        <input
+          type="text"
+          v-model="searchQuery"
+          placeholder="搜索集群..."
+          class="border rounded px-2 py-1"
+        />
       </div>
       <div class="text-gray-600">集群总数: {{ clusters.length }}</div>
-      <button @click="showAddClusterModal" class="bg-blue-500 text-white px-3 py-1 rounded">新增集群</button>
+      <button
+        @click="showAddClusterModal"
+        class="bg-blue-500 text-white px-3 py-1 rounded"
+      >
+        新增集群
+      </button>
     </div>
 
     <!-- 集群列表 -->
     <div class="cluster-list space-y-4">
-      <div v-for="(cluster, index) in paginatedclusters" :key="index" class="cluster-item bg-white p-4 rounded shadow-md">
+      <div
+        v-for="(cluster, index) in paginatedclusters"
+        :key="index"
+        class="cluster-item bg-white p-4 rounded shadow-md"
+      >
         <div class="row flex flex-wrap gap-2 mb-2">
           <span>集群ID：{{ cluster.id }}</span>
           <span>集群名称：{{ cluster.name }}</span>
@@ -155,11 +171,18 @@ function updateMonitoring(cluster: any) {
         <div class="monitor-metrics row space-y-2">
           <label>
             是否开启监控:
-            <input type="checkbox" v-model="cluster.monitoringEnabled" @change="updateMonitoring(cluster)">
+            <input
+              type="checkbox"
+              v-model="cluster.monitoringEnabled"
+              @change="updateMonitoring(cluster)"
+            />
           </label>
           <label>
             监控策略:
-            <select v-model="cluster.monitoringPolicy" @change="updateMonitoring(cluster)">
+            <select
+              v-model="cluster.monitoringPolicy"
+              @change="updateMonitoring(cluster)"
+            >
               <option value="now">从现在开始</option>
               <option value="range">时间范围</option>
             </select>
@@ -167,11 +190,19 @@ function updateMonitoring(cluster: any) {
           <template v-if="cluster.monitoringPolicy === 'range'">
             <label>
               监控开始时间:
-              <input type="datetime-local" v-model="cluster.monitorStartTime" @change="updateMonitoring(cluster)">
+              <input
+                type="datetime-local"
+                v-model="cluster.monitorStartTime"
+                @change="updateMonitoring(cluster)"
+              />
             </label>
             <label>
               监控结束时间:
-              <input type="datetime-local" v-model="cluster.monitorEndTime" @change="updateMonitoring(cluster)">
+              <input
+                type="datetime-local"
+                v-model="cluster.monitorEndTime"
+                @change="updateMonitoring(cluster)"
+              />
             </label>
           </template>
           <template v-else>
@@ -187,15 +218,33 @@ function updateMonitoring(cluster: any) {
     </div>
 
     <!-- 分页控制 -->
-    <div class="pagination flex justify-center space-x-2 mt-4" v-if="totalPages > 1">
-      <button @click="prevPage" :disabled="currentPage === 1" class="px-3 py-1 bg-gray-300 hover:bg-gray-400 rounded">上一页</button>
+    <div
+      class="pagination flex justify-center space-x-2 mt-4"
+      v-if="totalPages > 1"
+    >
+      <button
+        @click="prevPage"
+        :disabled="currentPage === 1"
+        class="px-3 py-1 bg-gray-300 hover:bg-gray-400 rounded"
+      >
+        上一页
+      </button>
       <span>第 {{ currentPage }} 页 / 共 {{ totalPages }} 页</span>
-      <button @click="nextPage" :disabled="currentPage === totalPages" class="px-3 py-1 bg-gray-300 hover:bg-gray-400 rounded">下一页</button>
+      <button
+        @click="nextPage"
+        :disabled="currentPage === totalPages"
+        class="px-3 py-1 bg-gray-300 hover:bg-gray-400 rounded"
+      >
+        下一页
+      </button>
     </div>
 
     <!-- 集群详情弹窗 -->
     <transition name="fade">
-      <div v-if="clusterModalVisible" class="modal-overlay fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+      <div
+        v-if="clusterModalVisible"
+        class="modal-overlay fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+      >
         <div class="modal bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
           <div class="modal-header flex justify-between items-center">
             <h3>{{ modalTitle }}</h3>
@@ -205,10 +254,19 @@ function updateMonitoring(cluster: any) {
             <p><strong>ID:</strong> {{ modalData.id }}</p>
             <p><strong>名称:</strong> {{ modalData.name }}</p>
             <p><strong>地址:</strong> {{ modalData.address }}</p>
-            <p><strong>更多信息:</strong> 这里是关于{{ modalData.name }}的额外信息。</p>
+            <p>
+              <strong>更多信息:</strong> 这里是关于{{
+                modalData.name
+              }}的额外信息。
+            </p>
           </div>
           <div class="modal-footer text-right">
-            <button @click="closeModal" class="bg-blue-500 text-white px-4 py-2 rounded">关闭</button>
+            <button
+              @click="closeModal"
+              class="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              关闭
+            </button>
           </div>
         </div>
       </div>
@@ -216,7 +274,10 @@ function updateMonitoring(cluster: any) {
 
     <!-- 新增/编辑集群模态框 -->
     <transition name="fade">
-      <div v-if="addEditClusterVisible" class="modal-overlay fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+      <div
+        v-if="addEditClusterVisible"
+        class="modal-overlay fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+      >
         <div class="modal bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
           <div class="modal-header flex justify-between items-center">
             <h3>{{ addEditModalTitle }}</h3>
@@ -224,35 +285,73 @@ function updateMonitoring(cluster: any) {
           </div>
           <form @submit.prevent="submitClusterForm" class="space-y-4">
             <label for="clusterName">集群名称:</label>
-            <input id="clusterName" v-model="newCluster.name" required class="border rounded px-2 py-1 w-full"/>
+            <input
+              id="clusterName"
+              v-model="newCluster.name"
+              required
+              class="border rounded px-2 py-1 w-full"
+            />
 
             <label for="clusterAddress">集群地址:</label>
-            <input id="clusterAddress" v-model="newCluster.address" required class="border rounded px-2 py-1 w-full"/>
+            <input
+              id="clusterAddress"
+              v-model="newCluster.address"
+              required
+              class="border rounded px-2 py-1 w-full"
+            />
 
             <label for="clusterType">集群类型:</label>
-            <input id="clusterType" v-model="newCluster.type" required class="border rounded px-2 py-1 w-full"/>
+            <input
+              id="clusterType"
+              v-model="newCluster.type"
+              required
+              class="border rounded px-2 py-1 w-full"
+            />
 
             <label for="monitoringEnabled">是否开启监控:</label>
-            <input id="monitoringEnabled" type="checkbox" v-model="newCluster.monitoringEnabled" />
+            <input
+              id="monitoringEnabled"
+              type="checkbox"
+              v-model="newCluster.monitoringEnabled"
+            />
 
             <label for="monitoringPolicy">监控策略:</label>
-            <select id="monitoringPolicy" v-model="newCluster.monitoringPolicy" class="border rounded px-2 py-1 w-full">
+            <select
+              id="monitoringPolicy"
+              v-model="newCluster.monitoringPolicy"
+              class="border rounded px-2 py-1 w-full"
+            >
               <option value="now">从现在开始</option>
               <option value="range">时间范围</option>
             </select>
 
             <template v-if="newCluster.monitoringPolicy === 'range'">
               <label for="monitorStartTime">监控开始时间:</label>
-              <input id="monitorStartTime" type="datetime-local" v-model="newCluster.monitorStartTime" class="border rounded px-2 py-1 w-full"/>
+              <input
+                id="monitorStartTime"
+                type="datetime-local"
+                v-model="newCluster.monitorStartTime"
+                class="border rounded px-2 py-1 w-full"
+              />
 
               <label for="monitorEndTime">监控结束时间:</label>
-              <input id="monitorEndTime" type="datetime-local" v-model="newCluster.monitorEndTime" class="border rounded px-2 py-1 w-full"/>
+              <input
+                id="monitorEndTime"
+                type="datetime-local"
+                v-model="newCluster.monitorEndTime"
+                class="border rounded px-2 py-1 w-full"
+              />
             </template>
             <template v-else>
               <p>监控将立即开始。</p>
             </template>
 
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">{{ addEditModalTitle.includes('新增') ? '添加' : '保存' }}</button>
+            <button
+              type="submit"
+              class="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              {{ addEditModalTitle.includes('新增') ? '添加' : '保存' }}
+            </button>
           </form>
         </div>
       </div>
@@ -292,7 +391,8 @@ function updateMonitoring(cluster: any) {
 }
 
 /* Transition for fade effect */
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.3s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { useCommonStore } from '@/store/modules/common.ts'
+import { storeToRefs } from 'pinia';
+import { useCommonStore } from '@/store/modules/common.ts';
 
-const commonStore = useCommonStore()
-const { isCollapse } = storeToRefs(commonStore)
+const commonStore = useCommonStore();
+const { isCollapse } = storeToRefs(commonStore);
 </script>
 
 <template>
@@ -13,6 +13,4 @@ const { isCollapse } = storeToRefs(commonStore)
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

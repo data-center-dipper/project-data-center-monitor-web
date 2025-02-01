@@ -1,5 +1,10 @@
 <template>
-  <el-dialog :visible="show" @close="$emit('close')" title="新增消费者" width="600px">
+  <el-dialog
+    :visible="show"
+    @close="$emit('close')"
+    title="新增消费者"
+    width="600px"
+  >
     <el-form :model="formData" label-width="100px" ref="formRef">
       <!-- 表单字段 -->
       <el-form-item label="Topic:" required>
@@ -15,7 +20,12 @@
       </el-form-item>
 
       <el-form-item label="截止日期:">
-        <el-date-picker type="date" placeholder="选择日期" v-model="formData.deadline" style="width: 100%;"></el-date-picker>
+        <el-date-picker
+          type="date"
+          placeholder="选择日期"
+          v-model="formData.deadline"
+          style="width: 100%"
+        ></el-date-picker>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -35,10 +45,10 @@ import { defineProps, defineEmits } from 'vue';
 const props = defineProps({
   show: {
     type: Boolean,
-    default: false
+    default: false,
   },
   editMode: Boolean,
-  modalData: Object
+  modalData: Object,
 });
 
 // 定义emits事件
@@ -49,7 +59,7 @@ const formData = ref({
   topic: props.modalData?.topic || '',
   groupId: props.modalData?.groupId || '',
   businessProperty: props.modalData?.businessProperty || '',
-  deadline: props.modalData?.deadline || ''
+  deadline: props.modalData?.deadline || '',
 });
 
 // 提交处理函数
@@ -66,7 +76,7 @@ function handleSubmit() {
     topic: '',
     groupId: '',
     businessProperty: '',
-    deadline: ''
+    deadline: '',
   });
 }
 </script>

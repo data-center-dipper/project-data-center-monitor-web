@@ -3,18 +3,29 @@
     <!-- 节点监控 -->
     <section v-if="kafkaMonitors.length > 0" class="monitor-section mb-4">
       <h2 class="section-title text-xl font-bold">Kafka节点监控</h2>
-      <hr class="my-2"/>
-      <div class="monitor-list grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
+      <hr class="my-2" />
+      <div
+        class="monitor-list grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]"
+      >
         <div
           v-for="(monitor, index) in paginatedKafkaMonitors"
           :key="index"
           class="monitor-info p-4 border rounded cursor-pointer hover:bg-gray-50"
           @click="showDetail(monitor)"
         >
-          <p>主机域名：<router-link to="/details" class="text-blue-600">{{ monitor.hostDomain }}</router-link></p>
-          <p>内存: {{ monitor.memory }} 空闲：{{ monitor.freeMemory }} CPU负载: {{ monitor.cpuLoad }}</p>
+          <p>
+            主机域名：<router-link to="/details" class="text-blue-600">{{
+              monitor.hostDomain
+            }}</router-link>
+          </p>
+          <p>
+            内存: {{ monitor.memory }} 空闲：{{ monitor.freeMemory }} CPU负载:
+            {{ monitor.cpuLoad }}
+          </p>
           <ul class="list-inside list-disc">
-            <li v-for="(metric, mIndex) in monitor.metrics" :key="mIndex">{{ metric.name }}: {{ metric.value }}</li>
+            <li v-for="(metric, mIndex) in monitor.metrics" :key="mIndex">
+              {{ metric.name }}: {{ metric.value }}
+            </li>
           </ul>
         </div>
       </div>
@@ -31,9 +42,15 @@
     </section>
 
     <!-- 显示主题和主机总数 -->
-    <div class="info-section border p-4 rounded-lg shadow-md w-full max-w-md mx-auto text-center">
+    <div
+      class="info-section border p-4 rounded-lg shadow-md w-full max-w-md mx-auto text-center"
+    >
       <span>主题: </span>
-      <el-input v-model="searchQuery" placeholder="搜索..." class="w-64 my-2 inline-block"></el-input>
+      <el-input
+        v-model="searchQuery"
+        placeholder="搜索..."
+        class="w-64 my-2 inline-block"
+      ></el-input>
       <span>主机总数: {{ kafkaMonitors.length }}</span>
     </div>
 
@@ -47,7 +64,10 @@
         <div>{{ host.hostDomain }} 基本信息</div>
         <div class="charts-grid grid gap-4 grid-cols-2 mt-4">
           <div v-for="chart in charts" :key="chart.title" class="p-2">
-            <line-chart :data="host[chart.dataKey]" :title="chart.title"></line-chart>
+            <line-chart
+              :data="host[chart.dataKey]"
+              :title="chart.title"
+            ></line-chart>
           </div>
         </div>
       </div>
@@ -83,14 +103,14 @@ const kafkaMonitors = ref<Monitor[]>([
     cpuLoad: '75%',
     metrics: [
       { name: 'Total Requests', value: '1000' },
-      { name: 'Error Rate', value: '0.5%' }
+      { name: 'Error Rate', value: '0.5%' },
     ],
     loadData: generateRandomData(24),
     cpuUsage: generateRandomData(24),
     ioWrite: generateRandomData(24),
     networkTraffic: generateRandomData(24),
     diskWrite: generateRandomData(24),
-    diskRead: generateRandomData(24)
+    diskRead: generateRandomData(24),
   },
   {
     hostDomain: 'host2.example.com',
@@ -99,15 +119,15 @@ const kafkaMonitors = ref<Monitor[]>([
     cpuLoad: '30%',
     metrics: [
       { name: 'Total Requests', value: '2000' },
-      { name: 'Error Rate', value: '0.2%' }
+      { name: 'Error Rate', value: '0.2%' },
     ],
     loadData: generateRandomData(24),
     cpuUsage: generateRandomData(24),
     ioWrite: generateRandomData(24),
     networkTraffic: generateRandomData(24),
     diskWrite: generateRandomData(24),
-    diskRead: generateRandomData(24)
-  }
+    diskRead: generateRandomData(24),
+  },
 ]);
 
 // 辅助函数生成随机数据用于图表
@@ -115,7 +135,7 @@ function generateRandomData(hours: number) {
   const now = new Date();
   return Array.from({ length: hours }, (_, i) => ({
     label: new Date(now - (hours - i - 1) * 3600 * 1000).toLocaleTimeString(),
-    value: Math.floor(Math.random() * 100) + 1 // 随机值从1到100
+    value: Math.floor(Math.random() * 100) + 1, // 随机值从1到100
   }));
 }
 
@@ -125,7 +145,9 @@ const searchQuery = ref('');
 // 分页相关变量
 const currentMonitorPage = ref(1);
 const monitorsPerPage = 10;
-const totalMonitorPages = computed(() => Math.ceil(kafkaMonitors.value.length / monitorsPerPage));
+const totalMonitorPages = computed(() =>
+  Math.ceil(kafkaMonitors.value.length / monitorsPerPage),
+);
 
 // 计算分页后的 Kafka 监控列表
 const paginatedKafkaMonitors = computed(() => {
@@ -141,7 +163,9 @@ function handleMonitorPageChange(page: number) {
 
 // 展示详情（这里可以实现更多逻辑）
 function showDetail(monitor: Monitor) {
-  if (!selectedHosts.value.some(host => host.hostDomain === monitor.hostDomain)) {
+  if (
+    !selectedHosts.value.some((host) => host.hostDomain === monitor.hostDomain)
+  ) {
     selectedHosts.value.push(monitor);
   }
 }
@@ -156,7 +180,7 @@ const charts = [
   { title: 'IO 写入', dataKey: 'ioWrite' },
   { title: '网络流量', dataKey: 'networkTraffic' },
   { title: '磁盘写入', dataKey: 'diskWrite' },
-  { title: '磁盘读取', dataKey: 'diskRead' }
+  { title: '磁盘读取', dataKey: 'diskRead' },
 ];
 </script>
 

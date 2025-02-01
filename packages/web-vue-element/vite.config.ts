@@ -21,33 +21,33 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 
 // 导出默认的 Vite 配置对象。
 export default defineConfig({
-    // 定义插件列表，这些插件会在项目构建过程中被应用。
-    plugins: [
-        // 使用 Vue 插件，并提供自定义模板编译选项。
-        vue({
-            template: {
-                compilerOptions: {
-                    // 指定哪些标签被视为自定义元素，避免被 Vue 编译器转换。
-                    isCustomElement: (tag) => tag === 'iconpark-icon'
-                }
-            }
-        }),
-        // 启用 Vue JSX 插件以支持 JSX 语法。
-        vueJsx(),
-        // 使用 AutoImport 插件并指定 ElementPlusResolver 作为解析器，以便自动导入 Element Plus 的 API。
-        AutoImport({
-            resolvers: [ElementPlusResolver()],
-        }),
-        // 使用 Components 插件并指定 ElementPlusResolver 作为解析器，以便自动注册 Element Plus 组件。
-        Components({
-            resolvers: [ElementPlusResolver()],
-        }),
-    ],
-    // resolve 属性用来设置模块解析选项。
-    resolve: {
-        alias: {
-            // 设置别名 '@' 指向项目的 src 目录，方便引用源代码文件。
-            '@': fileURLToPath(new URL('./src', import.meta.url)),
+  // 定义插件列表，这些插件会在项目构建过程中被应用。
+  plugins: [
+    // 使用 Vue 插件，并提供自定义模板编译选项。
+    vue({
+      template: {
+        compilerOptions: {
+          // 指定哪些标签被视为自定义元素，避免被 Vue 编译器转换。
+          isCustomElement: (tag) => tag === 'iconpark-icon',
         },
+      },
+    }),
+    // 启用 Vue JSX 插件以支持 JSX 语法。
+    vueJsx(),
+    // 使用 AutoImport 插件并指定 ElementPlusResolver 作为解析器，以便自动导入 Element Plus 的 API。
+    AutoImport({
+      resolvers: [ElementPlusResolver()],
+    }),
+    // 使用 Components 插件并指定 ElementPlusResolver 作为解析器，以便自动注册 Element Plus 组件。
+    Components({
+      resolvers: [ElementPlusResolver()],
+    }),
+  ],
+  // resolve 属性用来设置模块解析选项。
+  resolve: {
+    alias: {
+      // 设置别名 '@' 指向项目的 src 目录，方便引用源代码文件。
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
+  },
 });

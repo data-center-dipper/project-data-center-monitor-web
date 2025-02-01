@@ -10,8 +10,8 @@ export default {
   // 定义内容源，即包含 Tailwind CSS 类名的文件路径模式。
   // 这些文件会被扫描来确定最终输出的 CSS 中需要包含哪些样式规则。
   content: [
-    "./index.html", // 包含 HTML 文件中的 Tailwind 类名
-    "./src/**/*.{vue,js,ts,jsx,tsx}", // 包括 src 目录下所有的 Vue、JavaScript 和 TypeScript 文件中的 Tailwind 类名
+    './index.html', // 包含 HTML 文件中的 Tailwind 类名
+    './src/**/*.{vue,js,ts,jsx,tsx}', // 包括 src 目录下所有的 Vue、JavaScript 和 TypeScript 文件中的 Tailwind 类名
   ],
 
   // 主题配置，允许你自定义和扩展 Tailwind 的默认设计系统。
@@ -23,4 +23,4 @@ export default {
   // 插件数组，你可以在这里添加额外的功能或自定义行为到 Tailwind CSS。
   // 例如，可以通过插件添加更多的实用工具类，或者改变某些默认行为。
   plugins: [],
-}
+};

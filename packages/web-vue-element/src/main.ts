@@ -23,9 +23,9 @@ app.use(router);
 app.use(pinia);
 
 app.config.errorHandler = (err, vm, info) => {
-    console.error('Global errorHandler:', err);
-    console.log('Vue instance:', vm);
-    console.log('Info:', info);
+  console.error('Global errorHandler:', err);
+  console.log('Vue instance:', vm);
+  console.log('Info:', info);
 };
 
 // 将应用实例挂载到 HTML 中 id 为 'app' 的元素上，启动应用。
