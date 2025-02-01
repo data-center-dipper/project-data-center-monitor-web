@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import ListHeader from './components/list-header.vue'
 import ChooseData from './components/choose-data.vue'
 
@@ -42,11 +42,27 @@ const modalData = ref({})
 const modalTitle = ref('')
 const listHeaderRef: Ref<InstanceType<typeof ListHeader> | null> = ref(null)
 
+const pageSize = ref(10)
+const currentPage = ref(1)
+
+// 计算过滤后的集群数据
 const filteredClusters = computed(() =>
   clusters.value.filter((cluster) =>
     cluster.name.toLowerCase().includes(searchQuery.value.toLowerCase()),
   ),
 )
+
+// 计算需要展示的数据
+const paginatedClusters = computed(() =>
+  filteredClusters.value.slice(
+    (currentPage.value - 1) * pageSize.value,
+    currentPage.value * pageSize.value,
+  ),
+)
+
+watch(currentPage, () => {
+  paginatedClusters.value
+})
 
 function showDetails(cluster: any) {
   modalTitle.value = `集群详情 - ${cluster.name}`
@@ -70,6 +86,11 @@ function updateMonitoring(cluster: any) {
 function closeModal() {
   clusterModalVisible.value = false
 }
+
+// 分页改变时的处理函数
+function handlePageChange(page: number) {
+  currentPage.value = page
+}
 </script>
 
 <template>
@@ -77,9 +98,10 @@ function closeModal() {
     <ListHeader ref="listHeaderRef"></ListHeader>
     <!-- 集群列表 -->
     <el-table
-      :data="filteredClusters"
+      :data="paginatedClusters"
       border
       :header-cell-style="{ textAlign: 'center' } as any"
+      height="600"
     >
       <el-table-column prop="id" label="集群ID" width="80" />
       <el-table-column prop="name" label="集群名称" width="120" />
@@ -142,6 +164,17 @@ function closeModal() {
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 分页组件 -->
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :total="filteredClusters.length"
+      :page-size="pageSize"
+      :current-page="currentPage"
+      @current-change="handlePageChange"
+      class="mt-4 flex justify-end"
+    />
 
     <!-- 集群详情弹窗 -->
     <el-dialog v-model="clusterModalVisible" :title="modalTitle" width="30%">
