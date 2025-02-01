@@ -6,17 +6,16 @@
       <hr class="my-2"/>
 
       <!-- 选择 Topic -->
-      <div class="mb-4 flex items-center space-x-2">
-        <label for="topicSelect" class="text-sm">选择 Topic:</label>
-        <el-select v-model="selectedTopic" placeholder="请选择一个 Topic" @change="loadTopicMetrics">
+      <el-form-item label="选择 Topic" class="flex items-center gap-4 mb-4">
+        <el-select v-model="selectedTopic" @change="loadTopicMetrics">
           <el-option
-            v-for="topic in topics"
-            :key="topic.name"
-            :label="topic.name"
-            :value="topic.name"
+              v-for="topic in topics"
+              :key="topic.name"
+              :label="topic.name"
+              :value="topic.name"
           />
         </el-select>
-      </div>
+      </el-form-item>
 
       <!-- 展示选中 Topic 的指标信息 -->
       <div v-if="selectedTopicMetrics.length > 0" class="selected-topic-metrics grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
@@ -24,15 +23,16 @@
           <line-chart :data="metric.data" :title="metric.title"></line-chart>
         </div>
       </div>
-      <div v-else class="text-center">请选择一个 Topic 查看其监控信息。</div>
+      <div v-else class="flex justify-center mt-[100px]">
+        <el-empty description="请选择一个 Topic 查看其监控信息。" />
+      </div>
     </section>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { ElSelect, ElOption } from 'element-plus';
-import LineChart from '../kafka-host-load/node/LineChart.vue'; // 假设有一个折线图组件
+import LineChart from '../kafka-host-load/node/LineChart.vue'
 
 // 模拟的 Topic 数据
 interface Topic {
@@ -77,6 +77,9 @@ function loadTopicMetrics() {
 </script>
 
 <style scoped>
+:deep(.el-select) {
+  --el-select-width: 200px;
+}
 .topic-monitor-section {
   margin-bottom: 20px;
 }
