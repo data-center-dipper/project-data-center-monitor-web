@@ -50,6 +50,11 @@ Object.keys(metaRouters).forEach((item) => {
 
 // 定义所有路由配置，包括静态定义的登录路由和其他动态加载的路由
 const routes: RouteRecordRawWithMeta[] = [
+   {
+        path: '/',
+        redirect: '/login',
+        meta: { key: 'home', title: '首页' },
+    },
     {
         path: '/login',
         name: 'login',
@@ -62,6 +67,17 @@ const routes: RouteRecordRawWithMeta[] = [
             to: { name: 'login' }
         },
     },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFound',
+        component: () => import('@/views/error/404.vue'), // 假设你有一个404页面
+        meta: {
+            keepAlive: false,
+            requiresAuth: false,
+            title: '页面未找到',
+            key: 'not-found'
+        },
+    },
     ...routerArray, // 合并其他动态加载的路由
 ]
 
@@ -72,6 +88,18 @@ const router = createRouter({
     strict: false, // 是否严格模式
     scrollBehavior: () => ({ left: 0, top: 0 }), // 切换页面时滚动到顶部
 })
+
+router.beforeEach((to, from, next) => {
+    console.log('Navigating to:', to.fullPath);
+    console.log('Leaving route:', from.fullPath);
+    console.log('Matched routes:', to.matched);
+    next();
+});
+
+router.afterEach((to, from) => {
+    console.log('Navigation finished to:', to.fullPath);
+});
+
 
 // 导出路由实例供其他地方使用
 export default router

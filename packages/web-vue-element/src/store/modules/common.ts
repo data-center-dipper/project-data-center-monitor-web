@@ -4,7 +4,7 @@ import { useMobileDetection } from '../../hooks'
 
 export const useCommonStore = defineStore('common', () => {
     const isCollapse = ref(false)
-    const activeMenu = ref('/kafka/kafka-home')
+    const activeMenu = ref('/kafka/kafka-nodes')
     const { isMobile, isMediumScreen } = useMobileDetection()
 
     watch(isMediumScreen, (newVal) => {

@@ -1,5 +1,16 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { onMounted, onBeforeUnmount } from 'vue';
+
+console.log('KafkaClusterPage setup');
+
+onMounted(() => {
+    console.log('KafkaClusterPage mounted');
+});
+
+onBeforeUnmount(() => {
+    console.log('KafkaClusterPage beforeDestroy');
+});
 
 // 数据初始化
 const searchQuery = ref('');
