@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Ref } from 'vue'
 import { ref, computed } from 'vue'
 import ListHeader from './components/list-header.vue'
 import ChooseData from './components/choose-data.vue'
@@ -16,7 +17,22 @@ const clusters = ref([
     address: '192.168.1.1:9092',
     status: '正常',
     monitoringEnabled: false,
-    monitoringPolicy: 'now', // 默认值
+    monitoringPolicy: 'now',
+    monitorStartTime: null,
+    monitorEndTime: null,
+  },
+  {
+    id: 2,
+    name: 'cluster_lxx',
+    type: '内置',
+    partitions: 1,
+    replicas: 2,
+    registrationTime: '2024-01-01T12:00:00Z',
+    updateTime: '2024-01-01T12:00:00Z',
+    address: '192.168.1.1:9092',
+    status: '正常',
+    monitoringEnabled: false,
+    monitoringPolicy: 'now',
     monitorStartTime: null,
     monitorEndTime: null,
   },
@@ -24,6 +40,7 @@ const clusters = ref([
 const clusterModalVisible = ref(false)
 const modalData = ref({})
 const modalTitle = ref('')
+const listHeaderRef: Ref<InstanceType<typeof ListHeader> | null> = ref(null)
 
 const filteredClusters = computed(() =>
   clusters.value.filter((cluster) =>
@@ -37,7 +54,9 @@ function showDetails(cluster: any) {
   clusterModalVisible.value = true
 }
 
-function editCluster(cluster: any) {}
+function editCluster(cluster: any) {
+  listHeaderRef.value?.showEditClusterModal(cluster)
+}
 
 function deleteCluster(cluster: any) {}
 
@@ -55,7 +74,7 @@ function closeModal() {
 
 <template>
   <div class="kafka-cluster-manager p-4 space-y-4">
-    <ListHeader></ListHeader>
+    <ListHeader ref="listHeaderRef"></ListHeader>
     <!-- 集群列表 -->
     <el-table
       :data="filteredClusters"
