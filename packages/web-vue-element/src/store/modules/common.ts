@@ -1,10 +1,13 @@
-import { ref, watch } from 'vue'
+import { watch, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { useMobileDetection } from '../../hooks'
+import { useMobileDetection, useRouteChange } from '../../hooks'
+import { useRoute } from 'vue-router'
 
 export const useCommonStore = defineStore('common', () => {
+  const route = useRoute()
   const isCollapse = ref(false)
-  const activeMenu = ref('/kafka/kafka-nodes')
+  const activeMenu = ref(route.path)
+
   const { isMobile, isMediumScreen } = useMobileDetection()
 
   watch(isMediumScreen, (newVal) => {
@@ -18,6 +21,10 @@ export const useCommonStore = defineStore('common', () => {
   const toggleMenu = (menu: string) => {
     activeMenu.value = menu
   }
+
+  useRouteChange((newRoute) => {
+    activeMenu.value = newRoute.path // 当路由变化时，更新 activeMenu
+  })
 
   return {
     activeMenu,
