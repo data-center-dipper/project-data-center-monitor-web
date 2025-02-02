@@ -4,6 +4,7 @@ import { ref, computed, onMounted } from 'vue';
 import ListHeader from './components/list-header.vue';
 import ChooseData from './components/choose-data.vue';
 import request from '@/api/index.ts'; // 确保路径正确指向你的 RequestHttp 文件
+import { ElMessageBox } from 'element-plus';
 
 const searchQuery = ref('');
 const clusters: Ref<any[]> = ref([]); // 修改类型定义以适应异步数据加载
@@ -78,7 +79,50 @@ function editCluster(cluster: any) {
     listHeaderRef.value?.showEditClusterModal(cluster);
 }
 
-function deleteCluster(cluster: any) {}
+// 删除集群的逻辑
+async function deleteCluster(cluster: any) {
+  try {
+    if (!cluster || !cluster.clusterCode) {
+      console.error('无效的集群对象:', cluster);
+      return;
+    }
+
+    // 弹出确认对话框，并设置 center 属性
+    ElMessageBox.confirm(
+      `确定要删除集群 ${cluster.clusterName} 吗？`,
+      '删除确认',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true, // 设置为 true 可以使内容居中
+      }
+    ).then(async () => {
+      // 用户点击确定按钮后的逻辑
+      const response = await request.post('/dipper/monitor/api/v1/kafka/cluster/deleteCluster',
+                                         { clusterCode: cluster.clusterCode },
+                                         {
+                                           headers: {
+                                             'Content-Type': 'application/json'
+                                           }
+                                         });
+
+      console.log('集群删除成功:', response.data);
+
+      // 刷新集群列表
+      await fetchClusters();
+    }).catch(() => {
+      // 用户点击取消按钮后的逻辑
+      console.log('删除操作已取消');
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('集群删除失败:', error.message); // 打印错误消息
+    } else {
+      console.error('集群删除失败:', error); // 如果不是标准Error对象，直接打印
+    }
+  }
+}
 
 function updateMonitoring(cluster: any) {
   if (cluster.monitoringPolicy === 'now') {
@@ -219,5 +263,21 @@ function handlePageChange(page: number) {
   width: 100px;
   height: 40px;
   font-size: 16px;
+}
+
+::v-deep .el-message-box {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+::v-deep .el-message-box__wrapper {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 </style>
