@@ -60,13 +60,22 @@ onMounted(async () => {
 });
 
 function showDetails(cluster: any) {
-  modalTitle.value = `集群详情 - ${cluster.name}`;
+  modalTitle.value = `集群详情 - ${cluster.clusterName}`;
   modalData.value = { ...cluster };
   clusterModalVisible.value = true;
 }
 
+// 这段代码定义了一个名为 editCluster 的函数，用于处理编辑 Kafka 集群的操作。它通过调用父组件（在这个例子中是 ListHeader 组件）的方法来显示一个编辑集群信息的模态框（modal）。
 function editCluster(cluster: any) {
-  listHeaderRef.value?.showEditClusterModal(cluster);
+    console.log('index.vue - 尝试编辑集群:', JSON.stringify(cluster, null, 2));
+    if (!cluster) {
+        console.error('index.vue - 集群对象为 undefined');
+        return;
+    }
+    // listHeaderRef.value：这是一个对 ListHeader 组件实例的引用。在 Vue 3 中，你可以使用 ref 来获取子组件的实例。这里假设你已经在模板中使用了 <ListHeader ref="listHeaderRef"></ListHeader> 来创建对 ListHeader 组件的引用。
+    // listHeaderRef.value?.showEditClusterModal(cluster);：这里的 ?. 是可选链操作符，它确保只有当 listHeaderRef.value 不是 null 或 undefined 时才会尝试调用 showEditClusterModal 方法。如果 listHeaderRef.value 是 null 或 undefined，则整个表达式将短路返回 undefined 而不会抛出错误。
+    // showEditClusterModal(cluster)：这是假设 ListHeader 组件中定义的一个方法，用来展示一个编辑集群信息的模态框。这个方法接收一个集群对象作为参数，以便在模态框中填充当前集群的信息进行编辑。
+    listHeaderRef.value?.showEditClusterModal(cluster);
 }
 
 function deleteCluster(cluster: any) {}
@@ -90,7 +99,8 @@ function handlePageChange(page: number) {
 
 <template>
   <div class="kafka-cluster-manager p-4 space-y-4">
-    <ListHeader ref="listHeaderRef"></ListHeader>
+    <!-- 监听 update-clusters 事件 -->
+    <ListHeader @update-clusters="fetchClusters" ref="listHeaderRef"></ListHeader>
 
     <!-- 集群列表 -->
     <el-table
@@ -171,11 +181,43 @@ function handlePageChange(page: number) {
       </div>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="closeModal"> 关闭 </el-button>
+          <el-button @click="closeModal">关闭</el-button>
         </span>
       </template>
     </el-dialog>
+
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.modal-body {
+  font-size: 16px;
+}
+
+.modal-body p {
+  margin: 5px 0;
+}
+
+.modal-body strong {
+  display: inline-block;
+  width: 120px; /* 设置固定宽度，使文本对齐 */
+  font-weight: bold;
+}
+
+.el-dialog__header {
+  background-color: #f0f2f5;
+  padding: 15px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.el-dialog__title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.dialog-footer .el-button {
+  width: 100px;
+  height: 40px;
+  font-size: 16px;
+}
+</style>

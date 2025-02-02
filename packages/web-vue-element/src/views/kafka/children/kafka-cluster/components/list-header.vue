@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
 // 引入自定义封装的 RequestHttp 实例
 import request from '@/api/index.ts'; // 确保路径正确指向你的 RequestHttp 文件
 import ChooseData from '@/views/kafka/children/kafka-cluster/components/choose-data.vue';
+
+const emit = defineEmits(['update-clusters']);
 
 // 定义搜索查询的响应式变量
 const searchQuery = ref('');
@@ -38,18 +40,29 @@ const showAddClusterModal = () => {
 
 // 显示编辑集群模态框的方法
 const showEditClusterModal = (cluster) => {
-  addEditClusterVisible.value = true;
-  addEditModalTitle.value = '编辑集群';
+    console.log('ListHeader.vue - 接收到集群:', JSON.stringify(cluster, null, 2));
+    addEditClusterVisible.value = true;
+    addEditModalTitle.value = '编辑集群';
 
-  newCluster.value = { ...cluster };
+    // 确保所有需要的属性都被正确复制到 newCluster.value 中
+    newCluster.value = {
+        clusterCode: cluster.clusterCode ?? '',
+        clusterName: cluster.clusterName ?? '',
+        address: cluster.address ?? '',
+        clusterDesc: cluster.clusterDesc ?? '',
+        checkAddress: cluster.checkAddress !== undefined ? cluster.checkAddress : false,
+    };
 };
 
 // 提交表单的处理逻辑
 const submitClusterForm = async () => {
+  // 将表单中的字符串 "true" 和 "false" 转换为布尔值
+  newCluster.value.checkAddress = newCluster.value.checkAddress === 'true';
+
   if (addEditModalTitle.value.includes('新增')) {
     await addCluster();
   } else {
-    await editCluster();
+    await editCluster(newCluster.value); // 注意：editCluster 需要接收参数
   }
 };
 
@@ -85,18 +98,41 @@ const addCluster = async () => {
 };
 
 // 编辑集群的逻辑
-const editCluster = async () => {
+const editCluster = async (cluster: any) => {
   try {
-    // 使用自定义封装的 HTTP 请求类编辑现有集群
-    const response = await request.put(`/api/clusters/${newCluster.value.id}`, newCluster.value);
+    // 确保 cluster 不是 undefined 或 null
+    if (!cluster) {
+      console.error('尝试编辑无效的集群:', cluster);
+      return;
+    }
+    console.log('准备编辑集群1:', JSON.stringify(cluster, null, 2));
+
+    // 根据后端需求构造请求体数据
+    const adjustedData = {
+      clusterCode: cluster.clusterCode,
+      clusterName: cluster.clusterName,
+      address: cluster.address,
+      clusterDesc: cluster.clusterDesc,
+      checkAddress: typeof cluster.checkAddress === 'boolean' ? cluster.checkAddress : false,
+    };
+
+    // 发送请求到后端进行更新操作
+    const response = await request.post('/dipper/monitor/api/v1/kafka/cluster/updateCluster', adjustedData);
     console.log('集群编辑成功:', response.data);
 
-    // 成功后的处理逻辑，例如关闭模态框、刷新列表等
+    // 触发自定义事件通知父组件刷新集群列表
+    emit('update-clusters');
+
+    // 成功后的处理逻辑
     addEditClusterVisible.value = false;
-    // 这里可以添加其他逻辑，如清空表单、刷新数据列表等
   } catch (error) {
-    console.error('集群编辑失败:', error);
-    // 错误处理逻辑，如显示错误消息
+    if (error instanceof Error) {
+      console.error('集群编辑失败:', error.message); // 打印错误消息
+    } else {
+      console.error('集群编辑失败:', error); // 如果不是标准Error对象，直接打印
+    }
+
+    // 进一步处理错误，如提示用户等
   }
 };
 
