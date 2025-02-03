@@ -65,6 +65,8 @@ useRouteTitle()
       </el-header>
       <!-- 标签页组件 -->
       <Tab />
+
+      <!-- 主要内容区 这里以前遇到白屏问题，就是多个菜单切换来，切换后，然后来回几次就会出现白屏，后面经过测试发现，去掉transition过度效果就好了，但是加一个占位符，在组件未完全加载时显示，居然也能解决，但是却从来没有显示过加载中的样子，有点奇怪 -->
       <el-main>
         <router-view v-slot="{ Component, route }">
           <component :key="route.path" :is="Component" />
