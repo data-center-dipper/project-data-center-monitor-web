@@ -160,6 +160,13 @@ async function handleMonitoringChange(cluster: any) {
 }
 
 function saveMonitoringSettings() {
+    let policy = {
+        clusterCode: selectedCluster.value.clusterCode,
+        monitoringPolicy: selectedMonitoringPolicy.value,
+        monitorStartTime: null,
+        monitorEndTime: null,
+    };
+
     if (selectedMonitoringPolicy.value === 'range') {
         // 如果策略是时间范围，则需要检查开始时间和结束时间是否已填写
         if (!startTime.value || !endTime.value) {
@@ -171,18 +178,11 @@ function saveMonitoringSettings() {
         const formattedStartTime = new Date(startTime.value).toISOString().slice(0, 19).replace('T', ' ');
         const formattedEndTime = new Date(endTime.value).toISOString().slice(0, 19).replace('T', ' ');
 
-        const policy = {
+        policy = {
             clusterCode: selectedCluster.value.clusterCode,
             monitoringPolicy: selectedMonitoringPolicy.value,
             monitorStartTime: formattedStartTime,
             monitorEndTime: formattedEndTime,
-        };
-    } else {
-        const policy = {
-            clusterCode: selectedCluster.value.clusterCode,
-            monitoringPolicy: selectedMonitoringPolicy.value,
-            monitorStartTime: null,
-            monitorEndTime: null,
         };
     }
 
@@ -201,11 +201,27 @@ function saveMonitoringSettings() {
             console.error('监控策略更新失败:', error.message);
         });
 }
-
 async function cancelMonitoring(cluster: any) {
   try {
-    await request.post('/dipper/monitor/api/v1/kafka/cluster/cancelMonitoring',
-                       { clusterCode: cluster.clusterCode });
+      let policy = {
+          clusterCode: selectedCluster.value.clusterCode,
+          monitoringPolicy: 'none',
+          monitorStartTime: null,
+          monitorEndTime: null,
+      };
+      console.log('取消监控策略参数:', JSON.stringify(policy, null, 2));
+
+      request.post('/dipper/monitor/api/v1/kafka/cluster/updateMonitoring', policy, {
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      }).then(response => {
+          console.log('取消监控策略更新成功:', response.data);
+          fetchClusters();
+          monitoringDialogVisible.value = false;
+      }).catch(error => {
+          console.error('取消监控策略更新失败:', error.message);
+          });
     console.log('监控策略已取消:', cluster.clusterName);
     await fetchClusters();
   } catch (error) {
