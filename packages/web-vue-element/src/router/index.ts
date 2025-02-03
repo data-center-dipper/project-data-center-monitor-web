@@ -100,7 +100,7 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
-router.afterEach((to, from) => {
+router.afterEach((to) => {
   console.log('Navigation finished to:', to.fullPath)
 })
 
