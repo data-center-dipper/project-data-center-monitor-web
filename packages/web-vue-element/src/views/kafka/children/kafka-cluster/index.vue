@@ -233,7 +233,28 @@ async function cancelMonitoring(cluster: any) {
     } catch (error) {
         console.error('取消监控策略失败:', error.message);
     }
-}
+    }
+
+    // 格式化策略显示
+    function formatPolicy(policy: string): string {
+        if (policy === 'now') {
+            return '从现在开始';
+        } else if (policy === 'range') {
+            return '时间范围';
+        } else {
+            return '无';
+        }
+    }
+
+    // 格式化日期显示
+    function formatDate(dateString: string | null): string {
+        if (!dateString) {
+            return '未设置';
+        }
+        const date = new Date(dateString);
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+    }
+
 
 function closeModal() {
   clusterModalVisible.value = false;
@@ -284,6 +305,28 @@ function handlePageChange(page: number) {
                     </div>
                 </template>
             </el-table-column>
+
+            <!-- 新增：当前选择的策略 -->
+            <el-table-column prop="clusterPolicy" label="当前策略" width="120">
+                <template #default="scope">
+                    <span>{{ formatPolicy(scope.row.clusterPolicy) }}</span>
+                </template>
+            </el-table-column>
+
+            <!-- 新增：监控开始时间 -->
+            <el-table-column prop="monitorStartTime" label="开始时间" width="180">
+                <template #default="scope">
+                    <span>{{ formatDate(scope.row.monitorStartTime) }}</span>
+                </template>
+            </el-table-column>
+
+            <!-- 新增：监控结束时间 -->
+            <el-table-column prop="monitorEndTime" label="结束时间" width="180">
+                <template #default="scope">
+                    <span>{{ formatDate(scope.row.monitorEndTime) }}</span>
+                </template>
+            </el-table-column>
+
             <el-table-column label="操作" width="300" align="center">
                 <template #default="scope">
                     <el-button type="text" size="small" @click.prevent="showDetails(scope.row)">详情</el-button>
