@@ -1,16 +1,15 @@
 {
   "ExpandedNodes": [
     "",
-    "\\docs",
     "\\packages",
-    "\\packages\\web-vue-ant",
     "\\packages\\web-vue-element",
     "\\packages\\web-vue-element\\src",
+    "\\packages\\web-vue-element\\src\\api",
     "\\packages\\web-vue-element\\src\\views",
     "\\packages\\web-vue-element\\src\\views\\kafka",
     "\\packages\\web-vue-element\\src\\views\\kafka\\children",
-    "\\packages\\web-vue-element\\src\\views\\kafka\\children\\kafka-home"
+    "\\packages\\web-vue-element\\src\\views\\kafka\\children\\kafka-cluster",
+    "\\packages\\web-vue-element\\src\\views\\kafka\\children\\kafka-nodes"
   ],
-  "SelectedNode": "\\packages\\web-vue-element\\postcss.config.js",
   "PreviewInSolutionExplorer": false
 }

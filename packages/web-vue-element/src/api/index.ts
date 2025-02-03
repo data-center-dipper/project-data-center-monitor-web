@@ -14,7 +14,7 @@ import { ElMessage } from 'element-plus';
 import type { ResultData } from '../type/api/api';
 
 // 定义 API 基础 URL
-const URL: string = 'http://localhost:9750';
+const URL: string = 'http://lccweb.natapp1.cc';
 
 // 定义请求相关的枚举值
 enum RequestEnums {
