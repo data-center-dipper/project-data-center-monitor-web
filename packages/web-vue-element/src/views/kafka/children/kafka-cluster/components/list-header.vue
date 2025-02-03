@@ -20,6 +20,8 @@ const newCluster = ref({
   clusterCode: '',
   clusterName: '',
   address: '',
+  kafkaJmxAddress: '',
+  zookeeperAddress: '',
   clusterDesc: '',
   checkAddress: false
 });
@@ -33,6 +35,8 @@ const showAddClusterModal = () => {
     clusterCode: '',
     clusterName: '',
     address: '',
+    kafkaJmxAddress: '',
+    zookeeperAddress: '',
     clusterDesc: '',
     checkAddress: false
   };
@@ -49,6 +53,8 @@ const showEditClusterModal = (cluster) => {
         clusterCode: cluster.clusterCode ?? '',
         clusterName: cluster.clusterName ?? '',
         address: cluster.address ?? '',
+        kafkaJmxAddress: cluster.kafkaJmxAddress ?? '',
+        zookeeperAddress: cluster.zookeeperAddress ?? '',
         clusterDesc: cluster.clusterDesc ?? '',
         checkAddress: cluster.checkAddress !== undefined ? cluster.checkAddress : false,
     };
@@ -76,6 +82,8 @@ const addCluster = async () => {
       clusterCode: newCluster.value.clusterCode,
       clusterName: newCluster.value.clusterName,
       address: newCluster.value.address,
+        kafkaJmxAddress: newCluster.value.kafkaJmxAddress,
+        zookeeperAddress: newCluster.value.zookeeperAddress,
       clusterDesc: newCluster.value.clusterDesc,
       checkAddress: newCluster.value.checkAddress,
       // 根据后端需求添加或调整其他属性
@@ -111,7 +119,9 @@ const editCluster = async (cluster: any) => {
     const adjustedData = {
       clusterCode: cluster.clusterCode,
       clusterName: cluster.clusterName,
-      address: cluster.address,
+        address: cluster.address,
+        kafkaJmxAddress: newCluster.value.kafkaJmxAddress,
+        zookeeperAddress: newCluster.value.zookeeperAddress,
       clusterDesc: cluster.clusterDesc,
       checkAddress: typeof cluster.checkAddress === 'boolean' ? cluster.checkAddress : false,
     };
@@ -161,55 +171,66 @@ defineExpose({
     width="30%"
   >
 
-<el-form @submit.prevent="submitClusterForm" class="space-y-6 w-full">
-    <!-- 使用 el-row 和 el-col 来布局每一对 label 和 input -->
-    <div class="grid grid-cols-12 gap-4">
-      <label class="col-span-3 text-right pr-4 pt-2">集群唯一识别码:</label>
-      <div class="col-span-9">
-        <el-input id="clusterCode" v-model="newCluster.clusterCode" required placeholder="请输入集群唯一识别码，随机字符即可"></el-input>
-      </div>
-    </div>
+      <el-form @submit.prevent="submitClusterForm" class="space-y-6 w-full">
+          <!-- 使用 el-row 和 el-col 来布局每一对 label 和 input -->
+          <div class="grid grid-cols-12 gap-4">
+              <label class="col-span-3 text-right pr-4 pt-2">集群唯一识别码:</label>
+              <div class="col-span-9">
+                  <el-input id="clusterCode" v-model="newCluster.clusterCode" required placeholder="请输入集群唯一识别码，随机字符即可"></el-input>
+              </div>
+          </div>
 
-    <div class="grid grid-cols-12 gap-4">
-      <label class="col-span-3 text-right pr-4 pt-2">集群名称:</label>
-      <div class="col-span-9">
-        <el-input id="clusterName" v-model="newCluster.clusterName" required placeholder="请输入集群名称"></el-input>
-      </div>
-    </div>
+          <div class="grid grid-cols-12 gap-4">
+              <label class="col-span-3 text-right pr-4 pt-2">集群名称:</label>
+              <div class="col-span-9">
+                  <el-input id="clusterName" v-model="newCluster.clusterName" required placeholder="请输入集群名称"></el-input>
+              </div>
+          </div>
 
-    <div class="grid grid-cols-12 gap-4">
-      <label class="col-span-3 text-right pr-4 pt-2">集群地址:</label>
-      <div class="col-span-9">
-        <el-input id="clusterAddress" v-model="newCluster.address" required placeholder="请输入集群地址"></el-input>
-      </div>
-    </div>
+          <div class="grid grid-cols-12 gap-4">
+              <label class="col-span-3 text-right pr-4 pt-2">集群地址:</label>
+              <div class="col-span-9">
+                  <el-input id="clusterAddress" v-model="newCluster.address" required placeholder="请输入集群地址"></el-input>
+              </div>
+          </div>
 
-    <div class="grid grid-cols-12 gap-4">
-      <label class="col-span-3 text-right pr-4 pt-2">集群描述:</label>
-      <div class="col-span-9">
-        <el-input
-          type="textarea"
-          :rows="4"
-          id="clusterDesc"
-          v-model="newCluster.clusterDesc"
-          required
-          placeholder="请输入集群描述"
-        ></el-input>
-      </div>
-    </div>
+          <div class="grid grid-cols-12 gap-4">
+              <label class="col-span-3 text-right pr-4 pt-2">集群Jmx地址:</label>
+              <div class="col-span-9">
+                  <el-input id="kafkaJmxAddress" v-model="newCluster.kafkaJmxAddress" required placeholder="请输入集群jmx地址"></el-input>
+              </div>
+          </div>
+          <div class="grid grid-cols-12 gap-4">
+              <label class="col-span-3 text-right pr-4 pt-2">集群zk地址:</label>
+              <div class="col-span-9">
+                  <el-input id="zookeeperAddress" v-model="newCluster.zookeeperAddress" required placeholder="请输入集群zk地址"></el-input>
+              </div>
+          </div>
 
-    <div class="grid grid-cols-12 gap-4">
-      <label class="col-span-3 text-right pr-4 pt-2">检验地址:</label>
-      <div class="col-span-9">
-        <el-radio-group v-model="newCluster.checkAddress">
-          <el-radio label="true">是</el-radio>
-          <el-radio label="false">否</el-radio>
-        </el-radio-group>
-      </div>
-    </div>
+          <div class="grid grid-cols-12 gap-4">
+              <label class="col-span-3 text-right pr-4 pt-2">集群描述:</label>
+              <div class="col-span-9">
+                  <el-input type="textarea"
+                            :rows="4"
+                            id="clusterDesc"
+                            v-model="newCluster.clusterDesc"
+                            required
+                            placeholder="请输入集群描述"></el-input>
+              </div>
+          </div>
 
-    <!-- 其他表单项可以继续添加 -->
-  </el-form>
+          <div class="grid grid-cols-12 gap-4">
+              <label class="col-span-3 text-right pr-4 pt-2">检验地址:</label>
+              <div class="col-span-9">
+                  <el-radio-group v-model="newCluster.checkAddress">
+                      <el-radio label="true">是</el-radio>
+                      <el-radio label="false">否</el-radio>
+                  </el-radio-group>
+              </div>
+          </div>
+
+          <!-- 其他表单项可以继续添加 -->
+      </el-form>
 
     <!-- 模态框底部按钮 -->
     <template #footer>

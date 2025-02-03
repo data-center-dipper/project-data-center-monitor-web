@@ -286,6 +286,8 @@ function handlePageChange(page: number) {
             <el-table-column prop="clusterName" label="集群名称" width="150" />
             <el-table-column prop="clusterDesc" label="集群描述" width="200" />
             <el-table-column prop="address" label="集群地址" width="200" />
+            <el-table-column prop="kafkaJmxAddress" label="集群jmx地址" width="200" />
+            <el-table-column prop="kafkaJmxAddress" label="集群zk地址" width="200" />
             <el-table-column prop="currentCluster" label="当前集群" width="100">
                 <template #default="scope">
                     <span>{{ scope.row.currentCluster ? '是' : '否' }}</span>
