@@ -25,19 +25,24 @@ const newCluster = ref({ clusterCode: '', clusterName: '', address: '', clusterD
 
 // 获取所有集群数据的函数
 const fetchClusters = async () => {
-  try {
-    const response = await request.get('/dipper/monitor/api/v1/kafka/cluster/getAllCluster');
-    console.log('获取集群信息成功:', JSON.stringify(response.data, null, 2));
-    clusters.value = response.data; // 更新clusters值为从接口获取的数据
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error('获取集群信息失败:', error.message); // 打印错误消息
-    } else {
-      console.error('获取集群信息失败:', error); // 如果不是标准Error对象，直接打印
-    }
-  }
-};
+    try {
+        const response = await request.get('/dipper/monitor/api/v1/kafka/cluster/getAllCluster');
+        console.log('获取集群信息成功:', JSON.stringify(response.data, null, 2));
 
+        // 遍历每个集群并设置 monitoringEnabled 根据 clusterPolicy
+        clusters.value = response.data.map(cluster => ({
+            ...cluster,
+            monitoringEnabled: cluster.clusterPolicy !== 'none'
+        }));
+
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error('获取集群信息失败:', error.message); // 打印错误消息
+        } else {
+            console.error('获取集群信息失败:', error); // 如果不是标准Error对象，直接打印
+        }
+    }
+};
 
 // 计算过滤后的集群数据
 const filteredClusters = computed(() => {
@@ -201,32 +206,33 @@ function saveMonitoringSettings() {
             console.error('监控策略更新失败:', error.message);
         });
 }
-async function cancelMonitoring(cluster: any) {
-  try {
-      let policy = {
-          clusterCode: selectedCluster.value.clusterCode,
-          monitoringPolicy: 'none',
-          monitorStartTime: null,
-          monitorEndTime: null,
-      };
-      console.log('取消监控策略参数:', JSON.stringify(policy, null, 2));
 
-      request.post('/dipper/monitor/api/v1/kafka/cluster/updateMonitoring', policy, {
-          headers: {
-              'Content-Type': 'application/json'
-          }
-      }).then(response => {
-          console.log('取消监控策略更新成功:', response.data);
-          fetchClusters();
-          monitoringDialogVisible.value = false;
-      }).catch(error => {
-          console.error('取消监控策略更新失败:', error.message);
-          });
-    console.log('监控策略已取消:', cluster.clusterName);
-    await fetchClusters();
-  } catch (error) {
-    console.error('取消监控策略失败:', error.message);
-  }
+async function cancelMonitoring(cluster: any) {
+    try {
+        let policy = {
+            clusterCode: cluster.clusterCode, // 直接使用传入的 cluster 对象
+            monitoringPolicy: 'none',
+            monitorStartTime: null,
+            monitorEndTime: null,
+        };
+        console.log('取消监控策略参数:', JSON.stringify(policy, null, 2));
+
+        request.post('/dipper/monitor/api/v1/kafka/cluster/updateMonitoring', policy, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            console.log('取消监控策略更新成功:', response.data);
+            fetchClusters(); // 刷新集群列表
+            monitoringDialogVisible.value = false; // 如果有打开的对话框，则关闭它
+        }).catch(error => {
+            console.error('取消监控策略更新失败:', error.message);
+        });
+
+        console.log('监控策略已取消:', cluster.clusterName);
+    } catch (error) {
+        console.error('取消监控策略失败:', error.message);
+    }
 }
 
 function closeModal() {
