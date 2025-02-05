@@ -48,21 +48,10 @@ Object.keys(metaRouters).forEach((item) => {
 const routes: RouteRecordRawWithMeta[] = [
   {
     path: '/',
-    redirect: '/login',
+    redirect: '/dashboard',
     meta: { key: 'home', title: '首页' },
   },
-  {
-    path: '/login',
-    name: 'login',
-    component: () => import('@/views/login/index.vue'),
-    meta: {
-      keepAlive: false,
-      requiresAuth: false,
-      title: '登录',
-      key: 'login',
-      to: { name: 'login' },
-    },
-  },
+  ...routerArray,
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
@@ -74,7 +63,6 @@ const routes: RouteRecordRawWithMeta[] = [
       key: 'not-found',
     },
   },
-  ...routerArray,
 ]
 
 const router = createRouter({
