@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
 import { useRouter } from 'vue-router'
-import { useTagsStore } from '@/store/modules/tags' // 导入你的 tags store
+import { useTagsStore } from '@/store/modules/tags'
 
 const props = defineProps<{
   index: number

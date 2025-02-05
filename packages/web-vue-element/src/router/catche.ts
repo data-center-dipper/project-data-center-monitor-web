@@ -35,8 +35,6 @@ function filterKeepAlive(
   })
 }
 
-// 调用 filterKeepAlive 函数，开始过滤需要缓存的路由
 filterKeepAlive(routerArray, cacheRouter)
 
-// 导出缓存路由数组，供其他地方使用
 export default cacheRouter

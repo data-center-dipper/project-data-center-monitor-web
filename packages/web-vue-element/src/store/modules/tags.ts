@@ -13,7 +13,7 @@ export const useTagsStore = defineStore('tags', () => {
   ])
 
   const cssVar = reactive({
-    menuActiveText: 'rgba(66,99,182,0.8)',
+    menuActiveText: 'rgba(66,182,81,0.04)',
   })
 
   // 删除单个
