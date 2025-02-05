@@ -1,0 +1,43 @@
+{
+  // 继承来自 @vue/tsconfig 的 tsconfig.dom.json 配置。
+  // 这个配置提供了适用于浏览器环境的标准库定义和其他基本设置，
+  // 包括 DOM API 支持，确保 TypeScript 编译器能够正确理解浏览器环境中可用的全局对象和方法。
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+
+  "compilerOptions": {
+    // 指定增量编译信息文件的位置，有助于加速连续编译过程。
+    // 增量编译可以记住之前的编译状态，只需重新编译更改的部分，从而提高编译速度。
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+
+    /* Linting 和严格模式配置 */
+    // 启用所有严格的类型检查选项，确保代码质量。
+    // 严格模式强制执行更严格的类型检查规则，有助于捕捉潜在的错误。
+    "strict": true,
+
+    // 报告未使用的局部变量，帮助清理冗余代码。
+    // 这可以减少不必要的变量声明，使代码更加简洁。
+    "noUnusedLocals": true,
+
+    // 报告未使用的函数参数，进一步提高代码质量。
+    // 这有助于识别那些没有被实际使用的参数，可能表明代码逻辑中有改进空间。
+    "noUnusedParameters": true,
+
+    // 确保 switch 语句中有适当的 break 语句，防止逻辑错误。
+    // 如果一个 case 块中没有 break 语句，程序会继续执行下一个 case，这可能是意外行为。
+    "noFallthroughCasesInSwitch": true,
+
+    // 报告未经检查的副作用导入，例如导入了一个只为了副作用而不会使用其导出值的模块。
+    // 这有助于保持代码整洁并减少不必要的依赖，确保只有真正需要的模块被导入。
+    "noUncheckedSideEffectImports": true
+  },
+
+  // 指定要包含在 TypeScript 编译过程中的文件模式。
+  // 使用通配符匹配 src 目录及其子目录下的所有 .ts, .tsx 和 .vue 文件。
+  // 注意：最后一项 "src/**/*.tsx" 是重复的，建议移除以避免冗余。
+  "include": [
+    "src/**/*.ts", // 包含所有的 TypeScript 文件
+    "src/**/*.tsx", // 包含所有的 React JSX 文件（如果适用）
+    "src/**/*.vue", // 包含所有的 Vue 单文件组件
+    "src/**/*.tsx" // 冗余条目（已经包含在上一行中），建议移除
+  ]
+}

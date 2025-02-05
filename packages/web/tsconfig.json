@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    // 设置基础目录（baseUrl），用于解析非相对模块名称。
+    // 这里设置为当前目录（"."），意味着所有模块路径都将相对于项目根目录解析。
+    "baseUrl": ".",
+
+    // 配置路径映射（paths），允许使用自定义的路径别名来简化模块导入路径。
+    // 在这个例子中，"@data-center-monitor/lib" 是一个别名，指向 node_modules 中的相应库。
+    // 使用此别名可以避免在代码中使用冗长的相对路径。
+    "paths": {
+      "@data-center-monitor/lib": ["node_modules/@data-center-monitor/lib"]
+    }
+  },
+
+  // 指定要包含在编译中的具体文件列表。
+  // 如果数组为空，则默认包括所有符合 TypeScript 文件扩展名的文件（如 .ts, .tsx, .d.ts）。
+  // 在这种情况下，数组为空，表示将按照默认规则进行编译。
+  "files": [],
+
+  // 引用其他 tsconfig 文件，创建一个多项目的构建结构。
+  // 每个被引用的配置文件代表一个独立的编译上下文。
+  // 这种方式非常适合复杂的项目，其中不同的部分可能需要不同的编译选项或依赖关系。
+  "references": [
+    {
+      "path": "./tsconfig.app.json" // 引用应用程序的 TypeScript 配置文件，通常用于客户端代码的编译设置。
+    },
+    {
+      "path": "./tsconfig.node.json" // 引用 Node.js 环境的 TypeScript 配置文件，通常用于服务端代码或构建脚本的编译设置。
+    }
+  ]
+}
