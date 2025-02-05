@@ -7,7 +7,7 @@ import type {
   InternalAxiosRequestConfig,
 } from 'axios'
 import { ElMessage } from 'element-plus'
-import type { ResultData } from '../type/api/api'
+import type { ResultData } from '../types/api'
 
 const URL: string = 'http://lccweb.natapp1.cc'
 
