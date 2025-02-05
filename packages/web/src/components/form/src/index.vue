@@ -1,32 +1,34 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from "vue"
-import type { RuleItem } from "./rule.ts"
-import cloneDeep from "lodash/cloneDeep"
-import type { CSSProperties } from "vue"
+import { ref, onMounted, watch, nextTick } from 'vue'
+import type { RuleItem } from './rule.ts'
+import cloneDeep from 'lodash/cloneDeep'
+import type { CSSProperties } from 'vue'
+import E from 'wangeditor'
 
 interface FormOptions {
   // 表单项显示的元素
   type:
-    | "cascader"
-    | "checkbox"
-    | "checkbox-group"
-    | "checkbox-button"
-    | "radio"
-    | "radio-group"
-    | "radio-button"
-    | "color-picker"
-    | "date-picker"
-    | "input"
-    | "input-number"
-    | "rate"
-    | "select"
-    | "option"
-    | "slider"
-    | "switch"
-    | "time-picker"
-    | "time-select"
-    | "transfer"
-    | "upload"
+    | 'cascader'
+    | 'checkbox'
+    | 'checkbox-group'
+    | 'checkbox-button'
+    | 'radio'
+    | 'radio-group'
+    | 'radio-button'
+    | 'color-picker'
+    | 'date-picker'
+    | 'input'
+    | 'input-number'
+    | 'rate'
+    | 'select'
+    | 'option'
+    | 'slider'
+    | 'switch'
+    | 'time-picker'
+    | 'time-select'
+    | 'transfer'
+    | 'upload'
+    | 'editor '
   // 表单项的值
   value?: any
   // 表单的Label
@@ -51,7 +53,7 @@ interface FormOptions {
   uploadAttrs?: {
     action: string
     headers?: object
-    method?: "post" | "put" | "patch"
+    method?: 'post' | 'put' | 'patch'
     multiple?: boolean
     data?: any
     name?: string
@@ -61,7 +63,7 @@ interface FormOptions {
     accept?: string
     thumbnailMode?: boolean
     fileList?: any[]
-    listType?: "text" | "picture" | "picture-card"
+    listType?: 'text' | 'picture' | 'picture-card'
     autoUpload?: boolean
     disabled?: boolean
     limit?: number
@@ -76,21 +78,23 @@ const props = defineProps<{
 }>()
 
 const emits = defineEmits([
-  "on-preview",
-  "on-remove",
-  "on-success",
-  "on-error",
-  "on-progress",
-  "on-change",
-  "before-remove",
-  "before-upload",
-  "on-exceed",
+  'on-preview',
+  'on-remove',
+  'on-success',
+  'on-error',
+  'on-progress',
+  'on-change',
+  'before-remove',
+  'before-upload',
+  'on-exceed',
 ])
 
 const form = ref<any>(null)
 
 const model = ref(null)
 const rules = ref({})
+
+const edit = ref()
 
 const initForm = () => {
   if (props.options && props.options.length) {
@@ -99,9 +103,34 @@ const initForm = () => {
     props.options.map((item: FormOptions) => {
       m[item.prop] = item.value
       r[item.prop] = item.rules
+      if (item.type === 'editor') {
+        // 初始化富文本编辑器
+        nextTick(() => {
+          if (document.getElementById('editor')) {
+            const editor = new E('#editor')
+            editor.config.placeholder = item.placeholder
+            editor.create()
+            // 初始富文本编辑器内容
+            editor.txt.html(item.value)
+            // 监听富文本编辑器内容变化, 给表单项赋值
+            editor.config.onchange = (newHtml: string) => {
+              model.value[item.prop] = newHtml
+            }
+          }
+        })
+      }
     })
     model.value = cloneDeep(m)
     rules.value = cloneDeep(r)
+  }
+}
+
+// 重置表单
+const resetFields = () => {
+  form.value.resetFields()
+  if (props.options && props.options.length) {
+    let editorItem = props.options.find((item) => item.type === 'editor')
+    edit.value.txt.html(editorItem.value)
   }
 }
 
@@ -114,46 +143,50 @@ watch(
 )
 
 const onPreview = (file: any) => {
-  emits("on-preview", file)
+  emits('on-preview', file)
 }
 
 const onRemove = (file: any, fileList: any) => {
-  emits("on-remove", { file, fileList })
+  emits('on-remove', { file, fileList })
 }
 
 const onSuccess = (response: any, file: any, fileList: any) => {
   // 文件上传成功后, 给表单项进行赋值
-  let uploadItem = props.options.find((item) => item.type === "upload")
+  let uploadItem = props.options.find((item) => item.type === 'upload')
   model.value[uploadItem.prop] = { response, file, fileList }
-  emits("on-success", { response, file, fileList })
+  emits('on-success', { response, file, fileList })
 }
 
 const onError = (err: any, file: any, fileList: any) => {
-  emits("on-error", { err, file, fileList })
+  emits('on-error', { err, file, fileList })
 }
 
 const onProgress = (event: any, file: any, fileList: any) => {
-  emits("on-progress", { event, file, fileList })
+  emits('on-progress', { event, file, fileList })
 }
 
 const onChange = (file: any, fileList: any) => {
-  emits("on-change", { file, fileList })
+  emits('on-change', { file, fileList })
 }
 
 const beforeRemove = (file: any, fileList: any) => {
-  return emits("before-remove", { file, fileList })
+  return emits('before-remove', { file, fileList })
 }
 
 const beforeUpload = (file: any) => {
-  return emits("before-upload", file)
+  return emits('before-upload', file)
 }
 
 const onExceed = (files: any, fileList: any) => {
-  emits("on-exceed", { files, fileList })
+  emits('on-exceed', { files, fileList })
 }
 
 onMounted(() => {
   initForm()
+})
+
+defineExpose({
+  resetFields,
 })
 </script>
 
@@ -173,12 +206,13 @@ onMounted(() => {
         v-if="!item.children || !item.children.length"
       >
         <component
-          v-if="item.type !== 'upload'"
+          v-if="item.type !== 'upload' && item.type !== 'editor'"
           v-bind="item.attrs"
           :is="`el-${item.type}`"
           v-model="model[item.prop]"
         ></component>
         <el-upload
+          v-if="item.type === 'upload'"
           v-bind="item.uploadAttrs"
           :on-preview="onPreview"
           :on-remove="onRemove"
@@ -189,15 +223,19 @@ onMounted(() => {
           :before-remove="beforeRemove"
           :before-upload="beforeUpload"
           :on-exceed="onExceed"
-          v-else
         >
           <!--     文件上传触发区域     -->
           <slot name="uploadTrigger"> </slot>
           <!--     文件上传提示信息     -->
           <slot name="uploadTip"> </slot>
         </el-upload>
+        <div v-if="item.type === 'editor'" id="editor"></div>
       </el-form-item>
-      <el-form-item v-if="item.children && item.children.length">
+      <el-form-item
+        v-if="item.children && item.children.length"
+        :label="item.label"
+        :prop="item.prop"
+      >
         <component
           v-bind="item.attrs"
           :is="`el-${item.type}`"
