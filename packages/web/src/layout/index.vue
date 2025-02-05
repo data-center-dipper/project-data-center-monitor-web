@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import cacheRouter from '@/router/catche.ts'
 import { useRouteTitle, useMobileDetection } from '@/hooks'
 import { useCommonStore } from '@/store/modules/common.ts'
 
