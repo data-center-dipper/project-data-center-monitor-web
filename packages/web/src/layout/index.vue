@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouteTitle, useMobileDetection } from '@/hooks'
 import { useCommonStore } from '@/store/modules/common.ts'

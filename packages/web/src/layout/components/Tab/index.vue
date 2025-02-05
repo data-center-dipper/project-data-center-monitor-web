@@ -14,10 +14,13 @@
           v-for="(tag, index) in tagsViewList"
           :key="tag.fullPath"
           :to="{ path: tag.fullPath }"
+          @mouseenter="showCloseButton(index)"
+          @mouseleave="hideCloseButton"
           @contextmenu.prevent="openMenu($event, index)"
         >
+          <span v-if="isActive(tag)" class="active-dot mr-1">•</span>
           <span class="mr-1">{{ tag.title }}</span>
-          <template v-if="!isAffiix(tag)">
+          <template v-if="activeCloseButton === index">
             <iconpark-icon
               name="close-small"
               @click.prevent.stop="onCloseClick(index, tag)"
@@ -61,6 +64,19 @@ const menuStyle = reactive({
   left: '0px',
   top: '0px',
 })
+
+// 显示关闭按钮
+const activeCloseButton = ref(-1)
+const showCloseButton = (index: number) => {
+  if (!isAffiix(tagsViewList.value[index])) {
+    activeCloseButton.value = index
+  }
+}
+
+// 隐藏关闭按钮
+const hideCloseButton = () => {
+  activeCloseButton.value = -1
+}
 
 // 展示菜单
 const openMenu = (e: MouseEvent, index: number) => {
@@ -111,10 +127,14 @@ watch(visible, (val) => {
 .tags-view-item {
   padding: 0 10px;
   margin-right: 4px;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
+  border-radius: 1px;
+  transition: all 0.3s;
 }
 .tags-view-item.active {
-  font-weight: bold;
+  background-color: #f5f5f5;
+  color: #333;
+}
+.active-dot {
+  color: #40e9ff;
 }
 </style>
