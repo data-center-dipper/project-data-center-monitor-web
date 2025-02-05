@@ -39,7 +39,7 @@ declare module 'vue' {
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Src: typeof import('./src/components/table/src/index.vue')['default']
+    Src: typeof import('./src/components/pagination/src/index.vue')['default']
     Table: typeof import('./src/components/table/src/index.vue')['default']
   }
   export interface ComponentCustomProperties {
