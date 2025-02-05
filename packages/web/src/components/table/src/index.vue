@@ -83,6 +83,7 @@ const handleCurrentChange = (val: number) => {
       </el-table-column>
     </template>
     <el-table-column
+      v-if="$slots.action"
       :label="actionOptions?.label"
       :align="actionOptions?.align || 'left'"
       :width="actionOptions?.width || ''"
