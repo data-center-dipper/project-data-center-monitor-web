@@ -10,7 +10,7 @@ import type { Component } from 'vue'
 import { ElDialog } from 'element-plus'
 import 'element-plus/theme-chalk/el-dialog.css'
 
-export const modalList = shallowRef<Component[]>([])
+export const DialogList = shallowRef<Component[]>([])
 
 type IConstructor = new (...args: any[]) => any
 
@@ -22,7 +22,7 @@ interface ModalOptions<T extends IConstructor = DefineComponent> {
 
 let count = 0
 
-export const useModal = <T extends IConstructor>(options: ModalOptions<T>) => {
+export const useDialog = <T extends IConstructor>(options: ModalOptions<T>) => {
   const component = defineComponent({
     name: '__modal__' + count++,
     setup() {
@@ -40,11 +40,11 @@ export const useModal = <T extends IConstructor>(options: ModalOptions<T>) => {
     },
   })
 
-  modalList.value.push(component)
-  triggerRef(modalList)
+  DialogList.value.push(component)
+  triggerRef(DialogList)
 }
 
-export const useCloseModal = () => {
+export const useCloseDialog = () => {
   const instance = getCurrentInstance()?.proxy
   return () => {
     if (instance) {
@@ -56,8 +56,8 @@ export const useCloseModal = () => {
         p = p.$parent
       }
       if (p) {
-        modalList.value.filter((c) => c.name !== p?.$options.name)
-        triggerRef(modalList)
+        DialogList.value.filter((c) => c.name !== p?.$options.name)
+        triggerRef(DialogList)
       }
     }
   }
