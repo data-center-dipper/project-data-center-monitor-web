@@ -22,7 +22,7 @@ const kafkaRouter: Array<RouteRecordRaw> = [
         meta: {
           keepAlive: false,
           requiresAuth: true,
-          title: '概览',
+          title: '集群概览',
           key: 'kafka-nodes',
           to: { name: 'kafkaHome' },
           parentKey: 'kafka-management',
