@@ -13,6 +13,7 @@
     "chart.js": "^4.4.7",
     "echarts": "^5.5.1",
     "element-plus": "^2.9.3",
+    "lodash": "^4.17.21",
     "nprogress": "^0.2.0",
     "pinia": "^2.3.0",
     "pinia-plugin-persistedstate": "^4.2.0",
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "@types/echarts": "^4.9.22",
+    "@types/lodash": "^4.17.15",
     "@types/nprogress": "^0.2.3",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vitejs/plugin-vue-jsx": "^4.1.1",
