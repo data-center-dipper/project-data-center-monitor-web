@@ -2,7 +2,11 @@
 import { ref, onMounted, watch, nextTick } from 'vue'
 import cloneDeep from 'lodash/cloneDeep'
 import E from 'wangeditor'
-import type { FormOptions } from './interface.ts'
+import { FormOptions } from './interface.ts'
+
+defineOptions({
+  name: 'qx-form',
+})
 
 const props = defineProps<{
   // 表单项配置
@@ -42,7 +46,7 @@ const initForm = () => {
         nextTick(() => {
           if (document.getElementById('editor')) {
             const editor = new E('#editor')
-            editor.config.placeholder = item.placeholder
+            editor.config.placeholder = item.placeholder!
             editor.create()
             // 初始富文本编辑器内容
             editor.txt.html(item.value)
@@ -50,6 +54,7 @@ const initForm = () => {
             editor.config.onchange = (newHtml: string) => {
               model.value[item.prop] = newHtml
             }
+            edit.value = editor
           }
         })
       }
@@ -66,6 +71,16 @@ const resetFields = () => {
     let editorItem = props.options.find((item) => item.type === 'editor')
     edit.value.txt.html(editorItem.value)
   }
+}
+
+// 表单验证
+const validate = () => {
+  return form.value!.validate
+}
+
+// 表单数据收集
+const getFormData = () => {
+  return model.value
 }
 
 watch(
@@ -121,6 +136,8 @@ onMounted(() => {
 
 defineExpose({
   resetFields,
+  validate,
+  getFormData,
 })
 </script>
 
@@ -142,7 +159,7 @@ defineExpose({
         <component
           v-if="item.type !== 'upload' && item.type !== 'editor'"
           v-bind="item.attrs"
-          :is="`el-${item.type}`"
+          :is="`el-${item.type!}`"
           v-model="model[item.prop]"
         ></component>
         <el-upload

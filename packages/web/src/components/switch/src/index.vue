@@ -133,6 +133,10 @@
 <script setup>
 import { ref, reactive, computed } from 'vue'
 
+defineOptions({
+  name: 'qx-switch',
+})
+
 const emit = defineEmits(['onStatus'])
 
 const props = defineProps({

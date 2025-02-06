@@ -4,8 +4,9 @@ import Pagination from './pagination'
 import Switch from './switch'
 import FormDialog from './form-dialog'
 import Drawer from './drawers'
+import Form from './form'
 
-const components = [Table, Pagination, Switch, FormDialog, Drawer]
+const components = [Table, Pagination, Switch, FormDialog, Drawer, Form]
 
 export default {
   install(app: App) {

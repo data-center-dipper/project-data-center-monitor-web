@@ -1,79 +1,66 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-
 const tableOptions = ref([
-  { label: '入流速率(bytes)/1min', prop: 'inputRate' },
-  { label: '出流速率(bytes)/1min', prop: 'outputRate' },
-  { label: '排流量虚拟速率(EPS)/1min', prop: 'evaporationRate1' },
-  { label: '满入入流速率(EPS)/1min', prop: 'fullInputRate1' },
-  { label: '满入入流速率(EPS)/5min', prop: 'fullInputRate5' },
-  { label: '满入入流速率(EPS)/15min', prop: 'fullInputRate15' },
+  { label: '分区ID', prop: 'id', align: 'center', width: 180, sortable: true },
+  { label: '当前offset', prop: 'offset', align: 'center', sortable: true },
+  { label: 'start', prop: 'start', align: 'center', sortable: true },
+  { label: 'end', prop: 'end', align: 'center', sortable: true },
+  { label: 'size', prop: 'size', align: 'center', sortable: true },
+  { label: 'lag', prop: 'lag', align: 'center', sortable: true },
 ])
 
 const tableData = ref([
-  {
-    inputRate: '0.00MB',
-    outputRate: '0.00MB',
-    evaporationRate1: '0.0',
-    fullInputRate1: '0.00',
-    fullInputRate5: '0.00',
-    fullInputRate15: '0.00',
-  },
+  { id: 0, offset: 0, start: 0, end: 0, size: 0, lag: 0 },
+  { id: 1, offset: 0, start: 0, end: 0, size: 0, lag: 0 },
+  { id: 2, offset: 0, start: 0, end: 0, size: 0, lag: 0 },
+  { id: 3, offset: 0, start: 0, end: 0, size: 0, lag: 0 },
+  { id: 4, offset: 0, start: 0, end: 0, size: 0, lag: 0 },
+  { id: 5, offset: 0, start: 0, end: 0, size: 0, lag: 0 },
+  { id: 6, offset: 0, start: 0, end: 0, size: 0, lag: 0 },
+  { id: 7, offset: 0, start: 0, end: 0, size: 0, lag: 0 },
+  { id: 8, offset: 0, start: 0, end: 0, size: 0, lag: 0 },
+  { id: 9, offset: 0, start: 0, end: 0, size: 0, lag: 0 },
 ])
 </script>
 
 <template>
-  <div class="border rounded-md p-4 border-gray-200">
-    <div class="flex items-center gap-6">
-      <div class="flex items-center gap-1">
-        <span class="text-gray-500">topic名称：</span>
-        <span>com.dbapp.topic.rawevent</span>
-      </div>
-      <div class="flex items-center gap-1">
-        <span class="text-gray-500">类型：</span>
-        <span>内置</span>
-      </div>
-      <div class="flex items-center gap-1">
-        <span class="text-gray-500">分区数：</span>
-        <span>12</span>
-      </div>
-      <div class="flex items-center gap-1">
-        <span class="text-gray-500">副本数：</span>
-        <span>1</span>
-      </div>
-      <div class="flex items-center gap-1">
-        <span class="text-gray-500">平均数据大小：</span>
-        <span>133.91B</span>
-      </div>
-      <div class="flex items-center gap-1">
-        <span class="text-gray-500">数据大小：</span>
-        <span>2.88KB</span>
-      </div>
-    </div>
-    <div class="mt-4">
-      <qx-table
-        border
-        :options="tableOptions"
-        :data="tableData"
-        :pagination="false"
-        :isLoading="false"
-      />
-    </div>
-    <div class="flex items-center gap-1">
-      <span class="text-gray-500">分区状态：</span>
-      <span class="text-green-500">正常</span>
-    </div>
-    <div class="flex items-center gap-1">
-      <div class="text-gray-500">操作：</div>
-      <div class="flex gap-2">
-        <el-button type="text">查看详情</el-button>
-        <el-button type="text">消费组查看</el-button>
-        <el-button type="text">数据预览</el-button>
-        <el-button type="text">重建topic</el-button>
-        <el-button type="text">分区扩容</el-button>
-        <el-button type="text">生成数据</el-button>
+  <div>
+    <el-row :gutter="20">
+      <el-col :span="12">
+        <el-input>
+          <template #prepend>
+            <span>主题</span>
+          </template>
+        </el-input>
+      </el-col>
+      <el-col :span="12">
+        <el-input>
+          <template #prepend>
+            <span>消费组ID</span>
+          </template>
+        </el-input>
+      </el-col>
+    </el-row>
+    <div class="flex justify-between items-center py-3">
+      <div>消费状态</div>
+      <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1 cursor-pointer">
+          <iconpark-icon name="refresh"></iconpark-icon>
+          <span>刷新</span>
+        </div>
+        <div class="flex items-center gap-1 cursor-pointer">
+          <iconpark-icon name="save"></iconpark-icon>
+          <span>保存当前offset</span>
+        </div>
       </div>
     </div>
+    <qx-table
+      border
+      :header-cell-style="{ background: 'rgba(165,184,185,0.43)' }"
+      :options="tableOptions"
+      :data="tableData"
+    >
+    </qx-table>
   </div>
 </template>
 

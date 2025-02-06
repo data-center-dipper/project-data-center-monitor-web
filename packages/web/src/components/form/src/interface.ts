@@ -30,7 +30,7 @@ export interface FormOptions {
   // 表单的Label
   label?: string
   // 表单的标识
-  prop?: string
+  prop: string
   // 表单的验证规则
   rules?: RuleItem
   // 表单项的提示信息

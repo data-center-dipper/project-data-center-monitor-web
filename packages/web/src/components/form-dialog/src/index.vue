@@ -2,6 +2,10 @@
 import { type PropType, ref, watch } from 'vue'
 import type { FormOptions } from '../../form/src/interface.ts'
 
+defineOptions({
+  name: 'qx-form-dialog',
+})
+
 const form = ref<any>(null)
 
 const props = defineProps({
@@ -80,6 +84,7 @@ watch(dialogVisible, (value) => {
         @on-exceed="onExceed"
         @beforeUpload="beforeUpload"
         @on-change="onChange"
+        v-bind="$attrs.formAttrs"
       >
         <template #uploadTrigger>
           <slot name="uploadTrigger"></slot>

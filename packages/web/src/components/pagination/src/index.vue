@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from 'vue'
 
+defineOptions({
+  name: 'qx-pagination',
+})
+
 const props = defineProps({
   justify: {
     type: String,

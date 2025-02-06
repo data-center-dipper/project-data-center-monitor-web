@@ -2,6 +2,10 @@
 import { computed, ref, watch } from 'vue'
 import type { TableOptions } from './interface.ts'
 
+defineOptions({
+  name: 'qx-table',
+})
+
 const props = defineProps<{
   // 表格配置
   options: TableOptions[]
@@ -75,6 +79,7 @@ const handleCurrentChange = (val: number) => {
         :prop="item.prop"
         :align="item.align || 'left'"
         :width="item.width || ''"
+        :sortable="item.sortable || ''"
       >
         <template #default="scope">
           <slot v-if="item.slot" :name="item.slot" :scope="scope"></slot>

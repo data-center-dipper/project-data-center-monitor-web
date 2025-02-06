@@ -13,4 +13,6 @@ export interface TableOptions {
   action?: boolean
   // 是否是可编辑的单元格
   editable?: boolean
+  // 是否开启排序
+  sortable?: boolean
 }
