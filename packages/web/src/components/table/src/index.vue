@@ -79,7 +79,7 @@ const handleCurrentChange = (val: number) => {
         :prop="item.prop"
         :align="item.align || 'left'"
         :width="item.width || ''"
-        :sortable="item.sortable || ''"
+        :sortable="item.sortable || false"
       >
         <template #default="scope">
           <slot v-if="item.slot" :name="item.slot" :scope="scope"></slot>

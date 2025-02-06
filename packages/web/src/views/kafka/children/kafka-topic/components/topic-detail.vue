@@ -25,35 +25,20 @@ const tableData = ref([
 
 <template>
   <div>
-    <el-row :gutter="20">
+    <el-row :gutter="20" class="pb-3">
       <el-col :span="12">
-        <el-input>
-          <template #prepend>
-            <span>主题</span>
-          </template>
-        </el-input>
-      </el-col>
-      <el-col :span="12">
-        <el-input>
-          <template #prepend>
-            <span>消费组ID</span>
-          </template>
-        </el-input>
+        <el-form-item label="主题">
+          <el-select>
+            <el-option label="分区ID" value="id"></el-option>
+            <el-option label="当前offset" value="offset"></el-option>
+            <el-option label="start" value="start"></el-option>
+            <el-option label="end" value="end"></el-option>
+            <el-option label="size" value="size"></el-option>
+            <el-option label="lag" value="lag"></el-option>
+          </el-select>
+        </el-form-item>
       </el-col>
     </el-row>
-    <div class="flex justify-between items-center py-3">
-      <div>消费状态</div>
-      <div class="flex items-center gap-2">
-        <div class="flex items-center gap-1 cursor-pointer">
-          <iconpark-icon name="refresh"></iconpark-icon>
-          <span>刷新</span>
-        </div>
-        <div class="flex items-center gap-1 cursor-pointer">
-          <iconpark-icon name="save"></iconpark-icon>
-          <span>保存当前offset</span>
-        </div>
-      </div>
-    </div>
     <qx-table
       border
       :header-cell-style="{ background: 'rgba(165,184,185,0.43)' }"

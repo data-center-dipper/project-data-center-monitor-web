@@ -3,18 +3,18 @@ import type { Ref } from 'vue'
 import { ref, computed, onMounted } from 'vue'
 import ListHeader from './components/list-header.vue'
 import ChooseData from './components/choose-data.vue'
-import request from '@/api/index.ts' // 确保路径正确指向你的 RequestHttp 文件
+import request from '@/api/index.ts'
 import { ElMessageBox } from 'element-plus'
 
 const searchQuery = ref('')
-const clusters: Ref<any[]> = ref([]) // 修改类型定义以适应异步数据加载
+const clusters: Ref<any[]> = ref([])
 const clusterModalVisible = ref(false)
 const monitoringDialogVisible = ref(false)
-const selectedCluster = ref<any>(null) // Ensure this is declared and initialized properly.
+const selectedCluster = ref<any>(null)
 const modalData = ref({})
 const modalTitle = ref('')
 const listHeaderRef: Ref<InstanceType<typeof ListHeader> | null> = ref(null)
-const selectedMonitoringPolicy = ref('') // 确保已声明并初始化为空字符串或其他默认值
+const selectedMonitoringPolicy = ref('')
 const startTime = ref('')
 const endTime = ref('')
 
@@ -27,9 +27,8 @@ const newCluster = ref({
   address: '',
   clusterDesc: '',
   checkAddress: '',
-}) // 新增集群的数据模型
+})
 
-// 获取所有集群数据的函数
 const fetchClusters = async () => {
   try {
     const response = await request.get(
@@ -37,7 +36,6 @@ const fetchClusters = async () => {
     )
     console.log('获取集群信息成功:', JSON.stringify(response.data, null, 2))
 
-    // 遍历每个集群并设置 monitoringEnabled 根据 clusterPolicy
     clusters.value = response.data.map((cluster) => ({
       ...cluster,
       monitoringEnabled: cluster.clusterPolicy !== 'none',
@@ -51,7 +49,6 @@ const fetchClusters = async () => {
   }
 }
 
-// 计算过滤后的集群数据
 const filteredClusters = computed(() => {
   const result = clusters.value.filter(
     (cluster) =>
@@ -65,7 +62,6 @@ const filteredClusters = computed(() => {
   return result
 })
 
-// 计算需要展示的数据
 const paginatedClusters = computed(() => {
   const result = filteredClusters.value.slice(
     (currentPage.value - 1) * pageSize.value,
@@ -88,20 +84,15 @@ function showDetails(cluster: any) {
   clusterModalVisible.value = true
 }
 
-// 这段代码定义了一个名为 editCluster 的函数，用于处理编辑 Kafka 集群的操作。它通过调用父组件（在这个例子中是 ListHeader 组件）的方法来显示一个编辑集群信息的模态框（modal）。
 function editCluster(cluster: any) {
   console.log('index.vue - 尝试编辑集群:', JSON.stringify(cluster, null, 2))
   if (!cluster) {
     console.error('index.vue - 集群对象为 undefined')
     return
   }
-  // listHeaderRef.value：这是一个对 ListHeader 组件实例的引用。在 Vue 3 中，你可以使用 ref 来获取子组件的实例。这里假设你已经在模板中使用了 <ListHeader ref="listHeaderRef"></ListHeader> 来创建对 ListHeader 组件的引用。
-  // listHeaderRef.value?.showEditClusterModal(cluster);：这里的 ?. 是可选链操作符，它确保只有当 listHeaderRef.value 不是 null 或 undefined 时才会尝试调用 showEditClusterModal 方法。如果 listHeaderRef.value 是 null 或 undefined，则整个表达式将短路返回 undefined 而不会抛出错误。
-  // showEditClusterModal(cluster)：这是假设 ListHeader 组件中定义的一个方法，用来展示一个编辑集群信息的模态框。这个方法接收一个集群对象作为参数，以便在模态框中填充当前集群的信息进行编辑。
   listHeaderRef.value?.showEditClusterModal(cluster)
 }
 
-// 删除集群的逻辑
 async function deleteCluster(cluster: any) {
   try {
     if (!cluster || !cluster.clusterCode) {
@@ -109,7 +100,6 @@ async function deleteCluster(cluster: any) {
       return
     }
 
-    // 弹出确认对话框，并设置 center 属性
     ElMessageBox.confirm(
       `确定要删除集群 ${cluster.clusterName} 吗？`,
       '删除确认',
@@ -302,13 +292,6 @@ function handlePageChange(page: number) {
       @update-clusters="fetchClusters"
       ref="listHeaderRef"
     ></ListHeader>
-    <choose-data
-      :disableToday="true"
-      startPlaceholder="请选择开始时间"
-      endPlaceholder="请选择结束时间"
-      @startDateChange="handleStartDateChange"
-      @endDateChange="handleEndDateChange"
-    />
 
     <!-- 集群列表 -->
     <el-table

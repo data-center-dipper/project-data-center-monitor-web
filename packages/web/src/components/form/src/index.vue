@@ -181,6 +181,12 @@ defineExpose({
           <slot name="uploadTip"> </slot>
         </el-upload>
         <div v-if="item.type === 'editor'" id="editor"></div>
+        <el-input
+          v-if="item.type === 'textarea'"
+          autosize
+          type="textarea"
+          v-model="model[item.prop]"
+        ></el-input>
       </el-form-item>
       <el-form-item
         v-if="item.children && item.children.length"
