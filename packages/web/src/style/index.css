@@ -10,3 +10,29 @@ html {
 html::-webkit-scrollbar {
   display: none; /* Chrome, Safari 和 Opera */
 }
+
+/* Custom scrollbar styles */
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #e5e5e5 #f8f8f8;
+}
+
+/* Chrome, Safari, and Edge */
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #f8f8f8;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #e5e5e5;
+  border-radius: 4px;
+}
+
+.is-scroll .el-dialog__body {
+  overflow: auto;
+  height: 500px;
+}
