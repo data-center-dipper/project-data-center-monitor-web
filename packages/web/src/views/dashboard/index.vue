@@ -1,20 +1,16 @@
-<script setup lang="ts">
-import { useMessage, useMessageBox, useNotify } from '@/components/toast'
-useMessage().info('我是普通提示！')
-
-useMessageBox().success('我是成功提示！')
-
-useNotify().success('我的成功消息')
-
-useNotify().info('优先显示标题', {
-  title: 'sdsdsds',
-  message: 'dssddsds',
-  type: 'warning',
-})
-</script>
-
 <template>
-  <div>工作台</div>
+  <el-button @click="openDrawer">打开抽屉</el-button>
+  <qx-drawer direction="ltr" ref="drawer"></qx-drawer>
 </template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const drawer = ref(null)
+
+function openDrawer() {
+  drawer.value.openDrawer()
+}
+</script>
 
 <style scoped></style>
