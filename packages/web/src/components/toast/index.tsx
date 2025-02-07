@@ -48,6 +48,7 @@ export function useMessage() {
   }
   return new Message()
 }
+
 // messageBox
 export function useMessageBox() {
   class MessageBox implements MessageBoxImplements {
@@ -105,6 +106,7 @@ export function useMessageBox() {
   }
   return new MessageBox()
 }
+
 export function useNotify() {
   class Notify implements MessageImplements {
     info(

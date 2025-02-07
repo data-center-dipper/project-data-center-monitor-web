@@ -80,14 +80,6 @@ useRouteTitle()
   opacity: 0;
 }
 
-:deep(.el-drawer) {
-  width: auto !important;
-}
-
-:deep(.el-drawer__header) {
-  display: none;
-}
-
 :deep(.el-main) {
   --el-main-padding: 5px 20px;
 }

@@ -1,26 +1,28 @@
 <template>
-  <el-drawer v-model="drawerVisible" v-bind="$attrs" :direction="direction">
+  <el-drawer v-model="drawerVisible" v-bind="$attrs">
+    <template #header>
+      <slot name="header"></slot>
+    </template>
+    <template #default>
+      <slot></slot>
+    </template>
+    <template #footer>
+      <slot name="footer"></slot>
+    </template>
   </el-drawer>
 </template>
 
 <script lang="ts" setup>
-import { ref, defineProps, defineEmits, defineExpose } from 'vue'
+import { ref } from 'vue'
 
-const props = defineProps({
-  direction: {
-    type: String,
-    default: 'rtl',
-    validator: (value: string) => ['ltr', 'rtl', 'ttb', 'btt'].includes(value),
-  },
-})
-
-const emits = defineEmits([])
+const emits = defineEmits(['drawer-close'])
 
 const drawerVisible = ref(false)
 
 const openDrawer = () => {
   drawerVisible.value = true
 }
+
 const closeDrawer = () => {
   drawerVisible.value = false
 }

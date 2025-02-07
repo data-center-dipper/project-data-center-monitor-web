@@ -18,6 +18,7 @@ interface ModalOptions<T extends IConstructor = DefineComponent> {
   title: string
   component: Component | string
   props?: InstanceType<T>['$props']
+  dialogProps?: any
 }
 
 let count = 0
@@ -32,6 +33,7 @@ export const useDialog = <T extends IConstructor>(options: ModalOptions<T>) => {
           {
             modelValue: true,
             title: options.title,
+            ...options.dialogProps,
           },
           {
             default: () => h(options.component, options.props),

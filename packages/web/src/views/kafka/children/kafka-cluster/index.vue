@@ -1,25 +1,19 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
-import { ref, computed, onMounted } from 'vue'
-import ListHeader from './components/list-header.vue'
+import { ref, computed, onMounted, watch, type Ref, h } from 'vue'
 import ChooseData from './components/choose-data.vue'
-import request from '@/api/index.ts'
-import { ElMessageBox } from 'element-plus'
+import ListHeader from './components/list-header.vue'
+import QxDrawer from '@/components/drawers/src/index.vue'
+import { useDialog } from '@/components/dialog/useDialog.tsx'
+import { useMessageBox, useMessage } from '@/components/toast/index.tsx'
 
-const searchQuery = ref('')
-const clusters: Ref<any[]> = ref([])
-const clusterModalVisible = ref(false)
-const monitoringDialogVisible = ref(false)
-const selectedCluster = ref<any>(null)
-const modalData = ref({})
-const modalTitle = ref('')
 const listHeaderRef: Ref<InstanceType<typeof ListHeader> | null> = ref(null)
-const selectedMonitoringPolicy = ref('')
-const startTime = ref('')
-const endTime = ref('')
+const drawerRef: Ref<InstanceType<typeof QxDrawer> | null> = ref(null)
 
 const pageSize = ref(10)
 const currentPage = ref(1)
+
+const messageBox = useMessageBox()
+const message = useMessage()
 
 const newCluster = ref({
   clusterCode: '',
@@ -29,470 +23,299 @@ const newCluster = ref({
   checkAddress: '',
 })
 
-const fetchClusters = async () => {
-  try {
-    const response = await request.get(
-      '/dipper/monitor/api/v1/kafka/cluster/getAllCluster',
-    )
-    console.log('获取集群信息成功:', JSON.stringify(response.data, null, 2))
-
-    clusters.value = response.data.map((cluster) => ({
-      ...cluster,
-      monitoringEnabled: cluster.clusterPolicy !== 'none',
-    }))
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error('获取集群信息失败:', error.message) // 打印错误消息
-    } else {
-      console.error('获取集群信息失败:', error) // 如果不是标准Error对象，直接打印
-    }
-  }
-}
-
-const filteredClusters = computed(() => {
-  const result = clusters.value.filter(
-    (cluster) =>
-      cluster &&
-      cluster.clusterName &&
-      cluster.clusterName
-        .toLowerCase()
-        .includes(searchQuery.value.toLowerCase()),
-  )
-  console.log('Filtered Clusters:', JSON.stringify(result, null, 2)) // 打印过滤后的数据
-  return result
-})
-
-const paginatedClusters = computed(() => {
-  const result = filteredClusters.value.slice(
-    (currentPage.value - 1) * pageSize.value,
-    currentPage.value * pageSize.value,
-  )
-  console.log('Paginated Clusters:', JSON.stringify(result, null, 2)) // 打印分页后的数据
-  return result
-})
-
-onMounted(async () => {
-  console.log('开始获取集群信息...')
-  await fetchClusters() // 确保这里等待fetchClusters完成
-  console.log('结束获取集群信息.')
-  console.log('当前 clusters 数据:', JSON.stringify(clusters.value, null, 2)) // 打印获取后的clusters数据
-})
-
-function showDetails(cluster: any) {
-  modalTitle.value = `集群详情 - ${cluster.clusterName}`
-  modalData.value = { ...cluster }
-  clusterModalVisible.value = true
-}
-
-function editCluster(cluster: any) {
-  console.log('index.vue - 尝试编辑集群:', JSON.stringify(cluster, null, 2))
-  if (!cluster) {
-    console.error('index.vue - 集群对象为 undefined')
-    return
-  }
-  listHeaderRef.value?.showEditClusterModal(cluster)
-}
-
-async function deleteCluster(cluster: any) {
-  try {
-    if (!cluster || !cluster.clusterCode) {
-      console.error('无效的集群对象:', cluster)
-      return
-    }
-
-    ElMessageBox.confirm(
-      `确定要删除集群 ${cluster.clusterName} 吗？`,
-      '删除确认',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-        center: true, // 设置为 true 可以使内容居中
-      },
-    )
-      .then(async () => {
-        // 用户点击确定按钮后的逻辑
-        const response = await request.post(
-          '/dipper/monitor/api/v1/kafka/cluster/deleteCluster',
-          { clusterCode: cluster.clusterCode },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          },
-        )
-
-        console.log('集群删除成功:', response.data)
-
-        // 刷新集群列表
-        await fetchClusters()
-      })
-      .catch(() => {
-        // 用户点击取消按钮后的逻辑
-        console.log('删除操作已取消')
-      })
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error('集群删除失败:', error.message) // 打印错误消息
-    } else {
-      console.error('集群删除失败:', error) // 如果不是标准Error对象，直接打印
-    }
-  }
-}
-
-function updateMonitoring(cluster: any) {
-  if (cluster.monitoringPolicy === 'now') {
-    cluster.monitorStartTime = null
-    cluster.monitorEndTime = null
-  }
-}
-
-function handleStartDateChange(date: string | null) {
-  startTime.value = date || ''
-}
-
-function handleEndDateChange(dates: {
-  startDate: string | null
-  endDate: string
-}) {
-  if (dates.startDate) {
-    startTime.value = dates.startDate
-  }
-  endTime.value = dates.endDate
-}
-
-async function handleMonitoringChange(cluster: any) {
-  console.log('准备更新监控策略:', cluster)
-  if (cluster.monitoringEnabled) {
-    // 显示监控策略选择弹窗
-    monitoringDialogVisible.value = true
-    selectedCluster.value = cluster
-  } else {
-    // 取消监控策略
-    await cancelMonitoring(cluster)
-  }
-}
-
-function saveMonitoringSettings() {
-  let policy = {
-    clusterCode: selectedCluster.value.clusterCode,
-    monitoringPolicy: selectedMonitoringPolicy.value,
+const fakeClusters = [
+  {
+    id: 1,
+    clusterCode: 'C1',
+    clusterName: '集群1',
+    clusterDesc: '这是集群1的描述',
+    address: '192.168.1.1:9092',
+    kafkaJmxAddress: '192.168.1.1:9999',
+    kafkaZkAddress: '192.168.1.1:2181',
+    currentCluster: true,
+    defaultCluster: false,
+    clusterPolicy: 'now',
+    monitorStartTime: '2023-01-01 10:00:00',
+    monitorEndTime: null,
+    monitoringEnabled: true,
+  },
+  {
+    id: 2,
+    clusterCode: 'C2',
+    clusterName: '集群2',
+    clusterDesc: '这是集群2的描述',
+    address: '192.168.1.2:9092',
+    kafkaJmxAddress: '192.168.1.2:9999',
+    kafkaZkAddress: '192.168.1.2:2181',
+    currentCluster: false,
+    defaultCluster: true,
+    clusterPolicy: 'range',
+    monitorStartTime: '2023-02-01 12:00:00',
+    monitorEndTime: '2023-02-28 12:00:00',
+    monitoringEnabled: false,
+  },
+  {
+    id: 3,
+    clusterCode: 'C3',
+    clusterName: '集群3',
+    clusterDesc: '这是集群3的描述',
+    address: '192.168.1.3:9092',
+    kafkaJmxAddress: '192.168.1.3:9999',
+    kafkaZkAddress: '192.168.1.3:2181',
+    currentCluster: false,
+    defaultCluster: false,
+    clusterPolicy: 'none',
     monitorStartTime: null,
     monitorEndTime: null,
-  }
+    monitoringEnabled: false,
+  },
+]
 
-  if (selectedMonitoringPolicy.value === 'range') {
-    // 如果策略是时间范围，则需要检查开始时间和结束时间是否已填写
-    if (!startTime.value || !endTime.value) {
-      alert('对于时间范围策略，请填写开始时间和结束时间')
-      return
+const tableOptions = ref([
+  { label: '集群ID', prop: 'id', width: '80', align: 'center' },
+  { label: '集群编码', prop: 'clusterCode', width: '120', align: 'center' },
+  { label: '集群名称', prop: 'clusterName', width: '150', align: 'center' },
+  { label: '集群描述', prop: 'clusterDesc', width: '200', align: 'center' },
+  { label: '集群地址', prop: 'address', width: '200', align: 'center' },
+  {
+    label: '集群jmx地址',
+    prop: 'kafkaJmxAddress',
+    width: '200',
+    align: 'center',
+  },
+  {
+    label: '集群zk地址',
+    prop: 'kafkaZkAddress',
+    width: '200',
+    align: 'center',
+  },
+  {
+    label: '当前集群',
+    prop: 'currentCluster',
+    width: '100',
+    align: 'center',
+    slot: 'currentCluster',
+  },
+  {
+    label: '默认集群',
+    prop: 'defaultCluster',
+    width: '100',
+    align: 'center',
+    slot: 'defaultCluster',
+  },
+  {
+    label: '监控',
+    prop: 'monitoringEnabled',
+    width: '480',
+    align: 'center',
+    slot: 'monitoring',
+  },
+  {
+    label: '当前策略',
+    prop: 'clusterPolicy',
+    width: '120',
+    align: 'center',
+    slot: 'clusterPolicy',
+  },
+  {
+    label: '开始时间',
+    prop: 'monitorStartTime',
+    width: '180',
+    align: 'center',
+    slot: 'monitorStartTime',
+  },
+  {
+    label: '结束时间',
+    prop: 'monitorEndTime',
+    width: '180',
+    align: 'center',
+    slot: 'monitorEndTime',
+  },
+  {
+    label: '操作',
+    prop: 'action',
+    width: '300',
+    align: 'center',
+    action: true,
+    slot: 'action',
+  },
+])
+
+const monitoringPolicy = ref('')
+
+const handleMonitoringChange = (val: boolean, scope: any) => {
+  // 非监控状态到监控状态, 开启设置抽屉
+  if (val) {
+    drawerRef.value.openDrawer()
+    // 设置监控策略的初始值
+    if (scope.row.clusterPolicy === 'none') {
+      monitoringPolicy.value = ''
+    } else {
+      monitoringPolicy.value = scope.row.clusterPolicy
     }
-
-    // 格式化时间值为MySQL DATETIME格式
-    const formattedStartTime = new Date(startTime.value)
-      .toISOString()
-      .slice(0, 19)
-      .replace('T', ' ')
-    const formattedEndTime = new Date(endTime.value)
-      .toISOString()
-      .slice(0, 19)
-      .replace('T', ' ')
-
-    policy = {
-      clusterCode: selectedCluster.value.clusterCode,
-      monitoringPolicy: selectedMonitoringPolicy.value,
-      monitorStartTime: formattedStartTime,
-      monitorEndTime: formattedEndTime,
-    }
   }
-
-  console.log('更新监控策略参数:', JSON.stringify(policy, null, 2))
-
-  request
-    .post('/dipper/monitor/api/v1/kafka/cluster/updateMonitoring', policy, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then((response) => {
-      console.log('监控策略更新成功:', response.data)
-      fetchClusters()
-      monitoringDialogVisible.value = false
-    })
-    .catch((error) => {
-      console.error('监控策略更新失败:', error.message)
-    })
 }
 
-async function cancelMonitoring(cluster: any) {
-  try {
-    let policy = {
-      clusterCode: cluster.clusterCode, // 直接使用传入的 cluster 对象
-      monitoringPolicy: 'none',
-      monitorStartTime: null,
-      monitorEndTime: null,
-    }
-    console.log('取消监控策略参数:', JSON.stringify(policy, null, 2))
-
-    request
-      .post('/dipper/monitor/api/v1/kafka/cluster/updateMonitoring', policy, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+const handleBeforeClose = () => {
+  // 如果当前有改动,用户离开,才弹出确认框
+  if (true) {
+    messageBox
+      .confirm(
+        '存在未保存的修改，是否取消修改？',
+        { type: 'warning' },
+        '关闭确认',
+      )
+      .then(() => {
+        drawerRef.value.closeDrawer()
       })
-      .then((response) => {
-        console.log('取消监控策略更新成功:', response.data)
-        fetchClusters() // 刷新集群列表
-        monitoringDialogVisible.value = false // 如果有打开的对话框，则关闭它
-      })
-      .catch((error) => {
-        console.error('取消监控策略更新失败:', error.message)
-      })
-
-    console.log('监控策略已取消:', cluster.clusterName)
-  } catch (error) {
-    console.error('取消监控策略失败:', error.message)
-  }
-}
-
-// 格式化策略显示
-function formatPolicy(policy: string): string {
-  if (policy === 'now') {
-    return '从现在开始'
-  } else if (policy === 'range') {
-    return '时间范围'
   } else {
-    return '无'
+    drawerRef.value.closeDrawer()
   }
 }
 
-// 格式化日期显示
-function formatDate(dateString: string | null): string {
-  if (!dateString) {
-    return '未设置'
-  }
-  const date = new Date(dateString)
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
+const cancelDrawer = () => {
+  handleBeforeClose()
 }
 
-function closeModal() {
-  clusterModalVisible.value = false
+const handleSave = () => {
+  drawerRef.value.closeDrawer()
+  message.success('设置监控策略成功')
 }
 
-// 分页改变时的处理函数
+const selectedMonitoringPolicy = () => {}
+
+const handleDelete = (scope: any) => {
+  messageBox
+    .confirm(
+      `确定删除该集群 ${scope.row.clusterName} 吗？`,
+      { type: 'warning' },
+      '删除确认',
+    )
+    .then(() => {
+      message.success(`删除${scope.row.clusterName}成功`)
+    })
+    .catch(() => {
+      message.info('删除集群操作取消')
+    })
+}
+
+const handlePreview = (scope: any) => {
+  useDialog({
+    title: `${scope.row.clusterName} 详情`,
+    dialogProps: {
+      width: '30%',
+    },
+    component: () =>
+      h('div', [
+        h('p', `ID: ${scope.row.id}`),
+        h('p', `集群编号: ${scope.row.clusterCode}`),
+        h('p', `集群名称: ${scope.row.clusterName}`),
+        h('p', `集群描述: ${scope.row.description}`),
+        h('p', `集群地址: ${scope.row.address}`),
+        h('p', `是否为当前集群: ${scope.row.isCurrent ? '是' : '否'}`),
+        h('p', `是否为默认集群: ${scope.row.isDefault ? '是' : '否'}`),
+      ]),
+  })
+}
+
 function handlePageChange(page: number) {
   currentPage.value = page
+}
+
+function handleSizeChange(size: number) {
+  pageSize.value = size
 }
 </script>
 
 <template>
   <div class="kafka-cluster-manager p-4 space-y-4">
-    <!-- 监听 update-clusters 事件 -->
-    <ListHeader
-      @update-clusters="fetchClusters"
-      ref="listHeaderRef"
-    ></ListHeader>
+    <ListHeader @update-clusters="" ref="listHeaderRef"></ListHeader>
 
-    <!-- 集群列表 -->
-    <el-table
-      :data="paginatedClusters"
-      border
-      :header-cell-style="{ textAlign: 'center' }"
-      height="600"
-    >
-      <el-table-column prop="id" label="集群ID" width="80" />
-      <el-table-column prop="clusterCode" label="集群编码" width="120" />
-      <el-table-column prop="clusterName" label="集群名称" width="150" />
-      <el-table-column prop="clusterDesc" label="集群描述" width="200" />
-      <el-table-column prop="address" label="集群地址" width="200" />
-      <el-table-column prop="kafkaJmxAddress" label="集群jmx地址" width="200" />
-      <el-table-column prop="kafkaJmxAddress" label="集群zk地址" width="200" />
-      <el-table-column prop="currentCluster" label="当前集群" width="100">
-        <template #default="scope">
-          <span>{{ scope.row.currentCluster ? '是' : '否' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="defaultCluster" label="默认集群" width="100">
-        <template #default="scope">
-          <span>{{ scope.row.defaultCluster ? '是' : '否' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="监控" width="480">
-        <template #default="scope">
-          <div class="flex items-center gap-2">
-            <div>是否开启监控:</div>
-            <el-checkbox
-              v-model="scope.row.monitoringEnabled"
-              @change="handleMonitoringChange(scope.row)"
-            />
-          </div>
-        </template>
-      </el-table-column>
-
-      <!-- 新增：当前选择的策略 -->
-      <el-table-column prop="clusterPolicy" label="当前策略" width="120">
-        <template #default="scope">
-          <span>{{ formatPolicy(scope.row.clusterPolicy) }}</span>
-        </template>
-      </el-table-column>
-
-      <!-- 新增：监控开始时间 -->
-      <el-table-column prop="monitorStartTime" label="开始时间" width="180">
-        <template #default="scope">
-          <span>{{ formatDate(scope.row.monitorStartTime) }}</span>
-        </template>
-      </el-table-column>
-
-      <!-- 新增：监控结束时间 -->
-      <el-table-column prop="monitorEndTime" label="结束时间" width="180">
-        <template #default="scope">
-          <span>{{ formatDate(scope.row.monitorEndTime) }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="操作" width="300" align="center">
-        <template #default="scope">
-          <el-button
-            type="text"
-            size="small"
-            @click.prevent="showDetails(scope.row)"
-            >详情</el-button
-          >
-          <el-button
-            type="text"
-            size="small"
-            @click.prevent="editCluster(scope.row)"
-            >编辑</el-button
-          >
-          <el-button
-            type="text"
-            size="small"
-            @click.prevent="deleteCluster(scope.row)"
-            >删除</el-button
-          >
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <!-- 分页组件 -->
-    <el-pagination
-      background
-      layout="prev, pager, next"
-      :total="filteredClusters.length"
-      :page-size="pageSize"
-      :current-page="currentPage"
+    <qx-table
+      :options="tableOptions"
+      :data="fakeClusters"
+      :pagination="true"
+      :currentPage="currentPage"
+      :total="fakeClusters.length"
+      :pageSize="pageSize"
+      paginationLayout="right"
       @current-change="handlePageChange"
-      class="mt-4 flex justify-end"
-    />
-
-    <!-- 监控策略选择弹窗 -->
-    <el-dialog
-      v-model="monitoringDialogVisible"
-      title="选择监控策略"
-      width="30%"
+      @size-change="handleSizeChange"
+      border
+      height="670"
     >
-      <el-form>
-        <el-form-item label="监控策略">
-          <el-select
-            v-model="selectedMonitoringPolicy"
-            placeholder="请选择监控策略"
-          >
-            <el-option label="从现在开始" value="now" />
-            <el-option label="时间范围" value="range" />
-          </el-select>
-        </el-form-item>
-        <!-- 当选择了时间范围策略时，才显示 ChooseData 组件 -->
-        <div v-if="selectedMonitoringPolicy === 'range'">
-          <choose-data
-            :disableToday="true"
-            startPlaceholder="请选择开始时间"
-            endPlaceholder="请选择结束时间"
-            @startDateChange="handleStartDateChange"
-            @endDateChange="handleEndDateChange"
-          />
+      <template #monitoring="{ scope }">
+        <div class="flex items-center justify-center">
+          <span>是否开启监控：</span>
+          <el-checkbox
+            @change="handleMonitoringChange(scope.row.monitoringEnabled, scope)"
+            v-model="scope.row.monitoringEnabled"
+          ></el-checkbox>
         </div>
-      </el-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="monitoringDialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="saveMonitoringSettings"
-            >保存</el-button
-          >
-        </span>
       </template>
-    </el-dialog>
-
-    <!-- 集群详情弹窗 -->
-    <el-dialog v-model="clusterModalVisible" :title="modalTitle" width="30%">
-      <div class="modal-body">
-        <p><strong>ID:</strong> {{ modalData.id }}</p>
-        <p><strong>集群编码:</strong> {{ modalData.clusterCode }}</p>
-        <p><strong>集群名称:</strong> {{ modalData.clusterName }}</p>
-        <p><strong>集群描述:</strong> {{ modalData.clusterDesc }}</p>
-        <p><strong>集群地址:</strong> {{ modalData.address }}</p>
-        <p>
-          <strong>是否为当前集群:</strong>
-          {{ modalData.currentCluster ? '是' : '否' }}
-        </p>
-        <p>
-          <strong>是否为默认集群:</strong>
-          {{ modalData.defaultCluster ? '是' : '否' }}
-        </p>
-      </div>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="closeModal">关闭</el-button>
-        </span>
+      <template #currentCluster="{ scope }">
+        {{ scope.row.currentCluster ? '是' : '否' }}
       </template>
-    </el-dialog>
+      <template #clusterPolicy="{ scope }">
+        <span v-if="scope.row.clusterPolicy === 'now'">从现在开始</span>
+        <span v-else-if="scope.row.clusterPolicy === 'range'">按时间范围</span>
+        <span v-else-if="scope.row.clusterPolicy === 'none'">无</span>
+        <span v-else>未知策略</span>
+      </template>
+      <template #defaultCluster="{ scope }">
+        {{ scope.row.defaultCluster ? '是' : '否' }}
+      </template>
+      <template #monitorStartTime="{ scope }">
+        {{ scope.row.monitorStartTime ? scope.row.monitorStartTime : '未设置' }}
+      </template>
+      <template #monitorEndTime="{ scope }">
+        {{ scope.row.monitorEndTime ? scope.row.monitorEndTime : '未设置' }}
+      </template>
+      <template #action="{ scope }">
+        <el-button type="text" size="small" @click="handlePreview(scope)"
+          >详情</el-button
+        >
+        <el-button type="text" size="small">编辑</el-button>
+        <el-button type="text" size="small" @click="handleDelete(scope)"
+          >删除</el-button
+        >
+      </template>
+    </qx-table>
   </div>
+  <qx-drawer ref="drawerRef" :before-close="handleBeforeClose">
+    <template #header>
+      <span>监控设置</span>
+    </template>
+    <el-form>
+      <el-form-item label="监控策略">
+        <el-select
+          v-model="monitoringPolicy"
+          placeholder="请选择监控策略"
+          @change="selectedMonitoringPolicy"
+        >
+          <el-option label="从现在开始" value="now" />
+          <el-option label="时间范围" value="range" />
+        </el-select>
+      </el-form-item>
+      <!-- 当选择了时间范围策略时，才显示 ChooseData 组件 -->
+      <div v-if="monitoringPolicy === 'range'">
+        <div class="mb-3 text-sm text-gray-500">请选择时间范围</div>
+        <choose-data
+          :disableToday="true"
+          startPlaceholder="请选择开始时间"
+          endPlaceholder="请选择结束时间"
+        />
+      </div>
+    </el-form>
+    <template #footer>
+      <el-button type="primary" size="small" @click="cancelDrawer"
+        >取消</el-button
+      >
+      <el-button type="primary" size="small" @click="handleSave"
+        >保存</el-button
+      >
+    </template>
+  </qx-drawer>
 </template>
 
-<style scoped>
-.modal-body {
-  font-size: 16px;
-}
-
-.modal-body p {
-  margin: 5px 0;
-}
-
-.modal-body strong {
-  display: inline-block;
-  width: 120px; /* 设置固定宽度，使文本对齐 */
-  font-weight: bold;
-}
-
-.el-dialog__header {
-  background-color: #f0f2f5;
-  padding: 15px;
-  border-bottom: 1px solid #e8e8e8;
-}
-
-.el-dialog__title {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.dialog-footer .el-button {
-  width: 100px;
-  height: 40px;
-  font-size: 16px;
-}
-
-::v-deep .el-message-box {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-::v-deep .el-message-box__wrapper {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-</style>
+<style scoped></style>

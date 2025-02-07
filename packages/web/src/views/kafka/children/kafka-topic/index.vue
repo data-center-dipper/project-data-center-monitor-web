@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import TopicHeader from './components/topic-header.vue'
 import TopicItem from './components/topic-item.vue'
-import { DialogList } from '@/components/dialog/useDialog.tsx'
 
 const handleCurrentPageChange = (page: number) => {
   console.log(page)
@@ -27,7 +26,6 @@ const handlePageSizeChange = (size: number) => {
       @qx-current-change="handleCurrentPageChange"
       @qx-size-change="handlePageSizeChange"
     ></qx-pagination>
-    <component v-for="(modal, index) in DialogList" :is="modal" :key="index" />
   </el-card>
 </template>
 
