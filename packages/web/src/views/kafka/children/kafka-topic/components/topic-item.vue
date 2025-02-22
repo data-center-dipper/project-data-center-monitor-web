@@ -211,6 +211,8 @@ const deleteTopic = () => {
         >
         <el-button type="text" @click="deleteTopic('expand')">删除topic</el-button>
         <el-button type="text">生成数据</el-button>
+        <el-button type="text">数据实时统计</el-button>
+        <el-button type="text">数据历史统计</el-button>
         <el-button type="text">参数配置</el-button>
         <el-button type="text">监控关联</el-button>
       </div>

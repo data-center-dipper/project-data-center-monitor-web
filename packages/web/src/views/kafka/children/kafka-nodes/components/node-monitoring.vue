@@ -112,10 +112,19 @@ const handlePageSizeChange = (size: number) => {
       <template v-for="item in 5" :key="item">
         <div class="border border-gray-200 rounded-md">
           <div class="text-center py-3 bg-gray-100 font-bold">1-kafka-1</div>
-          <div class="flex justify-center py-3 gap-3">
-            <span>内存：共 8GB</span>
-            <span>空闲：5.6GB</span>
-            <span>系统CPU负载：0.15</span>
+          <div class="flex flex-col justify-center py-3 gap-3">
+            <span>内存：共 8GB  空闲：5.6GB</span>
+            <span>提示: 内存状态良好</span>
+          </div>
+          <div class="flex flex-col justify-center py-3 gap-3">
+              <span>系统CPU负载：0.15  磁盘IO:23w</span>
+              <span>提示: 当前磁盘使用率过高，可能会导致写入压力比较大</span>
+          </div>
+          <div class="flex flex-col justify-center py-3 gap-3">
+              <span>网络速率：1000xx -> 100M (千兆网卡)</span>
+              <span>网络速率实测：20M/s  更新时间:2023-12-12 12:12:11</span>
+              <span>节点消费速率+写入速率: 100M</span>
+              <span>提示: 数据量太大,即将达到网卡极限</span>
           </div>
           <qx-table :options="tableOptions" :data="tableData"> </qx-table>
         </div>
