@@ -7,6 +7,7 @@
     <div v-else-if="consumers.length > 0">
       <!-- 使用卡片布局展示消费者信息列表 -->
       <div v-for="(consumer, index) in consumers" :key="index" class="border rounded-md p-4 border-gray-200 mb-4">
+
         <div class="flex items-center gap-6 mb-2">
           <div class="flex items-center gap-1">
             <span class="text-gray-500">Topic名称：</span>
@@ -20,31 +21,42 @@
             <span class="text-gray-500">业务属性：</span>
             <span>{{ consumer.businessProperty }}</span>
           </div>
+        </div>
+
+        <div class="flex items-center gap-1 mb-2">
           <div class="flex items-center gap-1">
             <span class="text-gray-500">平均消费速率：</span>
             <span>{{ consumer.avgConsumeRate }}</span>
           </div>
           <div class="flex items-center gap-1">
+            <span class="text-gray-500">延迟lag：</span>
+            <span>1000</span>
+          </div>
+          <div class="flex items-center gap-1">
+              <span class="text-gray-500">延迟阈值：10分钟</span>
+              <span>1000</span>
+          </div>
+          <div class="flex items-center gap-1">
             <span class="text-gray-500">是否延迟：</span>
             <span>{{ consumer.isDelayed ? '延迟' : '不延迟' }}</span>
           </div>
+          <div class="flex items-center gap-1">
+           <span class="text-gray-500">预计耗时：</span>
+           <span>20分钟</span>
+          </div>
         </div>
+
         <div class="flex items-center gap-1 mb-2">
-          <span class="text-gray-500">延迟lag：</span>
-          <span>1000</span>
+          <div class="flex items-center gap-1">
+            <span class="text-gray-500">最后更新时间：</span>
+            <span>{{ consumer.lastUpdateTime }}</span>
+          </div>
+          <div class="flex items-center gap-1">
+            <span class="text-gray-500">生命截止时间：</span>
+            <span>{{ consumer.deadline }}</span>
+          </div>
         </div>
-        <div class="flex items-center gap-1 mb-2">
-          <span class="text-gray-500">预计耗时：</span>
-          <span>20分钟</span>
-        </div>
-        <div class="flex items-center gap-1 mb-2">
-          <span class="text-gray-500">最后更新时间：</span>
-          <span>{{ consumer.lastUpdateTime }}</span>
-        </div>
-        <div class="flex items-center gap-1 mb-2">
-          <span class="text-gray-500">生命截止时间：</span>
-          <span>{{ consumer.deadline }}</span>
-        </div>
+
         <div class="flex items-center gap-1">
           <span class="text-gray-500">操作：</span>
           <div class="flex gap-2">
