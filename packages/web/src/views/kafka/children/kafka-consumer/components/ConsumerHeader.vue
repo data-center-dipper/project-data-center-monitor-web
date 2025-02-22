@@ -1,6 +1,6 @@
 <template>
   <div class="child-a">
-    <h2>子组件A</h2>
+    <h2>搜索组件</h2>
     <!-- 动态加载下拉菜单选项 -->
     <el-select v-model="localSelectedTopic" placeholder="请选择主题" @change="handleChange">
       <el-option

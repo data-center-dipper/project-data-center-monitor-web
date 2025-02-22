@@ -10,7 +10,6 @@
 import { ref, computed } from 'vue';
 import ConsumerHeader from './components/ConsumerHeader.vue';
 import ConsumerContent from './components/ConsumerContent.vue';
-import ConsumerItem from './components/ConsumerItem.vue';
 
 
 // 当前选中的主题

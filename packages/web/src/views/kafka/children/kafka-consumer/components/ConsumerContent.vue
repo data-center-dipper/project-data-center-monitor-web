@@ -1,6 +1,6 @@
 <template>
   <div class="topicConsumerShow">
-    <h2>子组件B</h2>
+    <h2>展示组件</h2>
     <!-- 根据是否有数据决定显示的内容 -->
     <div v-if="loading">加载中...</div>
     <div v-else-if="error">{{ error }}</div>
@@ -37,6 +37,9 @@
 
 <script setup>
 import { defineProps, ref, watch } from 'vue';
+import ConsumerGroupDetail from '@/views/kafka/children/kafka-topic/components/consumer-group-detail.vue'
+import { useDialog } from '@/components/dialog/useDialog.tsx'
+
 // 接收父组件传递的选中主题
 const props = defineProps({
   selectedTopic: String,
@@ -110,6 +113,11 @@ async function fetchItems(topic) {
 function handleRealTimeQuery(consumer) {
   console.log(`实时查询 ${consumer.topic} 的信息`);
   // 实现实时查询逻辑
+   useDialog({
+      title: '消费组查看',
+      component: ConsumerGroupDetail,
+      props: {},
+    })
 }
 
 function handleViewHistory(consumer) {
