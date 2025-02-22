@@ -26,7 +26,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-button class="mt-4" style="width: 100%" @click="onAddItem">增加消费组</el-button>
+      <el-button class="mt-4" style="width: 100%" @click="onAddItem(scope.row)">增加消费组</el-button>
     </div>
     <div v-else>
       <p v-if="selectedTopic">请选择一个主题以查看相关内容。</p>
@@ -37,8 +37,10 @@
 
 <script setup>
 import { defineProps, ref, watch } from 'vue';
-import ConsumerGroupDetail from '@/views/kafka/children/kafka-topic/components/consumer-group-detail.vue'
 import { useDialog } from '@/components/dialog/useDialog.tsx'
+import ConsumerGroupDetail from '@/views/kafka/children/kafka-topic/components/consumer-group-detail.vue'
+import AddConsumer from '@/views/kafka/children/kafka-consumer/components/AddConsumer.vue'
+
 
 // 接收父组件传递的选中主题
 const props = defineProps({
@@ -129,6 +131,25 @@ function handleToggleMonitor(consumer, enable) {
   console.log(`${enable ? '开启' : '关闭'} ${consumer.topic} 的监控`);
   // 实现监控逻辑
 }
+
+function onAddItem() {
+  console.log('添加新的消费组');
+  useDialog({
+    title: '添加新的消费组',
+    component: AddConsumer,
+    props: {
+      editMode: false,
+      modalData: {}
+    },
+    dialogProps: {
+      width: '50%',
+      destroyOnClose: true,
+      closeOnClickModal: false,
+    }
+  });
+}
+
+
 </script>
 
 <style scoped>
