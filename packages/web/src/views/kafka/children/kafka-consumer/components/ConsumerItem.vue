@@ -1,18 +1,26 @@
 <template>
-  <el-card class="consumer-item">
-    <div slot="header" class="clearfix">
-      <span>{{ consumer.topic }}</span>
-      <span>{{ consumer.groupId }}</span>
-      <span>{{ consumer.businessProperty }}</span>
-      <span>{{ consumer.lastUpdateTime }}</span>
-      <span>{{ consumer.deadline }}</span>
-      <el-link type="primary" :underline="false" @click.prevent="refresh(consumer)">刷新</el-link>
-      <el-link type="primary" :underline="false" @click.prevent="update(consumer)">更新</el-link>
-      <el-link type="primary" :underline="false" @click.prevent="remove()">删除</el-link>
-    </div>
-    <!-- 默认展开的消费者详情 -->
-    <div class="consumer-details">
-      <el-table :data="consumer.details" style="width: 100%">
+  <div class="consumer-item">
+    <!-- 表格显示消费者信息 -->
+    <el-table :data="[formattedConsumer]" style="width: 100%">
+      <el-table-column prop="topicName" ></el-table-column>
+      <el-table-column prop="groupId" ></el-table-column>
+      <el-table-column prop="businessProperty" ></el-table-column>
+      <el-table-column prop="avgConsumeRate" ></el-table-column>
+      <el-table-column prop="isDelayed" ></el-table-column>
+      <el-table-column prop="lastUpdateTime" ></el-table-column>
+      <el-table-column >
+        <template #default="scope">
+          <el-button type="primary" size="small" @click="handleRealTimeQuery(scope.row)">实时查询</el-button>
+          <el-button type="primary" size="small" @click="handleViewHistory(scope.row)">查看历史</el-button>
+          <el-button type="primary" size="small" @click="handleToggleMonitor(scope.row, true)">开启监控</el-button>
+          <el-button type="primary" size="small" @click="handleToggleMonitor(scope.row, false)">关闭监控</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <!-- 实时查询弹窗 -->
+    <el-dialog v-model="dialogVisibleRealTime" title="实时查询">
+      <el-table :data="selectedConsumer.details" style="width: 100%">
         <el-table-column prop="topicName" label="topic名称"></el-table-column>
         <el-table-column prop="partition" label="分区"></el-table-column>
         <el-table-column prop="startOffset" label="数据起点offset"></el-table-column>
@@ -20,52 +28,78 @@
         <el-table-column prop="endOffset" label="数据结尾offset"></el-table-column>
         <el-table-column prop="lag" label="延迟lag"></el-table-column>
       </el-table>
-    </div>
-  </el-card>
+    </el-dialog>
+
+    <!-- 查看历史弹窗 -->
+    <el-dialog v-model="dialogVisibleHistory" title="查看历史">
+      <div id="historyChart" style="width: 100%; height: 400px;"></div>
+    </el-dialog>
+  </div>
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from 'vue';
+import { computed, ref, onMounted } from 'vue';
+import * as echarts from 'echarts';
 
 const props = defineProps({
   consumer: Object,
 });
 
-const emit = defineEmits(['refresh', 'update', 'delete']);
+// 格式化消费者信息以便在表格中展示
+const formattedConsumer = computed(() => ({
+  topicName: props.consumer.topic,
+  groupId: props.consumer.groupId,
+  businessProperty: props.consumer.businessProperty,
+  avgConsumeRate: props.consumer.avgConsumeRate,
+  isDelayed: props.consumer.isDelayed ? '延迟' : '不延迟',
+  lastUpdateTime: props.consumer.lastUpdateTime,
+  details: props.consumer.details
+}));
 
-function refresh() {
-  emit('refresh', props.consumer);
+// 弹窗控制
+const dialogVisibleRealTime = ref(false);
+const dialogVisibleHistory = ref(false);
+const selectedConsumer = ref(null);
+
+function handleRealTimeQuery(consumer) {
+  selectedConsumer.value = consumer;
+  dialogVisibleRealTime.value = true;
 }
 
-function update() {
-  emit('update', props.consumer);
+function handleViewHistory(consumer) {
+  selectedConsumer.value = consumer;
+  dialogVisibleHistory.value = true;
+
+  // 渲染折线图
+  onMounted(() => {
+    const chartDom = document.getElementById('historyChart');
+    const myChart = echarts.init(chartDom);
+    const option = {
+      xAxis: {
+        type: 'category',
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          data: [820, 932, 901, 934, 1290, 1330, 1320],
+          type: 'line'
+        }
+      ]
+    };
+    myChart.setOption(option);
+  });
 }
 
-function remove() {
-  emit('delete');
+function handleToggleMonitor(consumer, enable) {
+  console.log(`${enable ? '开启' : '关闭'} ${consumer.topicName} 的监控`);
 }
 </script>
 
 <style scoped>
 .consumer-item {
   margin-bottom: 20px;
-}
-
-.clearfix {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.clearfix span {
-  margin-right: 10px;
-}
-
-.el-link {
-  margin-left: 10px;
-}
-
-.consumer-details {
-  padding-top: 15px;
 }
 </style>

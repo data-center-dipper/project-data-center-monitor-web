@@ -6,16 +6,27 @@
     <div v-else-if="error">{{ error }}</div>
     <div v-else-if="consumers.length > 0">
       <!-- 消费者信息列表 -->
-      <div class="consumer-list">
-        <ConsumerItem
-          v-for="(consumer, index) in consumers"
-          :key="index"
-          :consumer="consumer"
-          @refresh="refresh"
-          @update="updateConsumer"
-          @delete="deleteConsumer(index)"
-        ></ConsumerItem>
-      </div>
+      <el-table :data="consumers" style="width: 100%">
+        <el-table-column prop="topic" label="Topic名称"></el-table-column>
+        <el-table-column prop="groupId" label="消费组"></el-table-column>
+        <el-table-column prop="businessProperty" label="业务属性"></el-table-column>
+        <el-table-column prop="avgConsumeRate" label="平均消费速率"></el-table-column>
+        <el-table-column prop="isDelayed" label="是否延迟">
+          <template #default="scope">
+            {{ scope.row.isDelayed ? '延迟' : '不延迟' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="lastUpdateTime" label="最后更新时间"></el-table-column>
+        <el-table-column fixed="right" label="操作" width="300">
+          <template #default="scope">
+            <el-button link  type="primary" size="small" @click="handleRealTimeQuery(scope.row)">实时查询</el-button>
+            <el-button link type="primary" size="small" @click="handleViewHistory(scope.row)">查看历史</el-button>
+            <el-button link type="primary" size="small" @click="handleToggleMonitor(scope.row, true)">开启监控</el-button>
+            <el-button link type="primary" size="small" @click="handleToggleMonitor(scope.row, false)">关闭监控</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-button class="mt-4" style="width: 100%" @click="onAddItem">增加消费组</el-button>
     </div>
     <div v-else>
       <p v-if="selectedTopic">请选择一个主题以查看相关内容。</p>
@@ -26,8 +37,6 @@
 
 <script setup>
 import { defineProps, ref, watch } from 'vue';
-import ConsumerItem from './ConsumerItem.vue'; // 导入 ConsumerItem 组件
-
 // 接收父组件传递的选中主题
 const props = defineProps({
   selectedTopic: String,
@@ -38,25 +47,21 @@ const loading = ref(false);
 const error = ref(null);
 const consumers = ref([]); // 改为存储消费者信息列表
 
-// 监听 selectedTopic 变化
-watch(() => props.selectedTopic, (newTopic) => {
+watch(() => props.selectedTopic, async (newTopic) => {
   console.log('接收到的主题:', newTopic); // 打印接收到的主题
 
   if (newTopic) {
-    fetchItems(newTopic).then(() => {
-      console.log('获取到的数据:', consumers.value); // 打印获取到的数据
-    });
+    await fetchItems(newTopic);
+    console.log('获取到的数据:', consumers.value); // 打印获取到的数据
   }
 }, { immediate: true }); // 立即执行一次监听器
 
-// 模拟接口调用函数
 async function fetchItems(topic) {
   loading.value = true;
   error.value = null;
   consumers.value = [];
 
   try {
-    // 这里可以替换为实际的异步请求
     const mockData = {
       topic1: [
         {
@@ -68,39 +73,27 @@ async function fetchItems(topic) {
           details: [
             { topicName: 'topic1', partition: 1, startOffset: 10001, currentOffset: 10002, endOffset: 10020, lag: 10 },
             { topicName: 'topic1', partition: 2, startOffset: 10001, currentOffset: 10002, endOffset: 10020, lag: 10 }
-          ]
-        }
-      ],
-      topic2: [
+          ],
+          isDelayed: true,
+          avgConsumeRate: '100eps'
+        },
         {
-          topic: 'Topic名称2',
+          topic: 'Topic名称1',
           groupId: '消费组A2',
           businessProperty: '业务属性2',
           lastUpdateTime: new Date().toLocaleString(),
-          deadline: '2025-02-01',
+          deadline: '2025-01-01',
           details: [
-            { topicName: 'topic2', partition: 1, startOffset: 20001, currentOffset: 20002, endOffset: 20020, lag: 8 },
-            { topicName: 'topic2', partition: 2, startOffset: 20001, currentOffset: 20002, endOffset: 20020, lag: 8 }
-          ]
-        }
-      ],
-      topic3: [
-        {
-          topic: 'Topic名称3',
-          groupId: '消费组A3',
-          businessProperty: '业务属性3',
-          lastUpdateTime: new Date().toLocaleString(),
-          deadline: '2025-03-01',
-          details: [
-            { topicName: 'topic3', partition: 1, startOffset: 30001, currentOffset: 30002, endOffset: 30020, lag: 6 },
-            { topicName: 'topic3', partition: 2, startOffset: 30001, currentOffset: 30002, endOffset: 30020, lag: 6 }
-          ]
+            { topicName: 'topic1', partition: 1, startOffset: 10001, currentOffset: 10002, endOffset: 10020, lag: 10 },
+            { topicName: 'topic1', partition: 2, startOffset: 10001, currentOffset: 10002, endOffset: 10020, lag: 10 }
+          ],
+          isDelayed: false,
+          avgConsumeRate: '90eps'
         }
       ]
     };
 
-    // 延迟1秒以模拟网络请求
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 1000)); // 延迟1秒模拟网络请求
 
     if (mockData[topic]) {
       consumers.value = mockData[topic];
@@ -114,16 +107,19 @@ async function fetchItems(topic) {
   }
 }
 
-function refresh(consumer) {
-  console.log(`刷新 ${consumer.topic} 的信息`);
+function handleRealTimeQuery(consumer) {
+  console.log(`实时查询 ${consumer.topic} 的信息`);
+  // 实现实时查询逻辑
 }
 
-function updateConsumer(consumer) {
-  console.log(`更新 ${consumer.topic} 的信息`);
+function handleViewHistory(consumer) {
+  console.log(`查看 ${consumer.topic} 的历史记录`);
+  // 实现查看历史记录逻辑
 }
 
-function deleteConsumer(index) {
-  consumers.value.splice(index, 1);
+function handleToggleMonitor(consumer, enable) {
+  console.log(`${enable ? '开启' : '关闭'} ${consumer.topic} 的监控`);
+  // 实现监控逻辑
 }
 </script>
 
