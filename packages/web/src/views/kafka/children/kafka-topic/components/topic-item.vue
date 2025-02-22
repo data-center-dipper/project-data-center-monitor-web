@@ -138,6 +138,10 @@ const handleFormDialog = (type: string) => {
     handleOpenDialog('分区扩容', dialogFormOptionsB.value, type)
   }
 }
+
+const deleteTopic = () => {
+ // 执行删除topic
+}
 </script>
 
 <template>
@@ -197,6 +201,7 @@ const handleFormDialog = (type: string) => {
         <el-button type="text" @click="handleFormDialog('expand')"
           >分区扩容</el-button
         >
+        <el-button type="text" @click="deleteTopic('expand')">删除topic</el-button>
         <el-button type="text">生成数据</el-button>
       </div>
     </div>

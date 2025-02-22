@@ -33,6 +33,13 @@ function showZkDtail(zkNode) {
           </div>
           <div class="p-3 flex flex-col gap-3">
             <div class="flex gap-2">
+              <div>角色：</div>
+              <div class="flex items-center gap-2">
+                <span class="bg-green-400 w-2 h-2 rounded-full"></span>
+                <span>leader</span>
+              </div>
+            </div>
+            <div class="flex gap-2">
               <div>连接状态：</div>
               <div class="flex items-center gap-2">
                 <span class="bg-green-400 w-2 h-2 rounded-full"></span>

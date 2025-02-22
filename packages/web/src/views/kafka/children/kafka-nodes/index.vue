@@ -5,6 +5,7 @@ import ZookeeperNodeDetection from './components/zookeeper-node-detection.vue'
 import NodeMonitoring from './components/node-monitoring.vue'
 import ClusterStatic from './components/cluster-static.vue'
 import ClusterStableNodes from './components/cluster-stable-nodes.vue'
+import TopicTop10 from './components/topic-top-stat.vue'
 </script>
 
 <template>
@@ -12,6 +13,7 @@ import ClusterStableNodes from './components/cluster-stable-nodes.vue'
     <ClusterOverview></ClusterOverview>
     <ClusterStatic></ClusterStatic>
     <ClusterStableNodes></ClusterStableNodes>
+    <TopicTop10></TopicTop10>
     <KafkaNodeDetection></KafkaNodeDetection>
     <ZookeeperNodeDetection></ZookeeperNodeDetection>
     <NodeMonitoring></NodeMonitoring>
