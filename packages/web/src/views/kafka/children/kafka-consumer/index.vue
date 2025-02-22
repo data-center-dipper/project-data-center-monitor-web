@@ -1,125 +1,27 @@
 <template>
   <div class="page-container">
     <!-- 显示主题和消费者总数 -->
-    <ConsumerHeader :search-query="searchQuery" @update-search="newQuery => searchQuery = newQuery" :consumer-count="consumerCount"></ConsumerHeader>
-
-    <!-- 消费者信息列表 -->
-    <div class="consumer-list">
-      <ConsumerItem v-for="(consumer, index) in filteredConsumers" :key="index" :consumer="consumer" @refresh="refresh" @update="updateConsumer" @delete="deleteConsumer(index)"></ConsumerItem>
-    </div>
-
-    <!-- 新增消费者按钮 -->
-    <button @click="showAddModal" class="add-link">新增</button>
-
-    <!-- 弹窗组件 -->
-    <AddConsumer
-      :show="isAddModalVisible"
-      @close="toggleAddModal"
-      @add="handleAddConsumer"
-      :editMode="editMode"
-      :modalData="modalData"
-      @update="updateSelectedConsumer"
-    />
+    <ConsumerHeader @select-topic="handleSelectTopic"></ConsumerHeader>
+    <ConsumerContent :selected-topic="selectedTopic"></ConsumerContent>
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
 import ConsumerHeader from './components/ConsumerHeader.vue';
+import ConsumerContent from './components/ConsumerContent.vue';
 import ConsumerItem from './components/ConsumerItem.vue';
-import AddConsumer from './components/AddConsumer.vue';
 
-// 模拟的消费者数据
-const consumers = ref([
-  {
-    topic: 'topic1',
-    groupId: 'group1',
-    businessProperty: '属性A',
-    lastUpdateTime: new Date().toLocaleString(),
-    deadline: '2025-01-01',
-    details: [
-      { topicName: 'topic1', partition: 1, startOffset: 10001, currentOffset: 10002, endOffset: 10020, lag: 10 },
-      { topicName: 'topic1', partition: 2, startOffset: 10001, currentOffset: 10002, endOffset: 10020, lag: 10 }
-    ]
-  },
-  {
-    topic: 'topic2',
-    groupId: 'group2',
-    businessProperty: '属性B',
-    lastUpdateTime: new Date().toLocaleString(),
-    deadline: '2025-02-01',
-    details: [
-      { topicName: 'topic2', partition: 1, startOffset: 20001, currentOffset: 20002, endOffset: 20020, lag: 8 },
-      { topicName: 'topic2', partition: 2, startOffset: 20001, currentOffset: 20002, endOffset: 20020, lag: 8 }
-    ]
-  }
-]);
 
-// 搜索查询字符串
-const searchQuery = ref('');
+// 当前选中的主题
+const selectedTopic = ref('');
 
-// 消费者总数
-const consumerCount = computed(() => consumers.value.length);
-
-// 过滤后的消费者列表
-const filteredConsumers = computed(() => {
-  return consumers.value.filter(consumer =>
-    consumer.topic.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-    consumer.groupId.toLowerCase().includes(searchQuery.value.toLowerCase())
-  );
-});
-
-// 刷新消费者信息
-function refresh(consumer) {
-  console.log(`刷新 ${consumer.topic} 的信息`);
+// 处理从子组件A传来的主题选择事件
+function handleSelectTopic(topic) {
+  selectedTopic.value = topic;
+  console.log('接受道子组件的传参，然后把数据传递给兄弟组件' ,topic);
 }
 
-// 更新消费者信息
-function updateConsumer(consumer) {
-  editMode.value = true;
-  modalData.value = { ...consumer };
-  toggleAddModal();
-}
-
-// 删除消费者
-function deleteConsumer(index) {
-  consumers.value.splice(index, 1);
-}
-
-// 控制新增消费者弹窗的显示状态
-const isAddModalVisible = ref(false);
-
-// 切换弹窗显示状态
-function toggleAddModal() {
-  isAddModalVisible.value = !isAddModalVisible.value;
-}
-
-// 处理新增消费者的逻辑
-function handleAddConsumer(consumerData) {
-  console.log('新消费者数据:', consumerData);
-  consumers.value.push({ ...consumerData, details: [] }); // 添加新消费者到列表
-  toggleAddModal(); // 添加后关闭弹窗
-}
-
-// 模态框相关状态
-const modalData = ref({ topic: '', groupId: '', businessProperty: '', deadline: '' });
-const editMode = ref(false);
-let editingIndex = null;
-
-// 显示添加弹窗
-function showAddModal() {
-  editMode.value = false;
-  modalData.value = { topic: '', groupId: '', businessProperty: '', deadline: '' };
-  toggleAddModal();
-}
-
-// 更新选中的消费者
-function updateSelectedConsumer(updatedData) {
-  if (editingIndex !== null && editingIndex >= 0 && editingIndex < consumers.value.length) {
-    consumers.value[editingIndex] = { ...updatedData };
-  }
-  toggleAddModal();
-}
 </script>
 
 <style scoped>
