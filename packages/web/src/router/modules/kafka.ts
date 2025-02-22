@@ -15,20 +15,7 @@ const kafkaRouter: Array<RouteRecordRaw> = [
       icon: 'Kafka',
     },
     children: [
-      {
-        path: '/kafka/kafka-nodes',
-        name: 'kafkaHome',
-        component: () => import('@/views/kafka/children/kafka-nodes/index.vue'),
-        meta: {
-          keepAlive: false,
-          requiresAuth: true,
-          title: '集群概览',
-          key: 'kafka-nodes',
-          to: { name: 'kafkaHome' },
-          parentKey: 'kafka-management',
-        },
-      },
-      {
+    {
         path: '/kafka/kafka-cluster',
         name: 'kafkaCluster',
         component: () =>
@@ -39,6 +26,19 @@ const kafkaRouter: Array<RouteRecordRaw> = [
           title: '集群管理',
           key: 'kafka-cluster',
           to: { name: 'kafkaCluster' },
+          parentKey: 'kafka-management',
+        },
+      },
+      {
+        path: '/kafka/kafka-nodes',
+        name: 'kafkaHome',
+        component: () => import('@/views/kafka/children/kafka-nodes/index.vue'),
+        meta: {
+          keepAlive: false,
+          requiresAuth: true,
+          title: '集群概览',
+          key: 'kafka-nodes',
+          to: { name: 'kafkaHome' },
           parentKey: 'kafka-management',
         },
       },
