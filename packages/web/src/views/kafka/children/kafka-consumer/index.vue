@@ -1,53 +1,11 @@
 <template>
   <div class="page-container">
     <!-- 显示主题和消费者总数 -->
-    <div class="info-section">
-      <div class="info-box">
-        <span>主题: </span>
-        <input type="text" v-model="searchQuery" placeholder="搜索..." />
-        <span>&nbsp;&nbsp;消费者总数: {{ consumerCount }}</span>
-      </div>
-    </div>
+    <ConsumerHeader :search-query="searchQuery" @update-search="newQuery => searchQuery = newQuery" :consumer-count="consumerCount"></ConsumerHeader>
 
     <!-- 消费者信息列表 -->
     <div class="consumer-list">
-      <div v-for="(consumer, index) in filteredConsumers" :key="index" class="consumer-item">
-        <div class="consumer-header">
-          <span>{{ consumer.topic }}</span>
-          <span>{{ consumer.groupId }}</span>
-          <span>{{ consumer.businessProperty }}</span>
-          <span>{{ consumer.lastUpdateTime }}</span>
-          <span>{{ consumer.deadline }}</span>
-          <a href="#" @click.prevent="refresh(consumer)">刷新</a>
-          <a href="#" @click.prevent="updateConsumer(consumer)">更新</a>
-          <a href="#" @click.prevent="deleteConsumer(index)">删除</a>
-        </div>
-        <!-- 默认展开的消费者详情 -->
-        <div class="consumer-details">
-          <table class="details-table">
-            <thead>
-              <tr>
-                <th>topic名称</th>
-                <th>分区</th>
-                <th>数据起点offset</th>
-                <th>当前读取offset</th>
-                <th>数据结尾offset</th>
-                <th>延迟lag</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="detail in consumer.details" :key="detail.partition">
-                <td>{{ detail.topicName }}</td>
-                <td>{{ detail.partition }}</td>
-                <td>{{ detail.startOffset }}</td>
-                <td>{{ detail.currentOffset }}</td>
-                <td>{{ detail.endOffset }}</td>
-                <td>{{ detail.lag }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <ConsumerItem v-for="(consumer, index) in filteredConsumers" :key="index" :consumer="consumer" @refresh="refresh" @update="updateConsumer" @delete="deleteConsumer(index)"></ConsumerItem>
     </div>
 
     <!-- 新增消费者按钮 -->
@@ -67,7 +25,9 @@
 
 <script setup>
 import { ref, computed } from 'vue';
-import AddConsumer from '@/views/kafka/children/kafka-consumer/AddConsumer.vue'; // 确保路径正确
+import ConsumerHeader from './components/ConsumerHeader.vue';
+import ConsumerItem from './components/ConsumerItem.vue';
+import AddConsumer from './components/AddConsumer.vue';
 
 // 模拟的消费者数据
 const consumers = ref([
@@ -116,7 +76,9 @@ function refresh(consumer) {
 
 // 更新消费者信息
 function updateConsumer(consumer) {
-  console.log('更新消费者信息');
+  editMode.value = true;
+  modalData.value = { ...consumer };
+  toggleAddModal();
 }
 
 // 删除消费者
