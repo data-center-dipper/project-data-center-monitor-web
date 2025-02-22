@@ -1,4 +1,21 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useDialog } from '@/components/dialog/useDialog.tsx'
+import zkCodeWindow from './pop-up-window/zk-code-window.vue'
+
+
+function showZkDtail(zkNode) {
+  console.log(`实时查询 ${zkNode} 的信息`);
+  // 实现实时查询逻辑
+   useDialog({
+      title: 'zkNode查看',
+      component: zkCodeWindow,
+      props: {},
+    })
+}
+
+
+</script>
 
 <template>
   <el-card>
@@ -32,14 +49,18 @@
             <div class="flex gap-2">
               <div>元数据：</div>
               <div class="flex items-center gap-2">
-                <span>此处是一段代码，默认显示一个复制的图标，点击复制的图标，弹出一个弹窗，里面是以代码格式的显示，然后可以复制A</span>
+                <el-button link  type="primary" size="small" @click="showZkDtail(scope.row)">查看详情</el-button>
               </div>
             </div>
           </div>
         </div>
       </template>
     </div>
+
+
   </el-card>
 </template>
 
-<style scoped></style>
+<style scoped>
+/* 可根据需要添加额外样式 */
+</style>
