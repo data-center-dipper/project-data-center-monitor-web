@@ -29,6 +29,12 @@
                 <span>不一致</span>
               </div>
             </div>
+            <div class="flex gap-2">
+              <div>元数据：</div>
+              <div class="flex items-center gap-2">
+                <span>此处是一段代码，默认显示一个复制的图标，点击复制的图标，弹出一个弹窗，里面是以代码格式的显示，然后可以复制A</span>
+              </div>
+            </div>
           </div>
         </div>
       </template>

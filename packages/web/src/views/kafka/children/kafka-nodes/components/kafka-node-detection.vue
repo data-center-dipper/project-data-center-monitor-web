@@ -31,6 +31,13 @@ const handlePageSizeChange = (size: number) => {
               </div>
             </div>
             <div class="flex gap-2">
+              <div>元数据：</div>
+              <div class="flex items-center gap-2">
+                <span class="bg-green-400 w-2 h-2 rounded-full"></span>
+                <span>正常</span>
+              </div>
+            </div>
+            <div class="flex gap-2">
               <div>jmx连接状态：</div>
               <div class="flex items-center gap-2">
                 <span class="bg-red-400 w-2 h-2 rounded-full"></span>

@@ -45,12 +45,10 @@
         </div>
         <div class="flex flex-col items-center gap-4 md:flex-row md:gap-6">
           <div>
-            Kafka集群共有 3 个节点：其中
-            <span class="text-red-500">0</span> 个节点离线
+            最大运行时常: <span class="text-red-500">4小时20分</span>
           </div>
           <div>
-            Zookeeper集群共有 3 个节点：其中
-            <span class="text-red-500">0</span> 个节点离线
+            最小运行时常: <span class="text-red-500">1小时20分</span>
           </div>
         </div>
       </div>
