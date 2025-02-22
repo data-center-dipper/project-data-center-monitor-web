@@ -164,13 +164,17 @@ const deleteTopic = () => {
         <span>1</span>
       </div>
       <div class="flex items-center gap-1">
-        <span class="text-gray-500">数据大小：</span>
-        <span>133.91B</span>
-      </div>
-      <div class="flex items-center gap-1">
-        <span class="text-gray-500">数据大小：</span>
+        <span class="text-gray-500">磁盘大小：</span>
         <span>2.88KB</span>
       </div>
+    </div>
+    <div class="flex items-center gap-1">
+      <span class="text-gray-500">业务属性：</span>
+      <span class="text-gray-500">原始日志入库的topic，承接所有日志信息</span>
+    </div>
+    <div class="flex items-center gap-1">
+      <span class="text-gray-500">数据大小：1KB</span>
+      <span class="text-red-500">数据大小超过1KB,那么会导致消费者消费速率变慢，甚至卡死</span>
     </div>
     <div class="mt-4">
       <qx-table
@@ -184,6 +188,10 @@ const deleteTopic = () => {
     <div class="flex items-center gap-1">
       <span class="text-gray-500">分区状态：</span>
       <span class="text-green-500">正常</span>
+    </div>
+    <div class="flex items-center gap-1">
+      <span class="text-gray-500">消费者总数：</span>
+      <span class="text-green-500">23</span>
     </div>
     <div class="flex items-center gap-1">
       <div class="text-gray-500">操作：</div>
@@ -203,6 +211,8 @@ const deleteTopic = () => {
         >
         <el-button type="text" @click="deleteTopic('expand')">删除topic</el-button>
         <el-button type="text">生成数据</el-button>
+        <el-button type="text">参数配置</el-button>
+        <el-button type="text">监控关联</el-button>
       </div>
     </div>
     <qx-form-dialog
