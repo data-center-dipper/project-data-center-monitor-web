@@ -79,8 +79,6 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
-router.afterEach((to) => {
-  console.log('Navigation finished to:', to.fullPath)
-})
+router.afterEach((to) => {})
 
 export default router
