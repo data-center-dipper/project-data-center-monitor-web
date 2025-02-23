@@ -1,0 +1,21 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "strict": false, // 关闭所有严格模式
+    "noUnusedLocals": false, // 不提示未使用的局部变量报错
+    "noUnusedParameters": false, // 不提示未使用的参数报错
+    "noFallthroughCasesInSwitch": false, // 允许 switch 语句中存在穿透情况
+    "noUncheckedIndexedAccess": false, // 允许不检查索引访问
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue"
+  ]
+}
