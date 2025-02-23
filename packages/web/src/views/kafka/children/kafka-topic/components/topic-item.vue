@@ -190,6 +190,10 @@ const deleteTopic = () => {
       <span class="text-green-500">正常</span>
     </div>
     <div class="flex items-center gap-1">
+      <span class="text-gray-500">数据是否倾斜：</span>
+      <span class="text-green-500">正常</span>
+    </div>
+    <div class="flex items-center gap-1">
       <span class="text-gray-500">消费者总数：</span>
       <span class="text-green-500">23</span>
     </div>
