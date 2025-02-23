@@ -1,6 +1,9 @@
 import type { App, Directive } from 'vue'
+import settingTextColor from './modules/settingTextColor.ts'
 
-const directivesList: { [key: string]: Directive } = {}
+const directivesList: { [key: string]: Directive } = {
+  settingTextColor,
+}
 
 const directives = {
   install(app: App<Element>) {

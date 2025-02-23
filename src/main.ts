@@ -1,3 +1,4 @@
+// src/main.ts
 import { createApp } from 'vue'
 import type { App as _App } from 'vue'
 import App from './App.vue'
@@ -8,8 +9,7 @@ import ProComponents from './components/index.ts'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import globalComponentsPlugin from '@/components/index'
-import ECharts from 'vue-echarts'
-import 'echarts'
+import Directives from './directives/index.ts'
 
 console.log('所有环境变量:', import.meta.env)
 
@@ -38,7 +38,9 @@ const initializeApp = async () => {
   app.use(pinia)
   app.use(ProComponents)
   app.use(globalComponentsPlugin)
-  app.use(ECharts)
+
+  // 注册自定义指令
+  app.use(Directives)
 
   // 根据当前环境执行相应的初始化步骤
   await setupForDevelopment(app)
