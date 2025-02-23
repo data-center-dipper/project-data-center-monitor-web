@@ -10,9 +10,6 @@
         v-for="(consumer, index) in consumers"
         :key="index"
         :consumer="consumer"
-        :handleRealTimeQuery="handleRealTimeQuery"
-        :handleViewHistory="handleViewHistory"
-        :handleToggleMonitor="handleToggleMonitor"
       />
       <el-button class="mt-4" style="width: 100%" @click="onAddItem()">增加消费组</el-button>
     </div>
@@ -83,21 +80,6 @@ async function fetchItems(topic) {
   } finally {
     loading.value = false;
   }
-}
-
-function handleRealTimeQuery(consumer) {
-  console.log(`实时查询 ${consumer.topic} 的信息`);
-  // 实现实时查询逻辑
-}
-
-function handleViewHistory(consumer) {
-  console.log(`查看 ${consumer.topic} 的历史记录`);
-  // 实现查看历史记录逻辑
-}
-
-function handleToggleMonitor(consumer, enable) {
-  console.log(`${enable ? '开启' : '关闭'} ${consumer.topic} 的监控`);
-  // 实现监控逻辑
 }
 
 function onAddItem() {
