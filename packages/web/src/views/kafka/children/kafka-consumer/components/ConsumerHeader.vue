@@ -6,7 +6,6 @@
                 <el-select v-model="formInline.selectedTopics"
                            multiple
                            placeholder="请选择主题"
-                           @change="handleChangeTopics"
                            clearable
                            style="width: 420px;">
                     <el-option v-for="option in options"
@@ -22,7 +21,6 @@
                 <el-select v-model="formInline.selectedConsumerGroups"
                            multiple
                            placeholder="请选择消费组"
-                           @change="handleChangeConsumerGroups"
                            clearable
                            style="width: 420px;">
                     <el-option v-for="group in consumerGroups"
@@ -35,7 +33,7 @@
 
             <!-- 增加消费组按钮 -->
             <el-form-item>
-                <el-button type="primary" style="width: 100px;" @click="onAddItem">搜索</el-button>
+                <el-button type="primary" style="width: 100px;" @click="onSearch">搜索</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -56,7 +54,6 @@
 
     // 模拟从API或其它异步操作中获取数据
     function fetchOptions() {
-        // 这里可以替换为实际的异步请求
         setTimeout(() => {
             options.value = [
                 { label: 'topic1', value: 'topic1' },
@@ -72,18 +69,16 @@
     }
 
     // 触发自定义事件通知父组件主题变化
-    const emit = defineEmits(['select-topics', 'select-consumer-groups']);
+    const emit = defineEmits(['searchForm']);
 
-    function handleChangeTopics() {
-        emit('select-topics', formInline.selectedTopics);
-    }
+    function onSearch() {
+        const topicsString = formInline.selectedTopics.join(',');
+        const groupsString = formInline.selectedConsumerGroups.join(',');
 
-    function handleChangeConsumerGroups() {
-        emit('select-consumer-groups', formInline.selectedConsumerGroups);
-    }
+        console.log('提交查询', formInline);
 
-    function onAddItem() {
-        console.log('增加消费组');
+        // 发送自定义事件给父组件
+        emit('searchForm', { topics: topicsString, consumerGroups: groupsString });
     }
 
     onMounted(() => {

@@ -14,8 +14,8 @@
       <el-button class="mt-4" style="width: 100%" @click="onAddItem()">增加消费组</el-button>
     </div>
     <div v-else>
-      <p v-if="selectedTopic">请选择一个主题以查看相关内容。</p>
-      <p v-else>没有选择任何主题。</p>
+      <p v-if="selectedTopics || selectedConsumerGroups">请选择一个主题或消费组以查看相关内容。</p>
+      <p v-else>没有选择任何主题或消费组。</p>
     </div>
   </div>
 </template>
@@ -29,14 +29,15 @@ const loading = ref(false);
 const error = ref(null);
 const consumers = ref([]); // 初始化为空数组
 
-// 接收父组件传递的选中主题
+// 接收父组件传递的选中主题和消费组
 const props = defineProps({
-  selectedTopic: String,
+  selectedTopics: String,
+  selectedConsumerGroups: String,
 });
 
-watch(() => props.selectedTopic, async (newTopic) => {
-  if (newTopic) {
-    await fetchItems(newTopic);
+watch([() => props.selectedTopics, () => props.selectedConsumerGroups], async ([newTopic, newGroup]) => {
+  if (newTopic || newGroup) {
+    await fetchItems(newTopic || 'topic1'); // 默认返回topic1的数据
   }
 }, { immediate: true }); // 立即执行一次监听器
 
@@ -56,15 +57,7 @@ async function fetchItems(topic) {
           isDelayed: true,
           avgConsumeRate: '100eps'
         },
-        {
-          topic: 'Topic名称1',
-          groupId: '消费组A2',
-          businessProperty: '业务属性2',
-          lastUpdateTime: new Date().toLocaleString(),
-          deadline: '2025-01-01',
-          isDelayed: false,
-          avgConsumeRate: '90eps'
-        }
+        // 其他模拟数据...
       ]
     };
 
