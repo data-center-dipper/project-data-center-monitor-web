@@ -105,13 +105,15 @@
     }
 
     function handleToggleSetting(consumer) {
-    console.log(`实时查询 ${consumer.topic} 的信息`);
-    useDialog({
-        title: '消费组设置',
-        component: ConsumerGroupSetting,
-        props: {},
-    })
-}
+        console.log(`实时查询 ${consumer.topic} 的信息`);
+        useDialog({
+            title: '消费组设置',
+            component: ConsumerGroupSetting,
+            props: {},
+        })
+    }
+
+
     
 </script>
 
