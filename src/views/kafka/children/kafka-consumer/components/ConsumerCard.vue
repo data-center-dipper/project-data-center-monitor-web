@@ -60,7 +60,7 @@
     <template #footer>
       <div class="flex items-center gap-1">
         <span class="text-gray-500">操作：</span>
-        <div class="flex gap-2">
+        <div class="flex gap-1">
           <el-button
             type="text"
             size="small"
@@ -92,7 +92,6 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
 import { useDialog } from '@/components/dialog/useDialog.tsx'
 import ConsumerGroupDetail from '@/views/kafka/children/kafka-consumer/components/pop-up-window/consumer-group-detail.vue'
 import ConsumerGroupHistory from '@/views/kafka/children/kafka-consumer/components/pop-up-window/consumer-group-history.vue'
