@@ -8,6 +8,8 @@ import ProComponents from './components/index.ts'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import globalComponentsPlugin from '@/components/index'; // 路径根据实际情况调整
+import ECharts from 'vue-echarts';
+import 'echarts';
 
 console.log('所有环境变量:', import.meta.env);
 
@@ -42,6 +44,7 @@ const initializeApp = async () => {
     app.use(pinia);
     app.use(ProComponents)
     app.use(globalComponentsPlugin);
+    app.use(ECharts);
 
     // 根据当前环境执行相应的初始化步骤
     console.log('【主程序】根据当前环境执行相应的初始化步骤 ', import.meta.env.VITE_USER_NODE_ENV);

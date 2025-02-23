@@ -70,7 +70,8 @@
 <script setup>
 import { defineProps } from 'vue';
 import { useDialog } from '@/components/dialog/useDialog.tsx'
-import ConsumerGroupDetail from '@/views/kafka/children/kafka-topic/components/consumer-group-detail.vue'
+import ConsumerGroupDetail from '@/views/kafka/children/kafka-consumer/components/pop-up-window/consumer-group-detail.vue'
+import ConsumerGroupHistory from '@/views/kafka/children/kafka-consumer/components/pop-up-window/consumer-group-history.vue'
 
 const props = defineProps({
   consumer: Object,
@@ -78,6 +79,26 @@ const props = defineProps({
   handleViewHistory: Function,
   handleToggleMonitor: Function,
 });
+
+function handleRealTimeQuery(consumer) {
+  console.log(`实时查询 ${consumer.topic} 的信息`);
+  // 实现实时查询逻辑
+   useDialog({
+      title: '消费组查看',
+      component: ConsumerGroupDetail,
+      props: {},
+    })
+}
+
+function handleViewHistory(consumer) {
+  console.log(`实时查询 ${consumer.topic} 的信息`);
+  // 实现实时查询逻辑
+   useDialog({
+      title: '消费组查看',
+      component: ConsumerGroupHistory,
+      props: {},
+    })
+}
 </script>
 
 <style scoped>

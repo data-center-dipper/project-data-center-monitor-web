@@ -12,7 +12,7 @@
   "dependencies": {
     "@simonwep/pickr": "^1.9.1",
     "chart.js": "^4.4.7",
-    "echarts": "^5.5.1",
+    "echarts": "^5.6.0",
     "element-plus": "^2.9.3",
     "lodash": "^4.17.21",
     "nprogress": "^0.2.0",
@@ -20,6 +20,7 @@
     "pinia-plugin-persistedstate": "^4.2.0",
     "simplebar-vue": "^2.4.0",
     "vue": "^3.5.13",
+    "vue-echarts": "^7.0.3",
     "vue-router": "^4.5.0",
     "wangeditor": "^4.7.15"
   },
