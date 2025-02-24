@@ -72,13 +72,4 @@ const router = createRouter({
   scrollBehavior: () => ({ left: 0, top: 0 }),
 })
 
-router.beforeEach((to, from, next) => {
-  console.log('Navigating to:', to.fullPath)
-  console.log('Leaving route:', from.fullPath)
-  console.log('Matched routes:', to.matched)
-  next()
-})
-
-router.afterEach((to) => {})
-
 export default router

@@ -1,8 +1,7 @@
-// src/main.ts
 import { createApp } from 'vue'
 import type { App as _App } from 'vue'
 import App from './App.vue'
-import router from './router'
+import router from './router/intercept.ts'
 import './style/index.css'
 import pinia from './store'
 import ProComponents from './components/index.ts'

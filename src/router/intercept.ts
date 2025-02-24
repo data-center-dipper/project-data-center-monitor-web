@@ -15,7 +15,6 @@ router.beforeEach(
     _from: RouteLocationNormalizedLoadedGeneric,
     next: NavigationGuardNext,
   ) => {
-    console.log('beforeEach', to)
     NProgress.start()
 
     // 如果是访问登陆页，没有 token 直接放行，有 token 跳转首页

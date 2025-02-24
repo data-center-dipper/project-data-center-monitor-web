@@ -243,9 +243,6 @@ onMounted(() => {
     })
     // 合并默认值
     searchVal = Object.assign(searchVal, props.defaultValue)
-    // 删除时间范围的字段
-    delete searchVal['daterange']
-    delete searchVal['endDaterange']
   }
 })
 </script>
