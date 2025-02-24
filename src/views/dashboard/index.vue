@@ -1,14 +1,20 @@
 <template>
   <div class="main">
     <qx-form-search
+      :defaultValue="{
+        daterange: '2024-01-01',
+        endDaterange: '2024-01-31',
+        inputA: 'defaultInputA',
+        inputB: 'defaultInputB',
+      }"
       :option="searchOptions"
-      :defaultValue="{ daterange: '', endDaterange: '' }"
       @search="search"
     />
   </div>
 </template>
+
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { reactive } from 'vue'
 import type { Option } from '@/components/form-search/src/interface.ts'
 
 const cascaderOptions = [
@@ -285,7 +291,13 @@ const searchOptions: Option[] = reactive([
     label: '文本类型',
     placeholder: '请输入文本',
     type: 'input',
-    prop: 'input',
+    prop: 'inputA',
+  },
+  {
+    label: '文本类型',
+    placeholder: '请输入文本',
+    type: 'input',
+    prop: 'inputB',
   },
   {
     label: '选择框',
@@ -348,6 +360,7 @@ const searchOptions: Option[] = reactive([
     endProp: 'endDaterange',
   },
 ])
+
 // 搜索
 const search = (val: any) => {
   tableData.searchForm = val
@@ -371,6 +384,7 @@ const initTableData = () => {
   console.log(tableData.searchForm)
 }
 </script>
+
 <style scoped>
 .main {
   padding: 20px;

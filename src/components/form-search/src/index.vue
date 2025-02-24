@@ -128,7 +128,7 @@
             :label="item.label"
           >
             <el-date-picker
-              v-model="searchVal[item.prop + 'Range']"
+              v-model="searchVal[`${item.prop}Range`]"
               style="width: 100%"
               type="daterange"
               range-separator="~"
@@ -137,8 +137,7 @@
               value-format="YYYY-MM-DD"
               format="YYYY-MM-DD"
               @change="changeDateRange(item)"
-            >
-            </el-date-picker>
+            />
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="props.span">
@@ -180,22 +179,34 @@ const search = () => {
 const reset = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.resetFields()
+  // 特别处理日期范围字段
+  props.option.forEach((item: any) => {
+    if (item.type === 'daterange') {
+      searchVal[`${item.prop}Range`] = []
+    }
+  })
+  // 确保清空非form绑定的字段
+  Object.keys(searchVal).forEach((key) => {
+    searchVal[key] = ''
+  })
   emit('search', searchVal)
 }
+
 // 级联选择
 const changeType = (value: any, data: Option) => {
   if (!value) value = []
   if (value.length > (data.max as number)) {
     searchVal[data.prop] = value.slice(0, 4)
-    ElMessage.error('馆校类型数量限制为4个')
+    ElMessage.error('数量限制为4个')
   }
 }
+
 // 日期范围选择
 const changeDateRange = (item: any) => {
   let dateArr = searchVal[item.prop + 'Range']
-  if (dateArr) {
-    searchVal[item.prop] = DateUtils.formatDate(dateArr[0], 'YYYY-mm-dd')
-    searchVal[item.endProp] = DateUtils.formatDate(dateArr[1], 'YYYY-mm-dd')
+  if (dateArr && dateArr.length === 2) {
+    searchVal[item.prop] = dateArr[0]
+    searchVal[item.endProp] = dateArr[1]
   } else {
     searchVal[item.prop] = ''
     searchVal[item.endProp] = ''
@@ -221,13 +232,12 @@ const props = withDefaults(defineProps<Props>(), {
 onMounted(() => {
   if (props.defaultValue) {
     props.option.forEach((p: any) => {
-      if (p.type == 'daterange' && props.defaultValue[p.prop]) {
-        searchVal[p.prop + 'Range'] = []
-        if (props.defaultValue[p.prop]) {
-          searchVal[p.prop + 'Range'][0] = props.defaultValue[p.prop]
-        }
-        if (props.defaultValue[p.endProp]) {
-          searchVal[p.prop + 'Range'][1] = props.defaultValue[p.endProp]
+      if (p.type === 'daterange') {
+        if (props.defaultValue[p.prop] && props.defaultValue[p.endProp]) {
+          searchVal[p.prop + 'Range'] = [
+            props.defaultValue[p.prop],
+            props.defaultValue[p.endProp],
+          ]
         }
       }
     })
