@@ -1,5 +1,5 @@
 <template>
-  <el-card class="mb-4" shadow="never">
+  <qx-card class="mb-4" shadow="never">
     <template #header>
       <div class="card-header">
         <div class="flex items-center gap-6 mb-2">
@@ -88,7 +88,7 @@
         </div>
       </div>
     </template>
-  </el-card>
+  </qx-card>
 </template>
 
 <script setup>

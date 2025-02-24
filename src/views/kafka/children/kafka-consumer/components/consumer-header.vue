@@ -1,10 +1,10 @@
 <template>
-  <el-card class="pt-1" shadow="never">
+  <qx-card class="pt-1" shadow="never">
     <qx-form-search
       @search="handleSearch"
       :option="searchOptions"
     ></qx-form-search>
-  </el-card>
+  </qx-card>
 </template>
 
 <script setup lang="ts">

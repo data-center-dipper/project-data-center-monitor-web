@@ -6,6 +6,7 @@ import Drawer from './drawers'
 import Form from './form'
 import FormSearch from './form-search'
 import Icon from './Icon'
+import Card from './Card'
 
 const components = [
   Table,
@@ -15,6 +16,7 @@ const components = [
   Form,
   FormSearch,
   Icon,
+  Card,
 ]
 
 export default {
