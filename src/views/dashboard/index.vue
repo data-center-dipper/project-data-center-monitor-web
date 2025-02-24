@@ -1,114 +1,378 @@
 <template>
-  <div ref="chartRef" style="width: 100%; height: 400px"></div>
+  <div class="main">
+    <qx-form-search
+      :option="searchOptions"
+      :defaultValue="{ daterange: '', endDaterange: '' }"
+      @search="search"
+    />
+  </div>
 </template>
-
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-import { useECharts } from '@/hooks/index.js'
+import { ref, reactive } from 'vue'
+import type { Option } from '@/components/form-search/src/interface.ts'
 
-const chartRef = ref(null)
-
-const { setOptions, removeResize } = useECharts(chartRef)
-
-const data = [
-  ['2000-06-05', 116],
-  ['2000-06-06', 129],
-  ['2000-06-07', 135],
-  ['2000-06-08', 86],
-  ['2000-06-09', 73],
-  ['2000-06-10', 85],
-  ['2000-06-11', 73],
-  ['2000-06-12', 68],
-  ['2000-06-13', 92],
-  ['2000-06-14', 130],
-  ['2000-06-15', 245],
-  ['2000-06-16', 133],
-  ['2000-06-17', 115],
-  ['2000-06-18', 111],
-  ['2000-06-19', 309],
-  ['2000-06-20', 206],
-  ['2000-06-21', 137],
-  ['2000-06-22', 128],
-  ['2000-06-23', 85],
-  ['2000-06-24', 94],
-  ['2000-06-25', 71],
-  ['2000-06-26', 106],
-  ['2000-06-27', 84],
-  ['2000-06-28', 93],
-  ['2000-06-29', 85],
-  ['2000-06-30', 73],
-  ['2000-07-01', 83],
-  ['2000-07-02', 125],
-  ['2000-07-03', 107],
-  ['2000-07-04', 82],
-  ['2000-07-05', 44],
-  ['2000-07-06', 72],
-  ['2000-07-07', 106],
-  ['2000-07-08', 107],
-  ['2000-07-09', 66],
-  ['2000-07-10', 91],
-  ['2000-07-11', 92],
-  ['2000-07-12', 113],
-  ['2000-07-13', 107],
-  ['2000-07-14', 131],
-  ['2000-07-15', 111],
-  ['2000-07-16', 64],
-  ['2000-07-17', 69],
-  ['2000-07-18', 88],
-  ['2000-07-19', 77],
-  ['2000-07-20', 83],
-  ['2000-07-21', 111],
-  ['2000-07-22', 57],
-  ['2000-07-23', 55],
-  ['2000-07-24', 60],
-]
-const dateList = data.map((item) => item[0])
-const valueList = data.map((item) => item[1])
-
-const chartOptions = {
-  visualMap: [
-    {
-      show: false,
-      type: 'continuous',
-      seriesIndex: 0,
-      min: 0,
-      max: 400,
-    },
-  ],
-  title: [
-    {
-      left: 'center',
-      text: 'Y 轴渐变',
-    },
-  ],
-  tooltip: {
-    trigger: 'axis',
+const cascaderOptions = [
+  {
+    value: 'guide',
+    label: 'Guide',
+    children: [
+      {
+        value: 'disciplines',
+        label: 'Disciplines',
+        children: [
+          {
+            value: 'consistency',
+            label: 'Consistency',
+          },
+          {
+            value: 'feedback',
+            label: 'Feedback',
+          },
+          {
+            value: 'efficiency',
+            label: 'Efficiency',
+          },
+          {
+            value: 'controllability',
+            label: 'Controllability',
+          },
+        ],
+      },
+      {
+        value: 'navigation',
+        label: 'Navigation',
+        children: [
+          {
+            value: 'side nav',
+            label: 'Side Navigation',
+          },
+          {
+            value: 'top nav',
+            label: 'Top Navigation',
+          },
+        ],
+      },
+    ],
   },
-  xAxis: [
-    {
-      data: dateList,
+  {
+    value: 'component',
+    label: 'Component',
+    children: [
+      {
+        value: 'basic',
+        label: 'Basic',
+        children: [
+          {
+            value: 'layout',
+            label: 'Layout',
+          },
+          {
+            value: 'color',
+            label: 'Color',
+          },
+          {
+            value: 'typography',
+            label: 'Typography',
+          },
+          {
+            value: 'icon',
+            label: 'Icon',
+          },
+          {
+            value: 'button',
+            label: 'Button',
+          },
+        ],
+      },
+      {
+        value: 'form',
+        label: 'Form',
+        children: [
+          {
+            value: 'radio',
+            label: 'Radio',
+          },
+          {
+            value: 'checkbox',
+            label: 'Checkbox',
+          },
+          {
+            value: 'input',
+            label: 'Input',
+          },
+          {
+            value: 'input-number',
+            label: 'InputNumber',
+          },
+          {
+            value: 'select',
+            label: 'Select',
+          },
+          {
+            value: 'cascader',
+            label: 'Cascader',
+          },
+          {
+            value: 'switch',
+            label: 'Switch',
+          },
+          {
+            value: 'slider',
+            label: 'Slider',
+          },
+          {
+            value: 'time-picker',
+            label: 'TimePicker',
+          },
+          {
+            value: 'date-picker',
+            label: 'DatePicker',
+          },
+          {
+            value: 'datetime-picker',
+            label: 'DateTimePicker',
+          },
+          {
+            value: 'upload',
+            label: 'Upload',
+          },
+          {
+            value: 'rate',
+            label: 'Rate',
+          },
+          {
+            value: 'form',
+            label: 'Form',
+          },
+        ],
+      },
+      {
+        value: 'data',
+        label: 'Data',
+        children: [
+          {
+            value: 'table',
+            label: 'Table',
+          },
+          {
+            value: 'tag',
+            label: 'Tag',
+          },
+          {
+            value: 'progress',
+            label: 'Progress',
+          },
+          {
+            value: 'tree',
+            label: 'Tree',
+          },
+          {
+            value: 'pagination',
+            label: 'Pagination',
+          },
+          {
+            value: 'badge',
+            label: 'Badge',
+          },
+        ],
+      },
+      {
+        value: 'notice',
+        label: 'Notice',
+        children: [
+          {
+            value: 'alert',
+            label: 'Alert',
+          },
+          {
+            value: 'loading',
+            label: 'Loading',
+          },
+          {
+            value: 'message',
+            label: 'Message',
+          },
+          {
+            value: 'message-box',
+            label: 'MessageBox',
+          },
+          {
+            value: 'notification',
+            label: 'Notification',
+          },
+        ],
+      },
+      {
+        value: 'navigation',
+        label: 'Navigation',
+        children: [
+          {
+            value: 'menu',
+            label: 'Menu',
+          },
+          {
+            value: 'tabs',
+            label: 'Tabs',
+          },
+          {
+            value: 'breadcrumb',
+            label: 'Breadcrumb',
+          },
+          {
+            value: 'dropdown',
+            label: 'Dropdown',
+          },
+          {
+            value: 'steps',
+            label: 'Steps',
+          },
+        ],
+      },
+      {
+        value: 'others',
+        label: 'Others',
+        children: [
+          {
+            value: 'dialog',
+            label: 'Dialog',
+          },
+          {
+            value: 'tooltip',
+            label: 'Tooltip',
+          },
+          {
+            value: 'popover',
+            label: 'Popover',
+          },
+          {
+            value: 'card',
+            label: 'Card',
+          },
+          {
+            value: 'carousel',
+            label: 'Carousel',
+          },
+          {
+            value: 'collapse',
+            label: 'Collapse',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    value: 'resource',
+    label: 'Resource',
+    children: [
+      {
+        value: 'axure',
+        label: 'Axure Components',
+      },
+      {
+        value: 'sketch',
+        label: 'Sketch Templates',
+      },
+      {
+        value: 'docs',
+        label: 'Design Documentation',
+      },
+    ],
+  },
+]
+
+const searchOptions: Option[] = reactive([
+  {
+    label: '文本类型',
+    placeholder: '请输入文本',
+    type: 'input',
+    prop: 'input',
+  },
+  {
+    label: '选择框',
+    prop: 'select',
+    placeholder: '请选择支付方式',
+    type: 'select',
+    option: [
+      {
+        label: '微信',
+        value: 0,
+      },
+      {
+        label: '支付宝',
+        value: 1,
+      },
+    ],
+  },
+  {
+    label: '文本选择框',
+    prop: 'inputSelect1',
+    placeholder: '请输入文本',
+    type: 'inputSelect',
+    inputOptions: {
+      prop: 'inputSelect2',
+      option: [
+        {
+          label: '微信',
+          value: 0,
+        },
+        {
+          label: '支付宝',
+          value: 1,
+        },
+      ],
     },
-  ],
-  yAxis: [{}],
-  grid: [
-    {
-      bottom: '60%',
-    },
-  ],
-  series: [
-    {
-      type: 'line',
-      showSymbol: false,
-      data: valueList,
-    },
-  ],
+  },
+  {
+    label: '级联选择器',
+    placeholder: '请选择级联选择器',
+    type: 'cascader',
+    prop: 'cascader',
+    option: cascaderOptions,
+  },
+  {
+    label: '日期选择',
+    type: 'date',
+    prop: 'date',
+    placeholder: '请选择日期',
+  },
+  {
+    label: '日期时间',
+    type: 'datetime',
+    prop: 'datetime',
+    placeholder: '请选择日期时间',
+  },
+  {
+    label: '日期范围',
+    type: 'daterange',
+    prop: 'daterange',
+    endProp: 'endDaterange',
+  },
+])
+// 搜索
+const search = (val: any) => {
+  tableData.searchForm = val
+  tableData.page.pageIndex = 1
+  initTableData()
 }
 
-onMounted(() => {
-  setOptions(chartOptions)
+//表格数据
+const tableData: any = reactive({
+  data: [],
+  searchForm: {},
+  page: {
+    pageIndex: 1,
+    pageSize: 10,
+    total: 0,
+  },
 })
 
-onUnmounted(() => {
-  removeResize()
-})
+// 初始化表格数据
+const initTableData = () => {
+  console.log(tableData.searchForm)
+}
 </script>
+<style scoped>
+.main {
+  padding: 20px;
+}
+</style>

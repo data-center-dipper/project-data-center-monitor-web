@@ -93,9 +93,9 @@
 
 <script setup>
 import { useDialog } from '@/components/dialog/useDialog.tsx'
-import ConsumerGroupDetail from '@/views/kafka/children/kafka-consumer/components/pop-up-window/consumer-group-detail.vue'
-import ConsumerGroupHistory from '@/views/kafka/children/kafka-consumer/components/pop-up-window/consumer-group-history.vue'
-import ConsumerGroupSetting from '@/views/kafka/children/kafka-consumer/components/pop-up-window/consumer-group-setting.vue'
+import ConsumerGroupDetail from '@/views/kafka/children/kafka-consumer/components/consumer-group-detail.vue'
+import ConsumerGroupHistory from '@/views/kafka/children/kafka-consumer/components/consumer-group-history.vue'
+import ConsumerGroupSetting from '@/views/kafka/children/kafka-consumer/components/consumer-group-setting.vue'
 
 const props = defineProps({
   consumer: Object,

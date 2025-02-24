@@ -28,7 +28,7 @@
 import { ref, watch } from 'vue'
 import { useDialog } from '@/components/dialog/useDialog.tsx'
 import ConsumerCard from './ConsumerCard.vue'
-import ConsumerGroupDetail from '@/views/kafka/children/kafka-consumer/components/pop-up-window/consumer-group-add.vue' // 确保路径正确
+import ConsumerGroupDetail from '@/views/kafka/children/kafka-consumer/components/consumer-group-add.vue' // 确保路径正确
 
 // 定义响应式变量用于状态管理
 const loading = ref(false)
