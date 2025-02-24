@@ -35,4 +35,5 @@ export interface Option {
   emitPath?: boolean // 是否返回由该节点所在的各级菜单的值所组成的数组
   show?: boolean // 是否显示选中值的完整路径
   filterable?: boolean // 选择框是否可搜索
+  elAttrs?: any // 该表单组件的其它属性
 }

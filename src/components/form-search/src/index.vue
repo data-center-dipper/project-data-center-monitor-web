@@ -122,7 +122,7 @@ onMounted(() => {
             <el-input
               v-model="searchVal[item.prop]"
               :placeholder="item.placeholder"
-              v-bind="$attrs.inputProps || {}"
+              v-bind="item.elAttrs"
             ></el-input>
           </el-form-item>
           <el-form-item
@@ -139,6 +139,7 @@ onMounted(() => {
                 <el-select
                   v-model="searchVal[item.inputOptions.prop]"
                   :style="{ width: props.labelWidth + 'px' }"
+                  v-bind="item.elAttrs"
                 >
                   <el-option
                     v-for="(sItem, sIndex) in item.inputOptions.option"
@@ -161,7 +162,7 @@ onMounted(() => {
               :fit-input-width="true"
               style="width: 100%"
               :placeholder="item.placeholder"
-              v-bind="$attrs.selectProps || {}"
+              v-bind="item.elAttrs"
             >
               <el-option
                 v-for="(sItem, sIndex) in item.option"
@@ -191,7 +192,7 @@ onMounted(() => {
               }"
               :show-all-levels="item.show || false"
               @change="(val: any) => changeType(val, item)"
-              v-bind="$attrs.cascaderProps || {}"
+              v-bind="item.elAttrs"
             />
           </el-form-item>
           <el-form-item
@@ -206,6 +207,7 @@ onMounted(() => {
               format="YYYY-MM-DD"
               :placeholder="item.placeholder"
               style="width: 100%"
+              v-bind="item.elAttrs"
             ></el-date-picker>
           </el-form-item>
           <el-form-item
@@ -220,6 +222,7 @@ onMounted(() => {
               format="YYYY-MM-DD HH:mm"
               :placeholder="item.placeholder"
               style="width: 100%"
+              v-bind="item.elAttrs"
             ></el-date-picker>
           </el-form-item>
           <el-form-item
@@ -237,6 +240,7 @@ onMounted(() => {
               value-format="YYYY-MM-DD"
               format="YYYY-MM-DD"
               @change="changeDateRange(item)"
+              v-bind="item.elAttrs"
             />
           </el-form-item>
         </el-col>
