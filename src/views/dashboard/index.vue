@@ -299,66 +299,6 @@ const searchOptions: Option[] = reactive([
     type: 'input',
     prop: 'inputB',
   },
-  {
-    label: '选择框',
-    prop: 'select',
-    placeholder: '请选择支付方式',
-    type: 'select',
-    option: [
-      {
-        label: '微信',
-        value: 0,
-      },
-      {
-        label: '支付宝',
-        value: 1,
-      },
-    ],
-  },
-  {
-    label: '文本选择框',
-    prop: 'inputSelect1',
-    placeholder: '请输入文本',
-    type: 'inputSelect',
-    inputOptions: {
-      prop: 'inputSelect2',
-      option: [
-        {
-          label: '微信',
-          value: 0,
-        },
-        {
-          label: '支付宝',
-          value: 1,
-        },
-      ],
-    },
-  },
-  {
-    label: '级联选择器',
-    placeholder: '请选择级联选择器',
-    type: 'cascader',
-    prop: 'cascader',
-    option: cascaderOptions,
-  },
-  {
-    label: '日期选择',
-    type: 'date',
-    prop: 'date',
-    placeholder: '请选择日期',
-  },
-  {
-    label: '日期时间',
-    type: 'datetime',
-    prop: 'datetime',
-    placeholder: '请选择日期时间',
-  },
-  {
-    label: '日期范围',
-    type: 'daterange',
-    prop: 'daterange',
-    endProp: 'endDaterange',
-  },
 ])
 
 // 搜索

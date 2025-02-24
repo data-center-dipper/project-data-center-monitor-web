@@ -155,10 +155,25 @@
 import { onMounted, reactive, ref } from 'vue'
 import type { ElForm } from 'element-plus'
 import { ElMessage } from 'element-plus'
-import { DateUtils } from '@/utils/index.ts'
 import type { Option } from './interface.ts'
 
 type FormInstance = InstanceType<typeof ElForm>
+
+const emit = defineEmits(['search', 'reset'])
+
+interface Props {
+  labelWidth?: number | string
+  size?: 'small' | 'default' | 'large'
+  span?: number
+  option: Option[]
+  defaultValue?: any
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  size: 'default',
+  span: 8,
+  labelWidth: 100,
+})
 
 const searchRef = ref<FormInstance>()
 
@@ -213,25 +228,10 @@ const changeDateRange = (item: any) => {
   }
 }
 
-const emit = defineEmits(['search', 'reset'])
-
-interface Props {
-  labelWidth?: number | string
-  size?: 'small' | 'default' | 'large'
-  span?: number
-  option: Option[]
-  defaultValue?: any
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 'default',
-  span: 8,
-  labelWidth: 100,
-})
-
 onMounted(() => {
   if (props.defaultValue) {
     props.option.forEach((p: any) => {
+      // 处理时间范围选择
       if (p.type === 'daterange') {
         if (props.defaultValue[p.prop] && props.defaultValue[p.endProp]) {
           searchVal[p.prop + 'Range'] = [
@@ -241,7 +241,11 @@ onMounted(() => {
         }
       }
     })
+    // 合并默认值
     searchVal = Object.assign(searchVal, props.defaultValue)
+    // 删除时间范围的字段
+    delete searchVal['daterange']
+    delete searchVal['endDaterange']
   }
 })
 </script>
