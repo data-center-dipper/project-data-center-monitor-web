@@ -243,6 +243,26 @@ onMounted(() => {
               v-bind="item.elAttrs"
             />
           </el-form-item>
+          <!--  单选  -->
+          <el-form-item v-else-if="item.type == 'radio'">
+            <el-radio> </el-radio>
+          </el-form-item>
+          <!--  多选  -->
+          <el-form-item
+            v-else-if="item.type == 'checkbox'"
+            :prop="item.prop"
+            :label="item.label"
+          >
+            <el-checkbox-group v-model="searchVal[item.prop]">
+              <template v-for="(sItem, sIndex) in item.option" :key="sIndex">
+                <el-checkbox
+                  :label="sItem[item.optionLabel || 'label']"
+                  :value="sItem[item.optionValue || 'value']"
+                >
+                </el-checkbox>
+              </template>
+            </el-checkbox-group>
+          </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="props.span">
           <el-form-item>

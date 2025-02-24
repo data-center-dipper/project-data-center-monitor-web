@@ -24,7 +24,7 @@ export interface Option {
     | 'inputSelect' // 表单项类型
   optionLabel?: string // 选择框的label字段
   optionValue?: string // 选择框的value字段
-  option?: any[] // 选择框option
+  option?: any[] // 选择框 option (下拉选择、级联选择、checkbox、radio)
   inputOptions?: InputOptions // 选择框和文本输入框的option
   max?: number // 级联选择器的最大选择数量
   children?: string // 级联选择器children字段名
