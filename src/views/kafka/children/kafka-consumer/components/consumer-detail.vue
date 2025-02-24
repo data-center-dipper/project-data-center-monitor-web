@@ -1,5 +1,5 @@
 <template>
-  <el-card class="box-card">
+  <el-card class="mb-4" shadow="never">
     <template #header>
       <div class="card-header">
         <div class="flex items-center gap-6 mb-2">
@@ -133,8 +133,4 @@ function handleToggleSetting(consumer) {
 }
 </script>
 
-<style scoped>
-.box-card {
-  margin-bottom: 10px;
-}
-</style>
+<style scoped></style>

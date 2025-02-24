@@ -15,30 +15,21 @@ const props = defineProps({
   },
 })
 
+const emit = defineEmits(['qx-size-change', 'qx-current-change'])
+
 const currentPage = ref(1)
 const pageSize = ref(10)
 
 watch(
   [currentPage, pageSize],
   ([newPage, newSize], [oldPage, oldSize]) => {
-    if (newPage !== oldPage) {
-      emit('qx-current-change', {
-        currentPage: newPage,
-        pageSize: newSize,
-      })
-      return
-    }
-    if (newSize !== oldSize) {
-      emit('qx-size-change', {
-        currentPage: newPage,
-        pageSize: newSize,
-      })
-    }
+    emit('qx-current-change', {
+      currentPage: newPage,
+      pageSize: newSize,
+    })
   },
   { immediate: true },
 )
-
-const emit = defineEmits(['qx-size-change', 'qx-current-change'])
 </script>
 
 <template>

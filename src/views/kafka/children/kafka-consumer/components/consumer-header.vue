@@ -1,10 +1,10 @@
 <template>
-  <div class="py-3">
+  <el-card class="pt-1" shadow="never">
     <qx-form-search
       @search="handleSearch"
       :option="searchOptions"
     ></qx-form-search>
-  </div>
+  </el-card>
 </template>
 
 <script setup lang="ts">
