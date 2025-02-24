@@ -1,25 +1,15 @@
 <template>
-    <div class="child-a">
-        <!-- 主题选择部分 -->
-        <div>
-            <label>主题</label>
-            <el-select v-model="selectedTopic"
-                       placeholder="请选择主题"
-                       @change="onTopicChange"
-                       clearable
-                       style="width: 420px;">
-                <el-option v-for="option in options"
-                           :key="option.value"
-                           :label="option.label"
-                           :value="option.value">
-                </el-option>
-            </el-select>
-        </div>
-    </div>
+  <div class="py-3">
+    <qx-form-search
+      @search="handleSearch"
+      :option="searchOptions"
+    ></qx-form-search>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import type { Option } from '@/components/form-search/src/interface.ts'
 
 // 单选绑定的值
 const selectedTopic = ref('');
@@ -44,6 +34,62 @@ const emit = defineEmits(['searchForm']);
 function onTopicChange(value) {
     console.log('主题选择变化:', value);
     emit('searchForm', { topics: selectedTopic.value });
+}
+
+
+const searchOptions: Option[] = [
+  {
+    label: '主题',
+    prop: 'selectedTopics',
+    placeholder: '请选择主题',
+    type: 'select',
+    option: [
+      { label: 'topic1', value: 'topic1' },
+      { label: 'topic2', value: 'topic2' },
+      { label: 'topic3', value: 'topic3' },
+    ],
+    elAttrs: {
+      multiple: true,
+    },
+  },
+  {
+    label: '消费组',
+    prop: 'selectedConsumerGroups',
+    placeholder: '请选择消费组',
+    type: 'select',
+    option: [
+      { label: 'group1', value: 'group1' },
+      { label: 'group2', value: 'group2' },
+      { label: 'group3', value: 'group3' },
+    ],
+    elAttrs: {
+      multiple: true,
+    },
+  },
+  {
+    label: '复选框',
+    type: 'checkbox',
+    prop: 'checkbox',
+    option: [
+      {
+        label: '选项1',
+        value: 0,
+      },
+      {
+        label: '选项2',
+        value: 1,
+      },
+      {
+        label: '选项3',
+        value: 2,
+      },
+    ],
+  },
+]
+
+
+const handleSearch = (value: any) => {
+  emit('header-search', value)
 }
 
 onMounted(() => {
