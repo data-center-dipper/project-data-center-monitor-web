@@ -15,28 +15,24 @@ const props = defineProps({
   },
 })
 
-// TODO： V-MODEL 优化
 const currentPage = ref(1)
 const pageSize = ref(10)
 
 watch(currentPage, (newPage) => {
-  emit('qx-current-change', newPage)
+  emit('qx-current-change', {
+    currentPage: newPage,
+    pageSize: pageSize.value,
+  })
 })
 
 watch(pageSize, (newSize) => {
-  emit('qx-size-change', newSize)
+  emit('qx-size-change', {
+    currentPage: currentPage.value,
+    pageSize: newSize,
+  })
 })
 
 const emit = defineEmits(['qx-size-change', 'qx-current-change'])
-
-// PREF： 废弃
-function handleSizeChange(newSize: number) {
-  emit('qx-size-change', newSize)
-}
-
-function handleCurrentChange(newPage: number) {
-  emit('qx-current-change', newPage)
-}
 </script>
 
 <template>

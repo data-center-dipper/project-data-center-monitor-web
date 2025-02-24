@@ -74,24 +74,11 @@ const chartOptions = {
       min: 0,
       max: 400,
     },
-    {
-      show: false,
-      type: 'continuous',
-      seriesIndex: 1,
-      dimension: 0,
-      min: 0,
-      max: dateList.length - 1,
-    },
   ],
   title: [
     {
       left: 'center',
       text: 'Y 轴渐变',
-    },
-    {
-      top: '55%',
-      left: 'center',
-      text: 'X 轴渐变',
     },
   ],
   tooltip: {
@@ -101,23 +88,11 @@ const chartOptions = {
     {
       data: dateList,
     },
-    {
-      data: dateList,
-      gridIndex: 1,
-    },
   ],
-  yAxis: [
-    {},
-    {
-      gridIndex: 1,
-    },
-  ],
+  yAxis: [{}],
   grid: [
     {
       bottom: '60%',
-    },
-    {
-      top: '60%',
     },
   ],
   series: [
@@ -125,13 +100,6 @@ const chartOptions = {
       type: 'line',
       showSymbol: false,
       data: valueList,
-    },
-    {
-      type: 'line',
-      showSymbol: false,
-      data: valueList,
-      xAxisIndex: 1,
-      yAxisIndex: 1,
     },
   ],
 }
