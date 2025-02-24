@@ -170,12 +170,12 @@ const deleteTopic = () => {
     </div>
     <div class="flex items-center gap-1">
       <span class="text-gray-500">业务属性：</span>
-      <span class="text-gray-500">原始日志入库的topic，承接所有日志信息</span>
+      <span>原始日志入库的topic，承接所有日志信息</span>
     </div>
     <div class="flex items-center gap-1">
       <span class="text-gray-500">数据大小：1KB</span>
       <span class="text-red-500"
-        >数据大小超过1KB,那么会导致消费者消费速率变慢，甚至卡死</span
+        >（数据大小超过1KB,那么会导致消费者消费速率变慢，甚至卡死）</span
       >
     </div>
     <div class="mt-4">

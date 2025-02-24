@@ -1,6 +1,5 @@
 <template>
   <div class="page-container">
-    <!-- 显示主题和消费者总数 -->
     <ConsumerHeader @searchForm="handleSelectTopic"></ConsumerHeader>
     <ConsumerContent
       :selectedTopics="selectedTopics"
@@ -9,7 +8,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import ConsumerHeader from './components/ConsumerHeader.vue'
 import ConsumerContent from './components/ConsumerContent.vue'

@@ -9,6 +9,9 @@
       }"
       :option="searchOptions"
       @search="search"
+      :selectProps="{
+        multiple: true,
+      }"
     />
   </div>
 </template>

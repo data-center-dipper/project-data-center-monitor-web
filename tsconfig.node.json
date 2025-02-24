@@ -7,65 +7,20 @@
     "skipLibCheck": true,
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
-
-    // 确保每个文件都被视为独立的模块，防止某些情况下可能发生的全局污染。
-    // 这对于避免潜在的命名冲突非常重要。
     "isolatedModules": true,
-
-    // 强制启用模块检测，确保所有代码都按照模块化方式进行处理。
-    // 这有助于捕捉未正确声明模块的错误。
     "moduleDetection": "force",
-
-    // 指定编译输出文件的目录。
-    // 所有经过 TypeScript 编译后的 JavaScript 文件都将被放置在这个目录中。
-    // 这有助于组织和管理编译输出，确保源代码和编译结果分离。
     "outDir": "./dist",
-
-    // 允许在项目中包含 JavaScript 文件（.js）。
-    // 当设置为 true 时，TypeScript 编译器将处理 .js 文件，并应用指定的检查规则。
     "allowJs": true,
-
-    // 对 JavaScript 文件进行类型检查。
-    // 当 `allowJs` 设置为 true 时，此选项确保 JavaScript 文件也受到严格的类型检查。
-    // 这对于逐步迁移到 TypeScript 或混合使用 JavaScript 和 TypeScript 的项目非常有用。
     "checkJs": true,
-
-    // 在编译过程中移除所有注释。
-    // 输出的 JavaScript 文件将不包含任何注释，这可以减小文件大小并简化最终代码。
     "removeComments": true,
-
-    // 强制在每个文件顶部插入 "use strict"; 指令。
-    // 这确保了所有代码都运行在严格模式下，避免了一些常见的编程错误。
     "alwaysStrict": true,
-
-    // 启用严格的空值检查。
-    // 这意味着所有变量、属性和函数参数都将被严格检查是否可能为 null 或 undefined，
-    // 帮助捕捉潜在的空值引用错误，提高代码的健壮性。
     "strictNullChecks": true,
-
-    // 不输出任何编译结果，仅用于类型检查和 linting。
-    // 对于配置文件或脚本非常有用，因为不需要实际的 JavaScript 输出。
     "noEmit": true,
-
-    /* Linting 和严格模式配置 */
-    // 启用所有严格的类型检查选项，确保代码质量。
     "strict": true,
-
-    // 报告未使用的局部变量，帮助清理冗余代码。
     "noUnusedLocals": true,
-
-    // 报告未使用的函数参数，进一步提高代码质量。
     "noUnusedParameters": true,
-
-    // 确保 switch 语句中有适当的 break 语句，防止逻辑错误。
     "noFallthroughCasesInSwitch": true,
-
-    // 报告未经检查的副作用导入，例如导入了一个只为了副作用而不会使用其导出值的模块。
-    // 这有助于保持代码整洁并减少不必要的依赖。
     "noUncheckedSideEffectImports": true
   },
-
-  // 指定要包含在 TypeScript 编译过程中的文件模式。
-  // 这里指定了 Vite 的配置文件 vite.config.ts。
   "include": ["vite.config.ts"]
 }

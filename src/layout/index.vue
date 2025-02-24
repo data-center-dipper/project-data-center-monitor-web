@@ -42,7 +42,6 @@ useRouteTitle()
         <Header />
       </el-header>
       <Tab />
-
       <el-main>
         <router-view v-slot="{ Component, route }">
           <component :key="route.path" :is="Component" />
