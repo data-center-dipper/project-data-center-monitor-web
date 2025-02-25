@@ -1,15 +1,15 @@
 <template>
   <div class="page-container">
     <!-- 显示主题和消费者总数 -->
-    <ConsumerHeader @searchForm="handleSelectTopic"></ConsumerHeader>
-    <ConsumerContent :selectedTopics="selectedTopics" :selectedConsumerGroups="selectedConsumerGroups"></ConsumerContent>
+    <TopicLoadHeader @searchForm="handleSelectTopic"></TopicLoadHeader>
+    <TopicLoadContent :selectedTopics="selectedTopics" :selectedConsumerGroups="selectedConsumerGroups"></TopicLoadContent>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import ConsumerHeader from './components/ConsumerHeader.vue';
-import ConsumerContent from './components/ConsumerContent.vue';
+import TopicLoadHeader from './components/TopicLoadHeader.vue';
+import TopicLoadContent from './components/TopicLoadContent.vue';
 
 // 当前选中的主题和消费组
 const selectedTopics = ref('');

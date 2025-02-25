@@ -10,12 +10,12 @@ const dialogTitle = ref('')
 const options = ref([])
 
 const tableOptions = ref([
-  { label: '入流速率(bytes)/1min', prop: 'inputRate' },
-  { label: '出流速率(bytes)/1min', prop: 'outputRate' },
-  { label: '排流量虚拟速率(EPS)/1min', prop: 'evaporationRate1' },
-  { label: '满入入流速率(EPS)/1min', prop: 'fullInputRate1' },
-  { label: '满入入流速率(EPS)/5min', prop: 'fullInputRate5' },
-  { label: '满入入流速率(EPS)/15min', prop: 'fullInputRate15' },
+  { label: '入站速率/1min', prop: 'inputRate' },
+  { label: '入站速率/5min', prop: 'inputRate' },
+  { label: '出站速率/1min', prop: 'outputRate' },
+  { label: '出站速率/5min', prop: 'outputRate' },
+  { label: '写入速率(条)/1min', prop: 'evaporationRate1' },
+  { label: '写入速率(条)/15min', prop: 'evaporationRate1' }
 ])
 
 const tableData = ref([
@@ -146,7 +146,7 @@ const deleteTopic = () => {
 
 <template>
   <div class="border rounded-md p-4 border-gray-200">
-    <div class="flex items-center gap-6">
+    <div class="flex items-center gap-6 ">
       <div class="flex items-center gap-1">
         <span class="text-gray-500">topic名称：</span>
         <span>com.dbapp.topic.rawevent</span>
@@ -168,17 +168,17 @@ const deleteTopic = () => {
         <span>2.88KB</span>
       </div>
     </div>
-    <div class="flex items-center gap-1">
+    <div class="flex items-center gap-1 mt-2">
       <span class="text-gray-500">业务属性：</span>
       <span>原始日志入库的topic，承接所有日志信息</span>
     </div>
-    <div class="flex items-center gap-1">
+    <div class="flex items-center gap-1 mt-2">
       <span class="text-gray-500">数据大小：1KB</span>
       <span class="text-red-500"
         >（数据大小超过1KB,那么会导致消费者消费速率变慢，甚至卡死）</span
       >
     </div>
-    <div class="mt-4">
+    <div class="mt-4" mt-2>
       <qx-table
         border
         :options="tableOptions"
@@ -187,19 +187,19 @@ const deleteTopic = () => {
         :isLoading="false"
       />
     </div>
-    <div class="flex items-center gap-1">
+    <div class="flex items-center gap-1 mt-2">
       <span class="text-gray-500">分区状态：</span>
       <span class="text-green-500">正常</span>
     </div>
-    <div class="flex items-center gap-1">
+    <div class="flex items-center gap-1 mt-2">
       <span class="text-gray-500">数据是否倾斜：</span>
       <span class="text-green-500">正常</span>
     </div>
-    <div class="flex items-center gap-1">
+    <div class="flex items-center gap-1 mt-2">
       <span class="text-gray-500">消费者总数：</span>
       <span class="text-green-500">23</span>
     </div>
-    <div class="flex items-center gap-1">
+    <div class="flex items-center gap-1 mt-2">
       <div class="text-gray-500">操作：</div>
       <div class="flex gap-2">
         <el-button type="text" @click="openDetailDialog">查看详情</el-button>
