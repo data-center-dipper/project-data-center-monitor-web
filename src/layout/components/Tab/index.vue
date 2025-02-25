@@ -6,11 +6,6 @@
       <div class="flex items-center h-full">
         <router-link
           class="tags-view-item transition-colors duration-300 flex items-center text-nowrap border border-solid border-gray-300 rounded-md cursor-pointer"
-          :class="isActive(tag) ? 'active' : ''"
-          :style="{
-            backgroundColor: isActive(tag) ? cssVar.menuActiveText : '',
-            borderColor: isActive(tag) ? cssVar.menuActiveText : '',
-          }"
           v-for="(tag, index) in tagsViewList"
           :key="tag.fullPath"
           :to="{ path: tag.fullPath }"
@@ -128,10 +123,6 @@ watch(visible, (val) => {
   padding: 0 10px;
   margin-right: 4px;
   transition: all 0.3s;
-}
-.tags-view-item.active {
-  background-color: rgba(127, 220, 196, 0.64);
-  color: #333;
 }
 .active-dot {
   color: #40e9ff;

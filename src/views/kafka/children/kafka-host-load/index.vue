@@ -1,7 +1,7 @@
 <script></script>
 
 <template>
-  <div></div>
+  <div>主机负载</div>
 </template>
 
 <style></style>
