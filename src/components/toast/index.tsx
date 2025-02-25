@@ -4,11 +4,6 @@ import type {
   NotificationOptions,
 } from 'element-plus'
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
-import 'element-plus/theme-chalk/el-message.css'
-import 'element-plus/theme-chalk/el-notification.css'
-import 'element-plus/theme-chalk/el-message-box.css'
-import 'element-plus/theme-chalk/el-dialog.css'
-import 'element-plus/theme-chalk/el-button.css'
 
 type optionType = MessageOptions | Partial<NotificationOptions> | string
 
