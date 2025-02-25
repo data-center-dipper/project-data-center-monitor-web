@@ -22,7 +22,6 @@
         </div>
       </div>
     </template>
-
     <div class="flex items-center gap-1 mb-2">
       <div class="flex items-center gap-1">
         <span class="text-gray-500">平均消费速率：</span>
@@ -45,7 +44,6 @@
         <span>20分钟</span>
       </div>
     </div>
-
     <div class="flex items-center gap-1 mb-2">
       <div class="flex items-center gap-1">
         <span class="text-gray-500">最后更新时间：</span>
@@ -56,7 +54,6 @@
         <span>{{ consumer.deadline }}</span>
       </div>
     </div>
-
     <template #footer>
       <div class="flex items-center gap-1">
         <span class="text-gray-500">操作：</span>
@@ -74,18 +71,28 @@
   </qx-card>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useDialog } from '@/components/dialog/useDialog.tsx'
 import ConsumerGroupDetail from './consumer-group-detail.vue'
 import ConsumerGroupHistory from './consumer-group-history.vue'
 import ConsumerGroupSetting from './consumer-group-setting.vue'
 
-const props = defineProps({
-  consumer: Object,
-  handleRealTimeQuery: Function,
-  handleViewHistory: Function,
-  handleToggleMonitor: Function,
-})
+interface Consumer {
+  topic: string
+  groupId: string
+  businessProperty: string
+  avgConsumeRate: number
+  isDelayed: boolean
+  lastUpdateTime: string
+  deadline: string
+}
+
+const props = defineProps<{
+  consumer: Consumer
+  handleRealTimeQuery: (consumer: Consumer) => void
+  handleViewHistory: (consumer: Consumer) => void
+  handleToggleMonitor: (consumer: Consumer, flag: boolean) => void
+}>()
 
 const actions = [
   {
@@ -111,7 +118,6 @@ const actions = [
 ]
 
 function handleRealTimeQuery(consumer) {
-  console.log(`实时查询 ${consumer.topic} 的信息`)
   useDialog({
     title: '消费组查看',
     component: ConsumerGroupDetail,
@@ -120,7 +126,6 @@ function handleRealTimeQuery(consumer) {
 }
 
 function handleViewHistory(consumer) {
-  console.log(`查看 ${consumer.topic} 的历史`)
   useDialog({
     title: '消费组历史查看',
     component: ConsumerGroupHistory,
@@ -128,13 +133,20 @@ function handleViewHistory(consumer) {
   })
 }
 
-function handleToggleSetting(consumer) {
-  console.log(`设置 ${consumer.topic} 的信息`)
+function handleToggleSetting() {
   useDialog({
     title: '消费组设置',
     component: ConsumerGroupSetting,
-    props: {},
+    props: {
+      onSettingSuccess: () => {
+        console.log('保存设置')
+      },
+    },
   })
+}
+
+function handleToggleMonitor(consumer, isMonitor) {
+  console.log(`设置 ${consumer.topic} 的监控状态为 ${isMonitor}`)
 }
 </script>
 

@@ -8,7 +8,6 @@ import {
 } from 'vue'
 import type { Component } from 'vue'
 import { ElDialog } from 'element-plus'
-import 'element-plus/theme-chalk/el-dialog.css'
 
 export const DialogList = shallowRef<Component[]>([])
 
