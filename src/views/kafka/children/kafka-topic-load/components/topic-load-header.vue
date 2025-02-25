@@ -42,41 +42,6 @@ const searchOptions = [
       multiple: true,
     },
   },
-  {
-    label: '指标',
-    type: 'checkbox',
-    prop: 'checkbox',
-    option: [
-      {
-        label: '磁盘大小',
-        value: 0,
-      },
-      {
-        label: '入站速率/1min',
-        value: 1,
-      },
-      {
-        label: '入站速率/5min',
-        value: 2,
-      },
-      {
-        label: '出站速率/1min',
-        value: 3,
-      },
-      {
-        label: '出站速率/5min',
-        value: 4,
-      },
-      {
-        label: '写入速率(条)/1min',
-        value: 5,
-      },
-      {
-        label: '写入速率(条)/15min',
-        value: 6,
-      },
-    ],
-  },
 ]
 
 const handleSearch = (value: any) => {

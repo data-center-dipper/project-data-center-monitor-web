@@ -1,15 +1,18 @@
 <template>
-  <div class="flex flex-wrap">
-    <div ref="chartRef1" style="width: 50%; height: 350px"></div>
-    <div ref="chartRef2" style="width: 50%; height: 350px"></div>
-    <div ref="chartRef3" style="width: 50%; height: 350px"></div>
-    <div ref="chartRef4" style="width: 50%; height: 350px"></div>
-  </div>
+  <qx-card class="mt-3">
+    <div class="flex flex-wrap">
+      <div ref="chartRef1" style="width: 50%; height: 350px" class="mb-2"></div>
+      <div ref="chartRef2" style="width: 50%; height: 350px" class="mb-2"></div>
+      <div ref="chartRef3" style="width: 50%; height: 350px" class="mb-2"></div>
+      <div ref="chartRef4" style="width: 50%; height: 350px" class="mb-2"></div>
+    </div>
+  </qx-card>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useECharts } from '@/hooks/modules/echarts/useEcharts.ts'
+import QxCard from '@/components/Card/src/index.vue'
 
 const chartRef1 = ref(null)
 const chartRef2 = ref(null)

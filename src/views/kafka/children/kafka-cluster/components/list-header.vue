@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import ChooseData from './choose-data.vue'
 
 const addEditClusterVisible = ref(false)
 const addEditModalTitle = ref('添加集群')
@@ -99,15 +98,11 @@ defineExpose({
 </script>
 
 <template>
-  <div class="flex justify-between items-center mb-4">
-    <div class="text-nowrap flex items-center gap-2">
-      <div>集群查询:</div>
-      <el-input placeholder="搜索集群..." />
-      <choose-data
-        :disableToday="true"
-        startPlaceholder="请选择开始时间"
-        endPlaceholder="请选择结束时间"
-      />
+  <div class="flex justify-between mb-4">
+    <div class="flex gap-2">
+      <el-form-item label="集群查询">
+        <el-input placeholder="搜索集群..." />
+      </el-form-item>
       <el-button>搜索</el-button>
     </div>
     <el-button type="primary" @click="openAddDialog"> 新增集群 </el-button>
