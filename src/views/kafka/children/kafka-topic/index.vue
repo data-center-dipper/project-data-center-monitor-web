@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import TopicHeader from './components/topic-header.vue'
 import TopicItem from './components/topic-item.vue'
+import QxPagination from '@/components/pagination/src/index.vue'
 
 const handleCurrentPageChange = (page: number) => {
   console.log(page)

@@ -1,6 +1,6 @@
 <template>
   <ul
-    class="context-menu-container absolute z-50 bg-white rounded-md shadow-lg text-center border border-gray-200"
+    class="context-menu-container absolute z-50 bg-white rounded-md shadow-lg text-center border border-gray-200 rounded-md"
   >
     <li
       @click="onRefreshClick"

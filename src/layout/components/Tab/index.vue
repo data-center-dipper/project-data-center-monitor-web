@@ -1,11 +1,11 @@
 <template>
   <div
-    class="tags-view-container h-[32px] px-2 flex items-center mt-1 border-b border-gray-200 pt-1"
+    class="tags-view-container h-[32px] px-2 flex items-center bg-gray-100 pt-1"
   >
     <el-scrollbar>
       <div class="flex items-center h-full">
         <router-link
-          class="tags-view-item flex items-center text-nowrap border border-solid border-gray-300 rounded-md cursor-pointer"
+          class="tags-view-item transition-colors duration-300 flex items-center text-nowrap border border-solid border-gray-300 rounded-md cursor-pointer"
           :class="isActive(tag) ? 'active' : ''"
           :style="{
             backgroundColor: isActive(tag) ? cssVar.menuActiveText : '',
@@ -127,11 +127,10 @@ watch(visible, (val) => {
 .tags-view-item {
   padding: 0 10px;
   margin-right: 4px;
-  border-radius: 1px;
   transition: all 0.3s;
 }
 .tags-view-item.active {
-  background-color: #f5f5f5;
+  background-color: rgba(127, 220, 196, 0.64);
   color: #333;
 }
 .active-dot {
