@@ -60,30 +60,13 @@
     <template #footer>
       <div class="flex items-center gap-1">
         <span class="text-gray-500">操作：</span>
-        <div class="flex gap-1">
+        <div class="flex">
           <el-button
+            v-for="action in actions"
+            :key="action.name"
             type="text"
-            size="small"
-            @click="handleRealTimeQuery(consumer)"
-            >实时查询</el-button
-          >
-          <el-button
-            type="text"
-            size="small"
-            @click="handleViewHistory(consumer)"
-            >查看历史</el-button
-          >
-          <el-button
-            type="text"
-            size="small"
-            @click="handleToggleSetting(consumer)"
-            >设置</el-button
-          >
-          <el-button
-            type="text"
-            size="small"
-            @click="handleToggleMonitor(consumer, false)"
-            >删除</el-button
+            @click="action.handler(consumer)"
+            >{{ action.label }}</el-button
           >
         </div>
       </div>
@@ -93,9 +76,9 @@
 
 <script setup>
 import { useDialog } from '@/components/dialog/useDialog.tsx'
-import ConsumerGroupDetail from '@/views/kafka/children/kafka-consumer/components/consumer-group-detail.vue'
-import ConsumerGroupHistory from '@/views/kafka/children/kafka-consumer/components/consumer-group-history.vue'
-import ConsumerGroupSetting from '@/views/kafka/children/kafka-consumer/components/consumer-group-setting.vue'
+import ConsumerGroupDetail from './consumer-group-detail.vue'
+import ConsumerGroupHistory from './consumer-group-history.vue'
+import ConsumerGroupSetting from './consumer-group-setting.vue'
 
 const props = defineProps({
   consumer: Object,
@@ -104,9 +87,31 @@ const props = defineProps({
   handleToggleMonitor: Function,
 })
 
+const actions = [
+  {
+    name: 'realTimeQuery',
+    label: '实时查询',
+    handler: handleRealTimeQuery,
+  },
+  {
+    name: 'viewHistory',
+    label: '查看历史',
+    handler: handleViewHistory,
+  },
+  {
+    name: 'toggleSetting',
+    label: '设置',
+    handler: handleToggleSetting,
+  },
+  {
+    name: 'deleteMonitor',
+    label: '删除',
+    handler: (consumer) => handleToggleMonitor(consumer, false),
+  },
+]
+
 function handleRealTimeQuery(consumer) {
   console.log(`实时查询 ${consumer.topic} 的信息`)
-  // 实现实时查询逻辑
   useDialog({
     title: '消费组查看',
     component: ConsumerGroupDetail,
@@ -115,7 +120,7 @@ function handleRealTimeQuery(consumer) {
 }
 
 function handleViewHistory(consumer) {
-  console.log(`实时查询 ${consumer.topic} 的信息`)
+  console.log(`查看 ${consumer.topic} 的历史`)
   useDialog({
     title: '消费组历史查看',
     component: ConsumerGroupHistory,
@@ -124,7 +129,7 @@ function handleViewHistory(consumer) {
 }
 
 function handleToggleSetting(consumer) {
-  console.log(`实时查询 ${consumer.topic} 的信息`)
+  console.log(`设置 ${consumer.topic} 的信息`)
   useDialog({
     title: '消费组设置',
     component: ConsumerGroupSetting,
