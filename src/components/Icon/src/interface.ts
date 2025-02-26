@@ -42,5 +42,6 @@ export interface IconProps {
   spinReverse?: boolean
   type?: 'primary' | 'success' | 'warning' | 'danger' | 'info'
   color?: string
-  cursor?: string
+  cursor?: string // 鼠标样式
+  smart?: boolean // 是否开启灵动模式
 }
