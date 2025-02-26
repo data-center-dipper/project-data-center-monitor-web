@@ -9,6 +9,7 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import globalComponentsPlugin from '@/components/index'
 import Directives from './directives/index.ts'
+import './plugins/modules/echarts-plugin.ts'
 
 console.log('所有环境变量:', import.meta.env)
 
