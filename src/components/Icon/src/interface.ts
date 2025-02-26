@@ -42,4 +42,5 @@ export interface IconProps {
   spinReverse?: boolean
   type?: 'primary' | 'success' | 'warning' | 'danger' | 'info'
   color?: string
+  cursor?: string
 }

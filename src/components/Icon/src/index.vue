@@ -22,7 +22,7 @@ const customStyle = computed(() => {
 <template>
   <i
     class="bre-icon inline-flex justify-center items-center relative"
-    :style="customStyle"
+    :style="{ ...customStyle, cursor: props.cursor }"
     v-bind="$attrs"
   >
     <font-awesome-icon v-bind="filterProps" />
