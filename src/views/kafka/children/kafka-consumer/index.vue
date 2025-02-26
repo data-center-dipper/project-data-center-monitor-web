@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container">
+  <div class="page-container mt-3">
     <ConsumerHeader @header-search="handleHeaderSearch"></ConsumerHeader>
     <ConsumerAction @action-success="handleActionSuccess"></ConsumerAction>
     <ConsumerContent

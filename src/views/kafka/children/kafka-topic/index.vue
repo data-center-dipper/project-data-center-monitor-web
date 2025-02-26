@@ -13,7 +13,7 @@ const handlePageSizeChange = (size: number) => {
 </script>
 
 <template>
-  <el-card>
+  <el-card class="mt-3">
     <TopicHeader></TopicHeader>
     <div class="flex flex-col gap-2">
       <template v-for="i in 3">

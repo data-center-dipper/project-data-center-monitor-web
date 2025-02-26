@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useDialog } from '@/components/dialog/useDialog.tsx'
-import zkCodeWindow from './pop-up-window/zk-code-window.vue'
+import zkCodeWindow from './pop-up-window/zk-detail.vue'
 
-function showZkDtail(zkNode) {
-  console.log(`实时查询 ${zkNode} 的信息`)
-  // 实现实时查询逻辑
+function showZkDetail() {
   useDialog({
-    title: 'zkNode查看',
+    title: 'zkNode详情查看',
     component: zkCodeWindow,
     props: {},
   })
@@ -50,17 +48,11 @@ function showZkDtail(zkNode) {
                 <span>不一致</span>
               </div>
             </div>
-            <div class="flex gap-2">
+            <div class="flex gap-1">
               <div>元数据：</div>
-              <div class="flex items-center gap-2">
-                <el-button
-                  link
-                  type="primary"
-                  size="small"
-                  @click="showZkDtail(scope.row)"
-                  >查看详情</el-button
-                >
-              </div>
+              <el-button link type="primary" size="small" @click="showZkDetail"
+                >查看详情</el-button
+              >
             </div>
           </div>
         </div>
@@ -69,6 +61,4 @@ function showZkDtail(zkNode) {
   </el-card>
 </template>
 
-<style scoped>
-/* 可根据需要添加额外样式 */
-</style>
+<style scoped></style>
