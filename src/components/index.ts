@@ -7,6 +7,7 @@ import Form from './form'
 import FormSearch from './form-search'
 import Icon from './Icon'
 import Card from './Card'
+import Lottie from './Lottie'
 
 const components = [
   Table,
@@ -17,6 +18,7 @@ const components = [
   FormSearch,
   Icon,
   Card,
+  Lottie,
 ]
 
 export default {

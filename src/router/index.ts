@@ -51,6 +51,17 @@ const routes: RouteRecordRawWithMeta[] = [
     redirect: '/dashboard',
     meta: { key: 'home', title: '首页' },
   },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/login/index.vue'),
+    meta: {
+      keepAlive: false,
+      requiresAuth: false,
+      title: '登录',
+      key: 'login',
+    },
+  },
   ...routerArray,
   {
     path: '/:pathMatch(.*)*',
