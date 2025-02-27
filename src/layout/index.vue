@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouteTitle, useMobileDetection } from '@/hooks'
 import { useCommonStore } from '@/store/modules/common.ts'
+import Search from './components/Search/index.vue'
 
 import Header from './components/Header/index.vue'
 import Menu from './components/Menu/index.vue'
@@ -37,7 +38,7 @@ useRouteTitle()
         <Menu />
       </div>
     </el-drawer>
-    <el-container>
+    <el-container class="bg-gray-100">
       <el-header>
         <Header />
       </el-header>
@@ -48,6 +49,8 @@ useRouteTitle()
         </router-view>
       </el-main>
     </el-container>
+    <!--  页面搜索  -->
+    <Search />
   </el-container>
 </template>
 

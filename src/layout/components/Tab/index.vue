@@ -1,6 +1,6 @@
 <template>
   <div
-    class="tags-view-container h-[32px] px-2 flex items-center bg-gray-100 pt-1"
+    class="tags-view-container h-[62px] px-2 flex items-center bg-gray-100 pt-1"
   >
     <el-scrollbar>
       <div class="flex items-center h-full">
@@ -120,7 +120,7 @@ watch(visible, (val) => {
 
 <style scoped>
 .tags-view-item {
-  padding: 0 10px;
+  padding: 5px 15px;
   margin-right: 4px;
   transition: all 0.3s;
 }
