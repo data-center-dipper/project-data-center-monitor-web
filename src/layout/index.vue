@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import { useRouteTitle, useMobileDetection } from '@/hooks'
 import { useCommonStore } from '@/store/modules/common.ts'
 import Search from './components/Search/index.vue'
+import Setting from './components/Setting/index.vue'
 
 import Header from './components/Header/index.vue'
 import Menu from './components/Menu/index.vue'
@@ -51,6 +52,8 @@ useRouteTitle()
     </el-container>
     <!--  页面搜索  -->
     <Search />
+    <!--  全局设置  -->
+    <Setting />
   </el-container>
 </template>
 

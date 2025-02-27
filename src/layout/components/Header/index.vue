@@ -25,6 +25,10 @@ const handleCollapse = () => {
 const openSearchDialog = () => {
   mittBus.emit('openSearchDialog')
 }
+
+const openSetting = () => {
+  mittBus.emit('openSetting')
+}
 </script>
 
 <template>
@@ -87,6 +91,7 @@ const openSearchDialog = () => {
         size="1x"
         cursor="pointer"
         class="bg-transparent p-2 hover:bg-gray-300/80"
+        @click="openSetting"
       ></qx-icon>
       <!--  主题切换  -->
       <qx-icon
