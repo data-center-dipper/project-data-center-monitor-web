@@ -13,7 +13,7 @@
               alt="logo"
             />
           </div>
-          <h1 class="title font-[26px] font-bold text-[#333] ml-2">
+          <h1 class="title font-bold text-[#333] ml-2">
             高效监控您的Kafka集群
           </h1>
         </div>

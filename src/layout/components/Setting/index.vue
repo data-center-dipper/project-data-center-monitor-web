@@ -1,12 +1,27 @@
 <script setup lang="ts">
+// TODO: 下一版本进行组件以及逻辑拆分, 暂时写到一起
 import { ref, onMounted } from 'vue'
 import { mittBus } from '@/utils'
 const showDrawer = ref(false)
+import {
+  containerWidthList,
+  boxStyleList,
+  mainColorList,
+  menuThemeList,
+  settingThemeList,
+} from '@/config'
+import { systemThemeEnum, containerWidthEnum, boxStyleEnum } from '@/enums'
 import QxIcon from '@/components/Icon/src/index.vue'
+import SettingItemTitle from './components/setting-item-title.vue'
+import BasicSettingContainer from './components/basic-setting-container.vue'
 
 const menuOpenWidth = ref(240)
 const pageTransition = ref()
 const customRadius = ref('0')
+const systemThemeMode = ref(systemThemeEnum.AUTO)
+const containerWidth = ref('')
+const boxStyle = ref('')
+const currentMenuTheme = ref('')
 const pageTransitionOps = [
   {
     value: '',
@@ -70,6 +85,31 @@ function setCustomRadius(val: string) {
   customRadius.value = val
 }
 
+function switchTheme(theme: string) {}
+
+function setSystemAutoTheme() {}
+
+function initSystemTheme() {
+  if (systemThemeMode.value === systemThemeEnum.AUTO) {
+    setSystemAutoTheme()
+  } else {
+  }
+}
+
+function setContainerWidth(width: containerWidthEnum) {
+  containerWidth.value = width
+}
+
+function setBoxStyle(box: boxStyleEnum) {
+  boxStyle.value = box
+}
+
+function setElementTheme() {}
+
+function setMenuTheme(menuTheme: string) {
+  currentMenuTheme.value = menuTheme
+}
+
 onMounted(() => {
   mittBus.on('openSetting', openSetting)
 })
@@ -86,7 +126,7 @@ onMounted(() => {
   >
     <div class="drawer-content">
       <!-- 关闭按钮图标 -->
-      <div class="close-wrapper flex justify-end mt-[10px]">
+      <div class="close-drawer flex justify-end my-[15px]">
         <qx-icon
           icon="close"
           size="1x"
@@ -94,150 +134,218 @@ onMounted(() => {
           @click="closeDrawer"
         ></qx-icon>
       </div>
-      <p class="title">主题风格</p>
-      <p class="title">菜单布局</p>
-      <p class="title">菜单风格</p>
-      <p class="title">系统主题色</p>
-      <p class="title">盒子样式</p>
-      <p class="title">容器宽度</p>
-      <p class="title">基础配置</p>
-      <div class="basic-config relative z-10 bg-transparent">
-        <div class="item flex">
-          <span>侧边栏开启手风琴模式</span>
-          <el-switch></el-switch>
-        </div>
-        <div class="item flex">
-          <span>显示折叠侧边栏按钮</span>
-          <el-switch></el-switch>
-        </div>
-        <div class="item flex">
-          <span>显示重载页面按钮</span>
-          <el-switch></el-switch>
-        </div>
-        <div class="item flex">
-          <span>显示全局面包屑导航</span>
-          <el-switch></el-switch>
-        </div>
-        <div class="item flex">
-          <span>开启多标签页</span>
-          <el-switch></el-switch>
-        </div>
-        <div class="item flex">
-          <span>显示多语言选择</span>
-          <el-switch></el-switch>
-        </div>
-        <div class="item flex">
-          <span>显示顶部进度条</span>
-          <el-switch></el-switch>
-        </div>
-        <div class="item flex">
-          <span>色弱模式</span>
-          <el-switch></el-switch>
-        </div>
-        <div class="item flex">
-          <span>自动关闭设置中心</span>
-          <el-switch></el-switch>
-        </div>
-        <div class="item flex">
-          <span>全局水印</span>
-          <el-switch></el-switch>
-        </div>
-        <div class="item flex">
-          <span>菜单宽度</span>
-          <el-input-number
-            :min="180"
-            :max="320"
-            size="default"
-            :step="10"
-            style="width: 120px"
-            v-model="menuOpenWidth"
-            controls-position="right"
-            @change="setMenuOpenSize"
-          />
-        </div>
-        <div class="item flex">
-          <span>页面切换动画</span>
-          <el-select
-            v-model="pageTransition"
-            placeholder="Select"
-            size="default"
-            style="width: 120px"
-            @change="setPageTransition"
+      <setting-item-title title="主题风格"></setting-item-title>
+      <setting-item-title title="菜单布局"></setting-item-title>
+      <setting-item-title title="菜单风格"></setting-item-title>
+      <div class="menu-theme-wrap py-[20px]">
+        <div class="flex flex-wrap gap-2">
+          <div
+            class="item w-[30%] mb-[15px]"
+            v-for="(item, index) in menuThemeList"
+            :key="index"
+            @click="setMenuTheme(item.theme)"
           >
-            <el-option
-              v-for="item in pageTransitionOps"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
+            <div
+              class="box relative h-[50px] overflow-hidden cursor-pointer bg-[#f5f7f9] border-2 border-gray-100 rounded-md shadow-sm transition-shadow duration-100 ease-in-out hover:shadow-lg"
+              :class="{
+                'border-green-300': currentMenuTheme === item.theme,
+              }"
+            >
+              <div
+                class="top w-full h-[8px]"
+                :style="{
+                  background: item.tabBarBackground + '!important',
+                }"
+              ></div>
+              <div
+                class="left absolute top-0 left-0 w-[22px] h-full"
+                :style="{
+                  background: item.background,
+                }"
+              >
+                <div class="absolute top-0 left-0 w-[22px] h-full">
+                  <div
+                    v-for="(cItem, index) in 3"
+                    :key="index"
+                    class="h-[2px] mt-[5px] ml-[4px]"
+                    :class="{
+                      'mt-[15px] w-[15px] ': index === 0,
+                      'w-[10px]': index === 1,
+                      'w-[13px]': index === 2,
+                    }"
+                    :style="{ background: item.leftLineColor }"
+                  ></div>
+                </div>
+              </div>
+              <div class="right absolute top-0 right-0 w-[46px] h-full">
+                <div
+                  v-for="(cItem, index) in 3"
+                  :key="index"
+                  class="h-[6px] mt-[5px] ml-[5px]"
+                  :class="{
+                    'w-[calc(100%-15px)] mt-[12px]': index === 0,
+                    'w-[calc(50%-5px)]': index === 1,
+                    'w-[calc(52%)]': index === 2,
+                  }"
+                  :style="{
+                    background: item.rightLineColor,
+                  }"
+                ></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="item flex">
-          <span>自定义圆角</span>
-          <el-select
-            v-model="customRadius"
-            placeholder="Select"
-            size="default"
-            style="width: 120px"
-            @change="setCustomRadius"
-          >
-            <el-option
-              v-for="item in customRadiusOps"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
+      </div>
+      <setting-item-title title="系统主题色"></setting-item-title>
+      <div class="main-color-wrap my-[20px]">
+        <div class="offset flex flex-wrap gap-2 justify-center">
+          <div
+            v-for="color in mainColorList"
+            :key="color"
+            class="flex items-center justify-center w-[25px] h-[25px] cursor-pointer rounded-full"
+            :style="{ background: `${color}` }"
+            @click="setElementTheme(color)"
+          ></div>
         </div>
+      </div>
+      <setting-item-title title="盒子样式"></setting-item-title>
+      <div
+        class="flex w-full items-center gap-1 p-[4px] my-[20px] bg-gray-200 shadow-sm rounded-[7px]"
+      >
+        <div
+          v-for="(item, index) in boxStyleList"
+          :key="index"
+          class="flex-1 flex items-center justify-center h-[34px] text-[13px] text-center cursor-pointer select-none rounded-[5px] transition-all duration-100 ease-in-out text-gray-500 hover:text-gray-800 [&:not(.is-active)]:hover:bg-black/[4%]"
+          :class="{
+            'bg-white text-gray-800 is-active': item.value === boxStyle,
+          }"
+          @click="setBoxStyle(item.value)"
+        >
+          {{ item.label }}
+        </div>
+      </div>
+      <setting-item-title title="容器宽度"></setting-item-title>
+      <div class="container-width-wrap flex gap-3">
+        <div
+          v-for="(item, index) in containerWidthList"
+          :key="index"
+          class="flex flex-1 items-center justify-center h-[60px] mt-[20px] mb-[15px] cursor-pointer border-2 border-[#eaebf1] shadow-sm gap-1"
+          :class="{
+            'border-green-300': containerWidth === item.value,
+          }"
+          @click="setContainerWidth(item.value)"
+        >
+          <qx-icon :icon="item.icon"></qx-icon>
+          <span class="text-gray-500 text-[13px]">
+            {{ item.label }}
+          </span>
+        </div>
+      </div>
+      <setting-item-title title="基础配置"></setting-item-title>
+      <div class="basic-config-wrap relative z-10 bg-transparent">
+        <BasicSettingContainer title="侧边栏开启手风琴模式">
+          <template #action>
+            <el-switch></el-switch>
+          </template>
+        </BasicSettingContainer>
+        <BasicSettingContainer title="显示折叠侧边栏按钮">
+          <template #action>
+            <el-switch></el-switch>
+          </template>
+        </BasicSettingContainer>
+        <BasicSettingContainer title="显示重载页面按钮">
+          <template #action>
+            <el-switch></el-switch>
+          </template>
+        </BasicSettingContainer>
+        <BasicSettingContainer title="显示全局面包屑导航">
+          <template #action>
+            <el-switch></el-switch>
+          </template>
+        </BasicSettingContainer>
+        <BasicSettingContainer title="开启多标签页">
+          <template #action>
+            <el-switch></el-switch>
+          </template>
+        </BasicSettingContainer>
+        <BasicSettingContainer title="显示多语言选择">
+          <template #action>
+            <el-switch></el-switch>
+          </template>
+        </BasicSettingContainer>
+        <BasicSettingContainer title="显示顶部进度条">
+          <template #action>
+            <el-switch></el-switch>
+          </template>
+        </BasicSettingContainer>
+        <BasicSettingContainer title="色弱模式">
+          <template #action>
+            <el-switch></el-switch>
+          </template>
+        </BasicSettingContainer>
+        <BasicSettingContainer title="自动关闭设置中心">
+          <template #action>
+            <el-switch></el-switch>
+          </template>
+        </BasicSettingContainer>
+        <BasicSettingContainer title="全局水印">
+          <template #action>
+            <el-switch></el-switch>
+          </template>
+        </BasicSettingContainer>
+        <BasicSettingContainer title="菜单宽度">
+          <template #action>
+            <el-input-number
+              :min="180"
+              :max="320"
+              size="default"
+              :step="10"
+              style="width: 120px"
+              v-model="menuOpenWidth"
+              controls-position="right"
+              @change="setMenuOpenSize"
+            />
+          </template>
+        </BasicSettingContainer>
+        <BasicSettingContainer title="页面切换动画">
+          <template #action>
+            <el-select
+              v-model="pageTransition"
+              placeholder="Select"
+              size="default"
+              style="width: 120px"
+              @change="setPageTransition"
+            >
+              <el-option
+                v-for="item in pageTransitionOps"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </template>
+        </BasicSettingContainer>
+        <BasicSettingContainer title="自定义圆角">
+          <template #action>
+            <el-select
+              v-model="customRadius"
+              placeholder="Select"
+              size="default"
+              style="width: 120px"
+              @change="setCustomRadius"
+            >
+              <el-option
+                v-for="item in customRadiusOps"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </template>
+        </BasicSettingContainer>
       </div>
     </div>
   </el-drawer>
 </template>
 
-<style scoped>
-/*配置模块标题*/
-.title {
-  position: relative;
-  font-size: 13px;
-  color: #000;
-  font-weight: 200;
-  text-align: center;
-}
-
-.title:first-of-type {
-  margin-top: 20px;
-}
-
-.title::before,
-.title::after {
-  position: absolute;
-  top: 10px;
-  width: 50px;
-  margin: auto;
-  content: '';
-  border-bottom: 1px solid #dbdfe9;
-}
-
-.title::before {
-  left: 0;
-}
-
-.title::after {
-  right: 0;
-}
-/*基础配置项*/
-.item {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 35px;
-  color: #000;
-  font-weight: 200;
-  background: transparent !important;
-}
-.item span {
-  font-size: 14px;
-  background: transparent !important;
-}
-</style>
+<style lang="scss" scoped></style>

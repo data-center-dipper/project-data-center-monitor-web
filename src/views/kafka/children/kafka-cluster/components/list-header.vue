@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import QxFormDialog from '@/components/form-dialog/src/index.vue'
 
 const addEditClusterVisible = ref(false)
 const addEditModalTitle = ref('添加集群')
@@ -98,7 +99,7 @@ defineExpose({
 </script>
 
 <template>
-  <div class="flex justify-between mb-4">
+  <div class="flex justify-between pt-4 px-4 bg-white rounded-md mb-4">
     <div class="flex gap-2">
       <el-form-item label="集群查询">
         <el-input placeholder="搜索集群..." />
