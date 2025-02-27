@@ -5,8 +5,15 @@ import { useCommonStore } from '@/store/modules/common.ts'
 import QxIcon from '@/components/Icon/src/index.vue'
 import { ref } from 'vue'
 import { mittBus } from '@/utils'
+import { useFullscreen } from '@vueuse/core'
 
 const size = ref(20)
+
+const { isFullscreen, toggle: toggleFullscreen } = useFullscreen()
+
+const handleToggleFullScreen = () => {
+  toggleFullscreen()
+}
 
 const commonStore = useCommonStore()
 const { isCollapse } = storeToRefs(commonStore)
@@ -24,7 +31,7 @@ const openSearchDialog = () => {
   <header
     class="flex justify-between items-center px-4 py-3 bg-gray-100 shadow-sm"
   >
-    <div class="flex items-center space-x-3">
+    <div class="flex items-center space-x-1">
       <iconpark-icon
         size="24"
         :name="isCollapse ? 'unfold' : 'fold'"
@@ -47,7 +54,7 @@ const openSearchDialog = () => {
       ></qx-icon>
       <Crumbs />
     </div>
-    <div class="flex items-center space-x-3">
+    <div class="flex items-center space-x-1">
       <!--  搜索按钮  -->
       <div class="search-wrap relative bg-white rounded-md flex items-center">
         <div
@@ -68,18 +75,17 @@ const openSearchDialog = () => {
       </div>
       <!--  全屏切换 -->
       <qx-icon
-        icon="expand"
+        :icon="isFullscreen ? 'minimize' : 'expand'"
         size="1x"
         cursor="pointer"
-        :smart="false"
         class="bg-transparent p-2 hover:bg-gray-300/80"
+        @click="handleToggleFullScreen"
       ></qx-icon>
       <!--  设置  -->
       <qx-icon
         icon="gear"
         size="1x"
         cursor="pointer"
-        smart
         class="bg-transparent p-2 hover:bg-gray-300/80"
       ></qx-icon>
       <!--  主题切换  -->
