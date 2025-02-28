@@ -39,7 +39,7 @@ useRouteChange((newRoute) => {
 </script>
 
 <template>
-  <div class="breadcrumb text-gray-800">
+  <div class="breadcrumb text-gray-800 ml-2">
     <el-breadcrumb separator="/">
       <!-- 渲染面包屑导航 -->
       <el-breadcrumb-item

@@ -7,6 +7,7 @@ import { ref } from 'vue'
 import { mittBus } from '@/utils'
 import { useFullscreen } from '@vueuse/core'
 import { useSettingStore } from '@/store/modules/setting.ts'
+import QuickGuide from '../Guide/index.vue'
 
 const size = ref(20)
 
@@ -48,13 +49,14 @@ const handleRefresh = () => {
   <header
     class="flex justify-between items-center px-4 py-3 bg-gray-100 shadow-sm"
   >
-    <div class="flex items-center space-x-1">
+    <div class="flex items-center">
       <iconpark-icon
-        size="24"
+        size="22"
         :name="isCollapse ? 'unfold' : 'fold'"
         @click="handleCollapse"
         class="cursor-pointer"
       ></iconpark-icon>
+      <quick-guide />
       <!--  刷新当前路由 -->
       <qx-icon
         icon="refresh"
@@ -65,13 +67,6 @@ const handleRefresh = () => {
         @click="handleRefresh"
       ></qx-icon>
       <!--   快捷访问   -->
-      <qx-icon
-        icon="home"
-        size="1x"
-        cursor="pointer"
-        class="bg-transparent p-2 hover:bg-gray-300/80"
-        color="#C0C0C0"
-      ></qx-icon>
       <Crumbs />
     </div>
     <div class="flex items-center space-x-1">
