@@ -6,10 +6,13 @@ import QxIcon from '@/components/Icon/src/index.vue'
 import { ref } from 'vue'
 import { mittBus } from '@/utils'
 import { useFullscreen } from '@vueuse/core'
+import { useSettingStore } from '@/store/modules/setting.ts'
 
 const size = ref(20)
 
 const { isFullscreen, toggle: toggleFullscreen } = useFullscreen()
+
+const settingStore = useSettingStore()
 
 const handleToggleFullScreen = () => {
   toggleFullscreen()
@@ -28,6 +31,16 @@ const openSearchDialog = () => {
 
 const openSetting = () => {
   mittBus.emit('openSetting')
+}
+
+const handleRefresh = () => {
+  settingStore.isLoading = true // 展示数据加载状态
+  settingStore.isRouterAlive = false // 设置为false，卸载dom
+  setTimeout(() => {
+    // 此处采用了定时器，不采用 nextTick
+    settingStore.isRouterAlive = true // 设置为true，重新挂载dom
+    settingStore.isLoading = false // 隐藏数据加载状态
+  }, 500)
 }
 </script>
 
@@ -49,6 +62,7 @@ const openSetting = () => {
         cursor="pointer"
         class="bg-transparent p-2 hover:bg-gray-300/80"
         color="#C0C0C0"
+        @click="handleRefresh"
       ></qx-icon>
       <!--   快捷访问   -->
       <qx-icon

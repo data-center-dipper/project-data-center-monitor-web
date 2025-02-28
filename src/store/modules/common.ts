@@ -1,6 +1,6 @@
 import { watch, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { useMobileDetection, useRouteChange } from '../../hooks'
+import { useMobileDetection, useRouteChange } from '@/hooks'
 import { useRoute } from 'vue-router'
 
 export const useCommonStore = defineStore('common', () => {

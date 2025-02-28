@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
-import { useRouteChange } from '../../hooks'
+import { useRouteChange } from '@/hooks'
 
 export const useTagsStore = defineStore('tags', () => {
   const tagsViewList = ref([

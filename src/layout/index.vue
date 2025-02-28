@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useSettingStore } from '@/store/modules/setting.ts'
 import { useRouteTitle, useMobileDetection } from '@/hooks'
 import { useCommonStore } from '@/store/modules/common.ts'
 import Search from './components/Search/index.vue'
@@ -16,6 +17,10 @@ const menuDrawerRef = ref(null)
 
 const commonStore = useCommonStore()
 const { isCollapse } = storeToRefs(commonStore)
+
+const settingStore = useSettingStore()
+
+const { isRouterAlive, isLoading } = storeToRefs(settingStore)
 
 const { isMobile } = useMobileDetection()
 
@@ -44,8 +49,12 @@ useRouteTitle()
         <Header />
       </el-header>
       <Tab />
-      <el-main>
-        <router-view v-slot="{ Component, route }">
+      <el-main
+        v-loading="isLoading"
+        element-loading-text="加载中……"
+        element-loading-background="rgba(0, 0, 0, 0.8)"
+      >
+        <router-view v-if="isRouterAlive" v-slot="{ Component, route }">
           <component :key="route.path" :is="Component" />
         </router-view>
       </el-main>
