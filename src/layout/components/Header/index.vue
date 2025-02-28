@@ -48,6 +48,7 @@ const openSetting = () => {
         size="1x"
         cursor="pointer"
         class="bg-transparent p-2 hover:bg-gray-300/80"
+        color="#C0C0C0"
       ></qx-icon>
       <!--   快捷访问   -->
       <qx-icon
@@ -55,6 +56,7 @@ const openSetting = () => {
         size="1x"
         cursor="pointer"
         class="bg-transparent p-2 hover:bg-gray-300/80"
+        color="#C0C0C0"
       ></qx-icon>
       <Crumbs />
     </div>
@@ -84,6 +86,7 @@ const openSetting = () => {
         cursor="pointer"
         class="bg-transparent p-2 hover:bg-gray-300/80"
         @click="handleToggleFullScreen"
+        color="#C0C0C0"
       ></qx-icon>
       <!--  设置  -->
       <qx-icon
@@ -92,6 +95,7 @@ const openSetting = () => {
         cursor="pointer"
         class="bg-transparent p-2 hover:bg-gray-300/80"
         @click="openSetting"
+        color="#C0C0C0"
       ></qx-icon>
       <!--  主题切换  -->
       <qx-icon
@@ -99,6 +103,7 @@ const openSetting = () => {
         size="1x"
         cursor="pointer"
         class="bg-transparent p-2 hover:bg-gray-300/80"
+        color="#C0C0C0"
       ></qx-icon>
       <!--  语言切换 -->
       <qx-icon
@@ -106,6 +111,7 @@ const openSetting = () => {
         size="1x"
         cursor="pointer"
         class="bg-transparent p-2 hover:bg-gray-300/80"
+        color="#C0C0C0"
       ></qx-icon>
       <!-- 消息 -->
       <qx-icon
@@ -113,6 +119,7 @@ const openSetting = () => {
         size="1x"
         cursor="pointer"
         class="bg-transparent p-2 hover:bg-gray-300/80"
+        color="#C0C0C0"
       ></qx-icon>
       <!-- 锁定屏幕 -->
       <qx-icon
@@ -120,6 +127,7 @@ const openSetting = () => {
         size="1x"
         cursor="pointer"
         class="bg-transparent p-2 hover:bg-gray-300/80"
+        color="#C0C0C0"
       ></qx-icon>
       <!-- 用户信息 -->
       <div class="user-avatar flex gap-2 items-center text-nowrap">

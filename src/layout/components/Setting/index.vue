@@ -22,6 +22,7 @@ const systemThemeMode = ref(systemThemeEnum.AUTO)
 const containerWidth = ref('')
 const boxStyle = ref('')
 const currentMenuTheme = ref('')
+const currentSystemTheme = ref('')
 const pageTransitionOps = [
   {
     value: '',
@@ -85,8 +86,6 @@ function setCustomRadius(val: string) {
   customRadius.value = val
 }
 
-function switchTheme(theme: string) {}
-
 function setSystemAutoTheme() {}
 
 function initSystemTheme() {
@@ -108,6 +107,10 @@ function setElementTheme() {}
 
 function setMenuTheme(menuTheme: string) {
   currentMenuTheme.value = menuTheme
+}
+
+function setSystemTheme(theme: systemThemeEnum) {
+  currentSystemTheme.value = theme
 }
 
 onMounted(() => {
@@ -135,9 +138,73 @@ onMounted(() => {
         ></qx-icon>
       </div>
       <setting-item-title title="主题风格"></setting-item-title>
+      <div class="theme-wrap flex gap-2 flex-wrap w-full mt-[25px]">
+        <div
+          class="item w-[30%]"
+          v-for="(item, index) in settingThemeList"
+          :key="index"
+          @click="setSystemTheme(item.theme)"
+        >
+          <div
+            class="box relative flex h-[50px] overflow-hidden cursor-pointer border-2 border-gray-100 rounded-md shadow-sm transition-shadow duration-100 ease-in-out hover:shadow-lg"
+            :class="{
+              'border-green-300': currentSystemTheme === item.theme,
+            }"
+          >
+            <div
+              :style="{
+                background: item.color[0],
+              }"
+              class="relative w-[50%] h-full"
+            >
+              <div
+                v-for="(cItem, index) in 3"
+                :key="index"
+                :class="{
+                  'mt-[13px]': index === 0,
+                  'w-[10px]': index === 1,
+                  'w-[13px]': index === 2,
+                }"
+                :style="{
+                  background: item.leftLineColor,
+                }"
+                class="w-[15px] h-[2px] mt-[5px] ml-[10px]"
+              ></div>
+            </div>
+            <div
+              :style="{
+                background: index === 2 ? item.color[1] : item.color[0],
+              }"
+              class="relative w-[50%] h-full"
+            >
+              <div
+                v-for="(cItem, index) in 3"
+                :key="index"
+                :class="{
+                  'w-[calc(100%-15px)]': index === 0,
+                  'w-[calc(50%-5px)]': index === 1,
+                  'w-[calc(52%)]': index === 2,
+                }"
+                :style="{
+                  background: item.rightLineColor,
+                }"
+                class="h-[5px] mt-[6px] ml-[5px]"
+              ></div>
+            </div>
+          </div>
+          <p></p>
+          <div class="dot-wrap w-full flex justify-center h-[13px] mt-[5px]">
+            <div
+              class="size-[8px] bg-green-300 rounded-full"
+              v-show="currentSystemTheme === item.theme"
+            ></div>
+          </div>
+        </div>
+      </div>
       <setting-item-title title="菜单布局"></setting-item-title>
+      <div></div>
       <setting-item-title title="菜单风格"></setting-item-title>
-      <div class="menu-theme-wrap py-[20px]">
+      <div class="menu-theme-wrap pt-[20px]">
         <div class="flex flex-wrap gap-2">
           <div
             class="item w-[30%] mb-[15px]"
@@ -192,6 +259,12 @@ onMounted(() => {
                   }"
                 ></div>
               </div>
+            </div>
+            <div class="dot-wrap w-full flex justify-center h-[13px] mt-[5px]">
+              <div
+                class="size-[8px] bg-green-300 rounded-full"
+                v-show="currentMenuTheme === item.theme"
+              ></div>
             </div>
           </div>
         </div>
