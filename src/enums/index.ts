@@ -19,3 +19,10 @@ export enum menuThemeEnum {
   LIGHT = 'light',
   DESIGN = 'design',
 }
+
+export enum menuTypeEnum {
+  LEFT = 'left',
+  TOP = 'top',
+  TOP_LEFT = 'top-left',
+  DUAL_MENU = 'dual-menu',
+}
